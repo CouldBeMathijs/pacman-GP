@@ -28,7 +28,7 @@
           export SFML_DIR=${sfml_2}/lib/cmake/SFML
           
           echo "Entering C++ development environment."
-          echo "Run 'cmake .' and 'make' to build your project."
+          echo "Please run your IDE from within this env to make sure all dependencies are present."
         '';
       };
 
