@@ -10,7 +10,7 @@ on:
   # Existing triggers
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * TUE'
+    - cron: '0 0 * * MON'
 jobs:
   nix-flake-update:
     permissions:
