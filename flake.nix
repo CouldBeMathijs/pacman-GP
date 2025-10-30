@@ -1,16 +1,14 @@
 {
-        description = "A C++ project with SFML, built using CMake and Nix.";
+        description = "The Pacman Project for the Advanced Programming course at the University of Antwerp";
 
         inputs = {
-                # Get the systems from the flake's utility functions
                 nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
                 flake-utils.url = "github:numtide/flake-utils";
         };
 
         outputs = { self, nixpkgs, flake-utils }:
-                # Use flake-utils to iterate over common systems
                 flake-utils.lib.eachDefaultSystem
-                (system: # <--- system variable is now passed in
+                (system:
                         let
                                 pkgs = import nixpkgs {
                                         inherit system;
@@ -18,16 +16,15 @@
                                 };
 
                                 compiler = pkgs.clang;
-
-                                # Use the specific SFML 2.6.2 package
                                 sfml_2 = pkgs.sfml_2;
+
                                 # Packages needed for development shell
-                                sfml-dev-pkgs = with pkgs; [ compiler cmake gdb sfml_2 valgrind gtest];
+                                sfml-dev-pkgs = with pkgs; [ compiler cmake gdb sfml_2 valgrind];
 
                                 # --- 1. PACKAGE DEFINITION (Build Shell) ---
                                 # Defines how to build and install the C++ project
                                 cppGamePackage = pkgs.stdenv.mkDerivation {
-                                        pname = "sfml-cpp-project";
+                                        pname = "Pacman";
                                         version = "0.1.0";
 
                                         src = ./.; # Source code is in the current flake directory
@@ -45,7 +42,6 @@
                                                 "-DSFML_DIR=${sfml_2}/lib/cmake/SFML"
                                         ];
 
-                                        # --- Custom installPhase to fix "No rule to make target 'install'" error ---
                                         installPhase = ''
                                                 echo "Running custom install phase..."
                                                 # Create the standard output directory for binaries

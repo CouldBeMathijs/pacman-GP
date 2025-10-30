@@ -1,8 +1,12 @@
 set(LOGIC_SOURCES
-        Stopwatch.cpp
-        World.cpp
         Random.cpp
-        Random.h
+        Stopwatch.cpp
+        Subject.cpp
+        Types/Collectable.cpp
+        Types/Ghost.cpp
+        Types/Pacman.cpp
+        Types/Wall.cpp
+        World.cpp
 )
 
 add_library(GameLogic STATIC ${LOGIC_SOURCES})
