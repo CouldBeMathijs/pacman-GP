@@ -3,6 +3,6 @@
 
 class Subject {};
 
-class EntityModel : Subject{};
+class EntityModel : Subject {};
 
 #endif // PACMAN_SUBJECT_H
