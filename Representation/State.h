@@ -1,7 +1,3 @@
-//
-// Created by mathijs on 29/10/2025.
-//
-
 #ifndef PACMAN_STATE_H
 #define PACMAN_STATE_H
 
