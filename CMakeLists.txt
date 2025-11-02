@@ -4,6 +4,7 @@ project(pacman)
 find_package(SFML 2.5 REQUIRED COMPONENTS graphics window system)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_compile_options(-Wall)
 
 add_subdirectory(Logic)
 
@@ -12,6 +13,8 @@ set(PACMAN_SOURCES
         Representation/Game.cpp
         Representation/Statemanager.cpp
         Representation/State.cpp
+        Representation/Camera.cpp
+        Representation/Camera.h
 )
 
 add_executable(pacman ${PACMAN_SOURCES})

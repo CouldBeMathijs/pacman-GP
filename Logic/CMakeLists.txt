@@ -8,6 +8,7 @@ set(LOGIC_SOURCES
         Types/Wall.cpp
         World.cpp
 )
+add_compile_options(-Wall)
 
 add_library(GameLogic STATIC ${LOGIC_SOURCES})
 
