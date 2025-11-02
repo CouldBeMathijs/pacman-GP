@@ -7,6 +7,12 @@ set(LOGIC_SOURCES
         Types/Pacman.cpp
         Types/Wall.cpp
         World.cpp
+        AbstractEntityFactory.cpp
+        AbstractEntityFactory.h
+        Observer.cpp
+        Observer.h
+        Score.cpp
+        Score.h
 )
 add_compile_options(-Wall)
 
