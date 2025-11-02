@@ -21,24 +21,18 @@
                                 # Packages needed for development shell
                                 sfml-dev-pkgs = with pkgs; [ compiler cmake gdb sfml_2 valgrind];
 
-                                # --- 1. PACKAGE DEFINITION (Build Shell) ---
-                                # Defines how to build and install the C++ project
                                 cppGamePackage = pkgs.stdenv.mkDerivation {
                                         pname = "Pacman";
                                         version = "0.1.0";
 
                                         src = ./.; # Source code is in the current flake directory
 
-                                        # Dependencies required for linking and runtime (SFML libraries)
                                         buildInputs = [ sfml_2 ];
 
-                                        # Dependencies required for the build process (e.g., CMake, compiler)
                                         nativeBuildInputs = [ pkgs.cmake pkgs.clang ];
 
-                                        # Set up the CMake flags
                                         cmakeFlags = [
                                                 "-DCMAKE_BUILD_TYPE=Release"
-                                                # Explicitly tell CMake where to find the SFML package configuration
                                                 "-DSFML_DIR=${sfml_2}/lib/cmake/SFML"
                                         ];
 
@@ -58,11 +52,8 @@
                                                 echo "Executable copied to $out/bin/"
                                         '';
 
-                                        # The installPhase now overrides the default 'make install' phase.
                                 };
 
-                                # --- 2. DEVELOPMENT SHELL DEFINITION ---
-                                # Defines the environment for development
                                 cpp-env = pkgs.mkShell {
                                         buildInputs = sfml-dev-pkgs;
                                         shellHook = ''
@@ -78,7 +69,6 @@
                                         '';
                                 };
                         in {
-                                # Make the C++ package available via `nix build` or `nix install`
                                 packages = {
                                         default = cppGamePackage;
                                         sfml-cpp-project = cppGamePackage;
