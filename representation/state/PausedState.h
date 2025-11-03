@@ -6,7 +6,7 @@
 class PausedState final : public State {
 public:
     void drawScreen(sf::RenderWindow&) override;
-    std::unique_ptr<State> handleInput(const sf::Event&) override;
+    std::unique_ptr<State> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 
 

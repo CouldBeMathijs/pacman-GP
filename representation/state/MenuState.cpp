@@ -32,15 +32,12 @@ MenuState::MenuState() {
 
 void MenuState::drawScreen(sf::RenderWindow& window) {
     window.clear(sf::Color::Black);
-
     window.draw(m_pacmanText);
-
     window.draw(m_playText);
-
     window.display();
 }
 
-std::unique_ptr<State> MenuState::handleInput(const sf::Event& event) {
+std::unique_ptr<State> MenuState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {
     if (event.type == sf::Event::KeyPressed)
     {
         return std::make_unique<LevelState>();

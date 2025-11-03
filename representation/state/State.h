@@ -8,7 +8,7 @@ class State {
 public:
     virtual ~State() = default;
     virtual void drawScreen(sf::RenderWindow&) = 0;
-    virtual std::unique_ptr<State> handleInput(const sf::Event&) = 0;
+    virtual std::unique_ptr<State> handleInput(const sf::Event&, unsigned int& amountOfPops) = 0;
 protected:
     State() = default;
 };

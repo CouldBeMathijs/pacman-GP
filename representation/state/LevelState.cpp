@@ -8,6 +8,6 @@ LevelState::LevelState() {
 
 void LevelState::drawScreen(sf::RenderWindow&) {}
 
-std::unique_ptr<State> LevelState::handleInput(const sf::Event&) {
+std::unique_ptr<State> LevelState::handleInput(const sf::Event&, unsigned int& amountOfPops) {
     return nullptr;
 }
