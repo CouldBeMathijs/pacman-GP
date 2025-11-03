@@ -27,6 +27,7 @@ void Game::run() {
         camera.applyView();
 
         // window.draw(myShape);
+        sm.top()->drawScreen(window);
 
         window.display();
     }

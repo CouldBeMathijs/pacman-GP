@@ -46,8 +46,8 @@
 
                                                 # If your project uses assets (images, fonts, etc.), you must copy them here as well.
                                                 # Example for assets:
-                                                # mkdir -p $out/share/pacman/
-                                                # cp -r assets/* $out/share/pacman/
+                                                # Corrected lines:
+                                                cp -r $src/Assets $out/bin/
 
                                                 echo "Executable copied to $out/bin/"
                                         '';
@@ -80,4 +80,3 @@
                         }
                 );
 }
-

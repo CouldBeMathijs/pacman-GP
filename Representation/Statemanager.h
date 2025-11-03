@@ -5,7 +5,7 @@
 #include <memory>
 #include <stack>
 
-class Statemanager : std::stack<std::unique_ptr<State>> {
+class Statemanager : public std::stack<std::unique_ptr<State>> {
 public:
     Statemanager();
 };
