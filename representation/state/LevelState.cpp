@@ -3,11 +3,14 @@
 
 #include <iostream>
 LevelState::LevelState() {
-    std::cout << "HI" << std::endl;
 }
 
 void LevelState::drawScreen(sf::RenderWindow&) {}
 
-std::unique_ptr<State> LevelState::handleInput(const sf::Event&, unsigned int& amountOfPops) {
+std::unique_ptr<State> LevelState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+    {
+        amountOfPops = 1;
+    }
     return nullptr;
 }
