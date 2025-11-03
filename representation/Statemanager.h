@@ -1,6 +1,6 @@
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
-#include "State/State.h"
+#include "state/State.h"
 
 #include <memory>
 #include <stack>

@@ -6,19 +6,19 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall)
 
-add_subdirectory(Logic)
+add_subdirectory(logic)
 
 set(PACMAN_SOURCES
         main.cpp
-        Representation/Game.cpp
-        Representation/Statemanager.cpp
-        Representation/Camera.cpp
-        Representation/ConcreteEntityFactory.cpp
-        Representation/EntityView.cpp
-        Representation/State/MenuState.cpp
-        Representation/State/LevelState.cpp
-        Representation/State/PausedState.cpp
-        Representation/State/VictoryState.cpp
+        representation/Game.cpp
+        representation/Statemanager.cpp
+        representation/Camera.cpp
+        representation/ConcreteEntityFactory.cpp
+        representation/EntityView.cpp
+        representation/state/MenuState.cpp
+        representation/state/LevelState.cpp
+        representation/state/PausedState.cpp
+        representation/state/VictoryState.cpp
 )
 
 add_executable(pacman ${PACMAN_SOURCES})

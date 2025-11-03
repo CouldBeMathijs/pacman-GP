@@ -1,6 +1,6 @@
 #include "Statemanager.h"
 
-#include "State/MenuState.h"
+#include "state/MenuState.h"
 Statemanager::Statemanager() {
     emplace(std::make_unique<MenuState>());
 }

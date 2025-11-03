@@ -4,7 +4,7 @@
 #include "LevelState.h"
 
 MenuState::MenuState() {
-    if (!m_font.loadFromFile("./Assets/BoldPixels/BoldPixels.ttf")) {
+    if (!m_font.loadFromFile("./assets/BoldPixels/BoldPixels.ttf")) {
         throw std::runtime_error("Missing font BoldPixels");
     }
 

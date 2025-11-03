@@ -2,10 +2,10 @@ set(LOGIC_SOURCES
         Random.cpp
         Stopwatch.cpp
         Subject.cpp
-        Types/Collectable.cpp
-        Types/Ghost.cpp
-        Types/Pacman.cpp
-        Types/Wall.cpp
+        entity_types/Collectable.cpp
+        entity_types/Ghost.cpp
+        entity_types/Pacman.cpp
+        entity_types/Wall.cpp
         World.cpp
         AbstractEntityFactory.cpp
         AbstractEntityFactory.h

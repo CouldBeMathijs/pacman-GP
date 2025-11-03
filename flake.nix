@@ -47,7 +47,7 @@
                                                 # If your project uses assets (images, fonts, etc.), you must copy them here as well.
                                                 # Example for assets:
                                                 # Corrected lines:
-                                                cp -r $src/Assets $out/
+                                                cp -r $src/assets $out/
 
                                                 echo "Executable copied to $out/"
                                         '';
