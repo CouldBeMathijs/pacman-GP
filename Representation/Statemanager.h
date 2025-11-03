@@ -2,13 +2,12 @@
 #define PACMAN_STATEMANAGER_H
 #include "State.h"
 
+#include <memory>
 #include <stack>
 
-class Statemanager {
-private:
-    std::stack<State> states;
+class Statemanager : std::stack<std::unique_ptr<State>> {
 public:
-    Statemanager() = default;
+    Statemanager();
 };
 
 #endif // PACMAN_STATEMANAGER_H

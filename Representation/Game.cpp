@@ -1,7 +1,5 @@
 #include "Game.h"
 
-#include "Stopwatch.h"
-#include "World.h"
 #include <SFML/Graphics.hpp>
 Game::Game() :
     camera(sf::VideoMode(800, 600), "Pacman AP", sf::Style::Close | sf::Style::Resize)
