@@ -6,9 +6,9 @@
 
 class World {
 private:
-    std::vector<EntityModel> entityVector;
+    std::vector<EntityModel> entities;
 public:
-
+    void update();
 };
 
 #endif // PACMAN_WORLD_H

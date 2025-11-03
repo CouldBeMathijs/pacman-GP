@@ -1,8 +1,13 @@
 #ifndef PACMAN_SUBJECT_H
 #define PACMAN_SUBJECT_H
 
-class Subject {};
+class Subject {
+public:
+    virtual ~Subject() = default;
+    virtual void update();
+};
 
-class EntityModel : Subject {};
+class EntityModel : public Subject {
+};
 
 #endif // PACMAN_SUBJECT_H
