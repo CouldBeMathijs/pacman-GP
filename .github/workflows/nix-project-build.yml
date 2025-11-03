@@ -1,7 +1,8 @@
-name: "Build Project"
+name: "Build Nix Project"
 on:
-  pull_request:
-  push:
+  # pull_request:
+  # push:
+  workflow_dispatch:
 jobs:
   tests:
     runs-on: ubuntu-latest
