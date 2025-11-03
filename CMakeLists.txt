@@ -12,10 +12,13 @@ set(PACMAN_SOURCES
         main.cpp
         Representation/Game.cpp
         Representation/Statemanager.cpp
-        Representation/State.cpp
         Representation/Camera.cpp
         Representation/ConcreteEntityFactory.cpp
         Representation/EntityView.cpp
+        Representation/State/MenuState.cpp
+        Representation/State/LevelState.cpp
+        Representation/State/PausedState.cpp
+        Representation/State/VictoryState.cpp
 )
 
 add_executable(pacman ${PACMAN_SOURCES})

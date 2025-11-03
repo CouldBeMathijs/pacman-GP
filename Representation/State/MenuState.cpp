@@ -1,34 +1,11 @@
-#include "State.h"
 
-#include <SFML/Graphics.hpp>
-#include <iostream>
-void MenuState::drawScreen(sf::RenderWindow& window) {
-    window.clear(sf::Color::Black);
+#include "MenuState.h"
 
-    window.draw(m_pacmanText);
+#include "LevelState.h"
 
-    window.draw(m_playText);
-
-    window.display();
-}
-std::unique_ptr<State> MenuState::handleInput(const sf::Event& event) {
-    if (event.type == sf::Event::KeyPressed)
-    {
-        return std::make_unique<LevelState>();
-    } else {
-        return nullptr;
-    }
-}
-LevelState::LevelState() {
-    std::cout << "HI" << std::endl;
-}
-void LevelState::drawScreen(sf::RenderWindow&) {}
-std::unique_ptr<State> LevelState::handleInput(const sf::Event&) {
-    return nullptr;
-}
 MenuState::MenuState() {
     if (!m_font.loadFromFile("./Assets/BoldPixels/BoldPixels.ttf")) {
-       throw std::runtime_error("Missing font BoldPixels");
+        throw std::runtime_error("Missing font BoldPixels");
     }
 
     m_pacmanText.setFont(m_font);
@@ -51,4 +28,23 @@ MenuState::MenuState() {
     m_playText.setOrigin(playBounds.left + playBounds.width / 2.0f,
                          playBounds.top + playBounds.height / 2.0f);
     m_playText.setPosition(800.0f / 2.0f, 400.0f);
+}
+
+void MenuState::drawScreen(sf::RenderWindow& window) {
+    window.clear(sf::Color::Black);
+
+    window.draw(m_pacmanText);
+
+    window.draw(m_playText);
+
+    window.display();
+}
+
+std::unique_ptr<State> MenuState::handleInput(const sf::Event& event) {
+    if (event.type == sf::Event::KeyPressed)
+    {
+        return std::make_unique<LevelState>();
+    } else {
+        return nullptr;
+    }
 }
