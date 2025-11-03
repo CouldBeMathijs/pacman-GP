@@ -1,5 +1,7 @@
 #include "State.h"
+
 #include <SFML/Graphics.hpp>
+#include <iostream>
 void MenuState::drawScreen(sf::RenderWindow& window) {
     window.clear(sf::Color::Black);
 
@@ -8,6 +10,21 @@ void MenuState::drawScreen(sf::RenderWindow& window) {
     window.draw(m_playText);
 
     window.display();
+}
+std::unique_ptr<State> MenuState::handleInput(const sf::Event& event) {
+    if (event.type == sf::Event::KeyPressed)
+    {
+        return std::make_unique<LevelState>();
+    } else {
+        return nullptr;
+    }
+}
+LevelState::LevelState() {
+    std::cout << "HI" << std::endl;
+}
+void LevelState::drawScreen(sf::RenderWindow&) {}
+std::unique_ptr<State> LevelState::handleInput(const sf::Event&) {
+    return nullptr;
 }
 MenuState::MenuState() {
     if (!m_font.loadFromFile("./Assets/BoldPixels/BoldPixels.ttf")) {
@@ -26,8 +43,8 @@ MenuState::MenuState() {
 
 
     m_playText.setFont(m_font);
-    m_playText.setString("Play");
-    m_playText.setCharacterSize(50);
+    m_playText.setString("Press any key to Play");
+    m_playText.setCharacterSize(30);
     m_playText.setFillColor(sf::Color::White);
 
     sf::FloatRect playBounds = m_playText.getLocalBounds();

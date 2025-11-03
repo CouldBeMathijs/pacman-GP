@@ -1,23 +1,19 @@
 #include "Game.h"
 
 #include <SFML/Graphics.hpp>
-Game::Game() :
-    camera(sf::VideoMode(800, 600), "Pacman AP", sf::Style::Close | sf::Style::Resize)
-{
-}
+Game::Game() : camera(sf::VideoMode(800, 600), "Pacman AP", sf::Style::Close | sf::Style::Resize) {}
 
 void Game::run() {
     sf::RenderWindow& window = camera.getWindow();
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
 
             camera.handleEvent(event); // Example: for resizing/view changes
+            sm.handleInput(event);
         }
 
         // update(deltaTime);
@@ -26,8 +22,7 @@ void Game::run() {
 
         camera.applyView();
 
-        // window.draw(myShape);
-        sm.top()->drawScreen(window);
+        sm.drawScreen(window);
 
         window.display();
     }

@@ -8,6 +8,8 @@
 class Statemanager : public std::stack<std::unique_ptr<State>> {
 public:
     Statemanager();
+    void drawScreen(sf::RenderWindow&);
+    void handleInput(const sf::Event&);
 };
 
 #endif // PACMAN_STATEMANAGER_H

@@ -9,6 +9,7 @@ class State {
 public:
     virtual ~State() = default;
     virtual void drawScreen(sf::RenderWindow&) = 0;
+    virtual std::unique_ptr<State> handleInput(const sf::Event&) = 0;
 protected:
     State() = default;
 };
@@ -19,19 +20,27 @@ private:
     sf::Text m_pacmanText;
     sf::Text m_playText;
 public:
-    void drawScreen(sf::RenderWindow&) override;
     MenuState();
+    void drawScreen(sf::RenderWindow&) override;
+    std::unique_ptr<State> handleInput(const sf::Event&) override;
 };
 class LevelState final : public State {
-    void drawScreen(sf::RenderWindow&) override;
 private:
     World world;
+public:
+    LevelState();
+    void drawScreen(sf::RenderWindow&) override;
+    std::unique_ptr<State> handleInput(const sf::Event&) override;
 };
 class PausedState final : public State {
+public:
     void drawScreen(sf::RenderWindow&) override;
+    std::unique_ptr<State> handleInput(const sf::Event&) override;
 };
 class VictoryState final : public State {
+public:
     void drawScreen(sf::RenderWindow&) override;
+    std::unique_ptr<State> handleInput(const sf::Event&) override;
 };
 
 #endif // PACMAN_STATE_H
