@@ -22,7 +22,7 @@
                                 sfml-dev-pkgs = with pkgs; [ compiler cmake gdb sfml_2 valgrind];
 
                                 cppGamePackage = pkgs.stdenv.mkDerivation {
-                                        pname = "Pacman";
+                                        pname = "pacman";
                                         version = "0.1.0";
 
                                         src = ./.; # Source code is in the current flake directory
@@ -39,17 +39,17 @@
                                         installPhase = ''
                                                 echo "Running custom install phase..."
                                                 # Create the standard output directory for binaries
-                                                mkdir -p $out/bin
+                                                mkdir -p $out
 
-                                                # Copy the built executable (named 'pacman' based on your log) to $out/bin
-                                                cp pacman $out/bin/
+                                                # Copy the built executable (named 'pacman' based on your log) to $out
+                                                cp pacman $out/
 
                                                 # If your project uses assets (images, fonts, etc.), you must copy them here as well.
                                                 # Example for assets:
                                                 # Corrected lines:
-                                                cp -r $src/Assets $out/bin/
+                                                cp -r $src/Assets $out/
 
-                                                echo "Executable copied to $out/bin/"
+                                                echo "Executable copied to $out/"
                                         '';
 
                                 };

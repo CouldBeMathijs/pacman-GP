@@ -14,11 +14,8 @@ set(PACMAN_SOURCES
         Representation/Statemanager.cpp
         Representation/State.cpp
         Representation/Camera.cpp
-        Representation/Camera.h
         Representation/ConcreteEntityFactory.cpp
-        Representation/ConcreteEntityFactory.h
         Representation/EntityView.cpp
-        Representation/EntityView.h
 )
 
 add_executable(pacman ${PACMAN_SOURCES})

@@ -10,8 +10,8 @@ void MenuState::drawScreen(sf::RenderWindow& window) {
     window.display();
 }
 MenuState::MenuState() {
-    if (!m_font.loadFromFile("../Assets/BoldPixels/BoldPixels.ttf")) {
-       throw std::runtime_error("Missing font");
+    if (!m_font.loadFromFile("./Assets/BoldPixels/BoldPixels.ttf")) {
+       throw std::runtime_error("Missing font BoldPixels");
     }
 
     m_pacmanText.setFont(m_font);
