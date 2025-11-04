@@ -5,14 +5,10 @@
 
 class EntityView : public Observer {};
 
-class PacmanView : EntityView {};
-
-class GhostView : EntityView {};
-
-class CoinView : EntityView {};
-
-class FruitView : EntityView {};
-
-class WallView : EntityView {};
+class CoinView : public EntityView {};
+class FruitView : public EntityView {};
+class GhostView : public EntityView {};
+class PacmanView : public EntityView {};
+class WallView : public EntityView {};
 
 #endif // PACMAN_ENTITYVIEW_H

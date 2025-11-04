@@ -11,24 +11,24 @@ protected:
     AbstractEntityFactory() = default;
 public:
     virtual ~AbstractEntityFactory() = default;
-    virtual EntityModel createPacman(Position) = 0;
-    EntityModel createPacman(const double x, const double y) {
+    virtual std::unique_ptr<EntityModel> createPacman(Position) = 0;
+    std::unique_ptr<EntityModel> createPacman(const double x, const double y) {
         return createPacman({x, y});
     }
-    virtual EntityModel createGhost(Position) = 0;
-    EntityModel createGhost(const double x, const double y) {
+    virtual std::unique_ptr<EntityModel> createGhost(Position) = 0;
+    std::unique_ptr<EntityModel> createGhost(const double x, const double y) {
         return createGhost({x, y});
     }
-    virtual EntityModel createWall(Position) = 0;
-    EntityModel createWall(const double x, const double y) {
+    virtual std::unique_ptr<EntityModel> createWall(Position) = 0;
+    std::unique_ptr<EntityModel> createWall(const double x, const double y) {
         return createWall({x, y});
     }
-    virtual EntityModel createCoin(Position) = 0;
-    EntityModel createCoint(const double x, const double y) {
+    virtual std::unique_ptr<EntityModel> createCoin(Position) = 0;
+    std::unique_ptr<EntityModel> createCoint(const double x, const double y) {
         return createCoin({x, y});
     }
-    virtual EntityModel createFruit(Position) = 0;
-    EntityModel createFruit(const double x, const double y) {
+    virtual std::unique_ptr<EntityModel> createFruit(Position) = 0;
+    std::unique_ptr<EntityModel> createFruit(const double x, const double y) {
         return createFruit({x, y});
     }
 };

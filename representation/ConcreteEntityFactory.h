@@ -5,11 +5,11 @@
 
 class ConcreteEntityFactory final : public AbstractEntityFactory {
 public:
-    EntityModel createCoin(Position) override;
-    EntityModel createFruit(Position) override;
-    EntityModel createGhost(Position) override;
-    EntityModel createPacman(Position) override;
-    EntityModel createWall(Position) override;
+    std::unique_ptr<EntityModel> createCoin(Position) override;
+    std::unique_ptr<EntityModel> createFruit(Position) override;
+    std::unique_ptr<EntityModel> createGhost(Position) override;
+    std::unique_ptr<EntityModel> createPacman(Position) override;
+    std::unique_ptr<EntityModel> createWall(Position) override;
 };
 
 #endif // PACMAN_CONCRETEENTITYFACTORY_H

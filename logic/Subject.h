@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 struct Position : public std::pair<double, double> {
 public:
@@ -17,7 +18,7 @@ public:
 
 class Subject {
 private:
-    std::unique_ptr<Observer> observer;
+    std::vector<std::unique_ptr<Observer>> observers;
 public:
     virtual ~Subject();
     virtual void update();

@@ -2,7 +2,7 @@
 #define PACMAN_PACMAN_H
 #include "Subject.h"
 
-class Pacman final : EntityModel {
+class Pacman final : public EntityModel {
 public:
     explicit Pacman(const Position& pos) : EntityModel(pos) {}
 };
