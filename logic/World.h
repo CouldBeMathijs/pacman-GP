@@ -3,6 +3,7 @@
 #include "Subject.h"
 
 #include <vector>
+#include <string>
 
 class World {
 private:
