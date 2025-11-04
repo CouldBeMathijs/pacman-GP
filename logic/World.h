@@ -10,9 +10,9 @@ private:
     std::vector<std::unique_ptr<EntityModel>> entities;
 public:
     void addEntity(std::unique_ptr<EntityModel>);
-    void update();
+    void update() const;
     World() = default;
-    World(std::string filename);
+    static World createWorldFromFile(const std::string& filename);
 };
 
 #endif // PACMAN_WORLD_H
