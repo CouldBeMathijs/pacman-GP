@@ -6,9 +6,12 @@
 
 class World {
 private:
-    std::vector<EntityModel> entities;
+    std::vector<std::unique_ptr<EntityModel>> entities;
 public:
+    void addEntity(std::unique_ptr<EntityModel>);
     void update();
+    World() = default;
+    World(std::string filename);
 };
 
 #endif // PACMAN_WORLD_H

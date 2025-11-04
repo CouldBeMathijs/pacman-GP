@@ -12,6 +12,8 @@ set(LOGIC_SOURCES
         Observer.h
         Score.cpp
         Score.h
+        Position.h
+        Position.cpp
 )
 add_compile_options(-Wall)
 

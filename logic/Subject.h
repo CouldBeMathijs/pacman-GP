@@ -1,20 +1,11 @@
 #ifndef PACMAN_SUBJECT_H
 #define PACMAN_SUBJECT_H
 #include "Observer.h"
+#include "Position.h"
 
 #include <memory>
 #include <utility>
 #include <vector>
-
-struct Position : public std::pair<double, double> {
-public:
-    double x = first;
-    double y = second;
-    Position(const double x, const double y) {
-        first = x;
-        second = y;
-    }
-};
 
 class Subject {
 private:
