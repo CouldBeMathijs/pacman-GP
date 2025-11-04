@@ -26,10 +26,9 @@ public:
 
 class EntityModel : public Subject {
 protected:
-    explicit EntityModel(Position  pos) : pos(std::move(pos)) {}
+    explicit EntityModel(Position pos) : pos(std::move(pos)) {}
 private:
     Position pos;
-
 };
 
 #endif // PACMAN_SUBJECT_H

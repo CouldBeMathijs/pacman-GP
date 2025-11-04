@@ -5,11 +5,11 @@
 
 class ConcreteEntityFactory final : public AbstractEntityFactory {
 public:
-    Coin createCoin(Position) override;
-    Fruit createFruit(Position) override;
-    Ghost createGhost(Position) override;
-    Pacman createPacman(Position) override;
-    Wall createWall(Position) override;
+    EntityModel createCoin(Position) override;
+    EntityModel createFruit(Position) override;
+    EntityModel createGhost(Position) override;
+    EntityModel createPacman(Position) override;
+    EntityModel createWall(Position) override;
 };
 
 #endif // PACMAN_CONCRETEENTITYFACTORY_H

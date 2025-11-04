@@ -2,7 +2,10 @@
 #define PACMAN_GHOST_H
 #include "Subject.h"
 
-class Ghost : EntityModel {};
+class Ghost final : EntityModel {
+public:
+    explicit Ghost(const Position& pos) : EntityModel(pos) {}
+};
 
 
 

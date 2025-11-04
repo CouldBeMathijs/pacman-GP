@@ -3,7 +3,8 @@
 #define PACMAN_COLLECTABLE_H
 #include "Subject.h"
 
-class Collectable : EntityModel {};
+class Collectable : EntityModel {
+};
 
 class Coin : Collectable {};
 
