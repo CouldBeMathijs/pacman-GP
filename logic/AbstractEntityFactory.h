@@ -11,11 +11,26 @@ protected:
     AbstractEntityFactory() = default;
 public:
     virtual ~AbstractEntityFactory() = default;
-    virtual Pacman createPacman() = 0;
-    virtual Ghost createGhost() = 0;
-    virtual Wall createWall() = 0;
-    virtual Coin createCoin() = 0;
-    virtual Fruit createFruit() = 0;
+    virtual Pacman createPacman(Position) = 0;
+    Pacman createPacman(const double x, const double y) {
+        return createPacman({x, y});
+    }
+    virtual Ghost createGhost(Position) = 0;
+    Ghost createGhost(const double x, const double y) {
+        return createGhost({x, y});
+    }
+    virtual Wall createWall(Position) = 0;
+    Wall createWall(const double x, const double y) {
+        return createWall({x, y});
+    }
+    virtual Coin createCoin(Position) = 0;
+    Coin createCoint(const double x, const double y) {
+        return createCoin({x, y});
+    }
+    virtual Fruit createFruit(Position) = 0;
+    Fruit createFruit(const double x, const double y) {
+        return createFruit({x, y});
+    }
 };
 
 #endif // PACMAN_ABSTRACTENTITYFACTORY_H
