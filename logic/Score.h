@@ -3,6 +3,8 @@
 #define PACMAN_SCORE_H
 #include "Observer.h"
 
-class Score : Observer {};
+class Score final : public Observer {
+    void update() override;
+};
 
 #endif // PACMAN_SCORE_H

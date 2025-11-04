@@ -3,7 +3,12 @@
 #define PACMAN_ENTITYVIEW_H
 #include "Observer.h"
 
-class EntityView : public Observer {};
+class EntityView : public Observer {
+protected:
+    EntityView();
+public:
+    void update() override;
+};
 
 class CoinView : public EntityView {};
 class FruitView : public EntityView {};

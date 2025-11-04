@@ -9,8 +9,10 @@ void Game::run() {
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed || sm.empty()) {
                 window.close();
+                return;
+            }
 
             camera.handleEvent(event); // Example: for resizing/view changes
             sm.handleInput(event);

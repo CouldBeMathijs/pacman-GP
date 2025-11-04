@@ -13,5 +13,4 @@ public:
     std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 
-
 #endif // PACMAN_LEVELSTATE_H

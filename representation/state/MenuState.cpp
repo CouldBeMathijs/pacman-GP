@@ -40,6 +40,10 @@ void MenuState::drawScreen(sf::RenderWindow& window) {
 std::unique_ptr<AbstractState> MenuState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {
     if (event.type == sf::Event::KeyPressed)
     {
+        if (event.key.code == sf::Keyboard::Escape) {
+            amountOfPops = 1;
+            return nullptr;
+        }
         return std::make_unique<LevelState>();
     } else {
         return nullptr;
