@@ -37,7 +37,7 @@ void MenuState::drawScreen(sf::RenderWindow& window) {
     window.display();
 }
 
-std::unique_ptr<State> MenuState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {
+std::unique_ptr<AbstractState> MenuState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {
     if (event.type == sf::Event::KeyPressed)
     {
         return std::make_unique<LevelState>();

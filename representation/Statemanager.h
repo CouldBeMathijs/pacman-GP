@@ -1,11 +1,11 @@
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
-#include "state/State.h"
+#include "state/AbstractState.h"
 
 #include <memory>
 #include <stack>
 
-class Statemanager : std::stack<std::unique_ptr<State>> {
+class Statemanager : std::stack<std::unique_ptr<AbstractState>> {
 public:
     Statemanager();
     void drawScreen(sf::RenderWindow&);

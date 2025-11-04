@@ -1,12 +1,12 @@
 
 #ifndef PACMAN_VICTORYSTATE_H
 #define PACMAN_VICTORYSTATE_H
-#include "State.h"
+#include "AbstractState.h"
 
-class VictoryState final : public State {
+class VictoryState final : public AbstractState {
 public:
     void drawScreen(sf::RenderWindow&) override;
-    std::unique_ptr<State> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
+    std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 
 

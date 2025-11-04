@@ -1,16 +1,16 @@
 
 #ifndef PACMAN_LEVELSTATE_H
 #define PACMAN_LEVELSTATE_H
-#include "State.h"
+#include "AbstractState.h"
 #include "World.h"
 
-class LevelState final : public State {
+class LevelState final : public AbstractState {
 private:
     World world;
 public:
     LevelState();
     void drawScreen(sf::RenderWindow&) override;
-    std::unique_ptr<State> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
+    std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 
 

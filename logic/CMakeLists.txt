@@ -7,7 +7,6 @@ set(LOGIC_SOURCES
         entity_types/Pacman.cpp
         entity_types/Wall.cpp
         World.cpp
-        AbstractEntityFactory.cpp
         AbstractEntityFactory.h
         Observer.cpp
         Observer.h
