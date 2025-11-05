@@ -4,7 +4,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <ranges>
 #include <vector>
 
 void World::addEntity(std::unique_ptr<EntityModel> e) {
@@ -38,17 +37,17 @@ World World::createWorldFromFile(const std::string& filename, std::shared_ptr<Ab
 
     inputFile.close();
 
-    int row_size = static_cast<int>(gridData[0].size());
+    size_t row_size = gridData[0].size();
     for (const auto& row : gridData) {
-        if (row_size != static_cast<int>(row.size())) {
+        if (row_size != row.size()) {
             throw std::runtime_error("Invalid world map; every line must have the same number of characters");
         }
     }
 
     World out;
-    int col_size = static_cast<int>(gridData.size());
-    for (auto x : std::ranges::views::iota(0, col_size - 1)) {
-        for (auto y : std::ranges::views::iota(0, row_size - 1)) {
+    size_t col_size = gridData.size();
+    for (size_t x = 0; x < col_size - 1; x++) {
+        for (size_t y = 0; y < row_size - 1; y++) {
             Position pos = Position(x, y).rescale({0,0},{static_cast<double>(row_size - 1), static_cast<double>(col_size - 1)}, {-1, -1}, {1, 1});
 
             char c = gridData[x][y];
