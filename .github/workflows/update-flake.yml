@@ -30,6 +30,8 @@ jobs:
       - name: Update flake.lock
         # Run the update command
         run: nix flake update
+      - name: Test build
+        run: nix build
       
       - name: Check for Changes
         # Check if the lock file has actually changed and set output via $GITHUB_OUTPUT
