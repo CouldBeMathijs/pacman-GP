@@ -61,6 +61,15 @@ World World::createWorldFromFile(const std::string& filename, std::shared_ptr<Ab
             case 'F':
                 out.addEntity(factory->createFruit(pos));
                 break;
+            case 'P':
+                out.addEntity(factory->createPacman(pos));
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+                out.addEntity(factory->createGhost(pos));
+                break;
             default:
                 break;
             }
