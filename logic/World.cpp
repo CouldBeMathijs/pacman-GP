@@ -16,7 +16,7 @@ void World::update() const {
     }
 }
 
-World World::createWorldFromFile(const std::string& filename, std::shared_ptr<AbstractEntityFactory> factory) {
+World World::createWorldFromFile(const std::string& filename, const std::shared_ptr<AbstractEntityFactory>& factory) {
     std::ifstream inputFile(filename);
     // Handeling the file
     if (!inputFile.is_open()) {
@@ -43,7 +43,7 @@ World World::createWorldFromFile(const std::string& filename, std::shared_ptr<Ab
             throw std::runtime_error("Invalid world map; every line must have the same number of characters");
         }
     }
-
+    // Building the world object
     World out;
     size_t col_size = gridData.size();
     for (size_t x = 0; x < col_size - 1; x++) {
