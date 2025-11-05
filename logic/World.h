@@ -1,5 +1,6 @@
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
+#include "AbstractEntityFactory.h"
 #include "Subject.h"
 
 #include <vector>
@@ -12,7 +13,7 @@ public:
     void addEntity(std::unique_ptr<EntityModel>);
     void update() const;
     World() = default;
-    static World createWorldFromFile(const std::string& filename);
+    static World createWorldFromFile(const std::string& filename, std::shared_ptr<AbstractEntityFactory> factory);
 };
 
 #endif // PACMAN_WORLD_H

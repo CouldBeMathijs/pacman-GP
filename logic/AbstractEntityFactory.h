@@ -24,7 +24,7 @@ public:
         return createWall({x, y});
     }
     virtual std::unique_ptr<EntityModel> createCoin(Position) = 0;
-    std::unique_ptr<EntityModel> createCoint(const double x, const double y) {
+    std::unique_ptr<EntityModel> createCoin(const double x, const double y) {
         return createCoin({x, y});
     }
     virtual std::unique_ptr<EntityModel> createFruit(Position) = 0;

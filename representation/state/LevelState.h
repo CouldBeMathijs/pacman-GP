@@ -1,12 +1,14 @@
 
 #ifndef PACMAN_LEVELSTATE_H
 #define PACMAN_LEVELSTATE_H
+#include "../ConcreteEntityFactory.h"
 #include "AbstractState.h"
 #include "World.h"
 
 class LevelState final : public AbstractState {
 private:
     World world;
+    std::shared_ptr<ConcreteEntityFactory> factory;
 public:
     LevelState();
     void drawScreen(sf::RenderWindow&) override;

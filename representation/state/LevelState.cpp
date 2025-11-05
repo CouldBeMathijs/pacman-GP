@@ -4,7 +4,8 @@
 #include "PausedState.h"
 
 #include <iostream>
-LevelState::LevelState() {
+LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
+    world = World::createWorldFromFile("./assets/worldmap", factory);
 }
 
 void LevelState::drawScreen(sf::RenderWindow&) {}

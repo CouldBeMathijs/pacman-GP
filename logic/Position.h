@@ -7,13 +7,10 @@ struct Position {
     double x;
     double y;
 
-    // Constructor with default arguments
     Position(double x, double y) : x(x), y(y) {}
 
-    // Assignment operator (was already correctly defined inside)
     Position& operator=(const Position& other);
 
-    // Rescale method (uses the non-member operators defined below)
     [[nodiscard]] Position rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
                      const Position& wanted_max) const;
 };
