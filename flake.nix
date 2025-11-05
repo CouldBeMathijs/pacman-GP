@@ -77,6 +77,11 @@
                                 devShells = {
                                         default = cpp-env;
                                 };
+
+                                apps.default = {
+                                        type = "app";
+                                        program = "${cppGamePackage}/pacman";
+                                };
                         }
                 );
 }
