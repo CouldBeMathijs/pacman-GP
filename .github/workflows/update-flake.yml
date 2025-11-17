@@ -3,8 +3,6 @@ name: "Flake.lock: update Nix dependencies"
 on:
   # The new 'push' event trigger
   push:
-    branches:
-      - main
     paths:
       - 'flake.nix'
   # Existing triggers
