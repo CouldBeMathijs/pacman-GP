@@ -1,4 +1,3 @@
-
 #include "EntityView.h"
 #include <utility>
 
