@@ -45,6 +45,9 @@ jobs:
         # Only run the commit if there are changes
         if: steps.git_status.outputs.changed == 'true'
         run: |
+          # The current branch name is available in $GITHUB_REF_NAME
+          BRANCH_NAME=$GITHUB_REF_NAME
+
           # Configure Git user
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -55,5 +58,6 @@ jobs:
           # Commit the changes
           git commit -m "chore(deps): Update Nix flake dependencies"
           
-          # Push directly to the default branch (assuming it is 'main')
-          git push
+          # Push to the current branch
+          echo "Pushing changes to branch: $BRANCH_NAME"
+          git push origin HEAD:$BRANCH_NAME
