@@ -30,15 +30,15 @@ public:
 };
 class GhostView final : public EntityView {
 public:
-    explicit GhostView() {}
+    explicit GhostView();
 };
 class PacmanView final : public EntityView {
 public:
-    explicit PacmanView() {}
+    explicit PacmanView();
 };
 class WallView final : public EntityView {
 public:
-    explicit WallView() {}
+    explicit WallView();
 };
 
 #endif // PACMAN_ENTITYVIEW_H

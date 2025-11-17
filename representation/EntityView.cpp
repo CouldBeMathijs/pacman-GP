@@ -9,6 +9,19 @@ void EntityView::update() {}
 CoinView::CoinView() {
     EntityView();
 }
+
 FruitView::FruitView() {
+    EntityView();
+}
+
+GhostView::GhostView() {
+    EntityView();
+}
+
+PacmanView::PacmanView() {
+    EntityView();
+}
+
+WallView::WallView() {
     EntityView();
 }
