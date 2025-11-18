@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include "Camera.h"
+
 #include <SFML/Graphics.hpp>
 
 void Game::run() {

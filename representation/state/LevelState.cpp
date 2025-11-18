@@ -10,7 +10,6 @@ LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
 
 void LevelState::drawScreen(sf::RenderWindow& window) {
     for (const auto& e : world.getEntities()) {
-        Position p = e->getPosition().rescale({-1,-1},{1,1},{0,0},{static_cast<double>(window.getSize().x), static_cast<double>(window.getSize().y)});
     }
 }
 

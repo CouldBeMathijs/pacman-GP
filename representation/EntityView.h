@@ -3,15 +3,18 @@
 #define PACMAN_ENTITYVIEW_H
 #include "Observer.h"
 
-#include <SFML/Graphics.hpp>
 #include "Spritemap.h"
+#include "Subject.h"
+#include <SFML/Graphics.hpp>
+
+#include <memory>
 
 class EntityView : public Observer {
 private:
     Spritemap::SpriteInfo base;
-
+    std::shared_ptr<EntityModel> coupledEntity;
 protected:
-    explicit EntityView(Spritemap::SpriteInfo);
+    explicit EntityView(Spritemap::SpriteInfo, std::shared_ptr<EntityModel>);
 public:
     void update() override;
 };
@@ -20,32 +23,32 @@ class DirectionalEntityView : public EntityView {
 private:
     unsigned int amountOfTextures;
 protected:
-    explicit DirectionalEntityView(Spritemap::SpriteInfo, unsigned int amountOfTextures);
+    DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n, int amountOfTextures);
 };
 
 class CoinView final : public EntityView {
 public:
-    explicit CoinView();
+    explicit CoinView(std::shared_ptr<EntityModel>);
 };
 
 class FruitView final : public EntityView {
 public:
-    explicit FruitView();
+    explicit FruitView(std::shared_ptr<EntityModel>);
 };
 
 class GhostView final : public DirectionalEntityView {
 public:
-    explicit GhostView();
+    explicit GhostView(std::shared_ptr<EntityModel>);
 };
 
 class PacmanView final : public DirectionalEntityView {
 public:
-    explicit PacmanView();
+    explicit PacmanView(std::shared_ptr<EntityModel>);
 };
 
 class WallView final : public EntityView {
 public:
-    explicit WallView();
+    explicit WallView(std::shared_ptr<EntityModel>);
 };
 
 #endif // PACMAN_ENTITYVIEW_H
