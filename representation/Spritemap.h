@@ -1,6 +1,7 @@
 #ifndef PACMAN_SPRITEMAP_H
 #define PACMAN_SPRITEMAP_H
 
+#include <array>
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
