@@ -8,14 +8,16 @@
 
 class Subject {
 private:
-    std::vector<std::unique_ptr<Observer>> observers;
+    std::vector<std::shared_ptr<Observer>> observers;
 public:
     virtual ~Subject();
     virtual void update();
-    void addObserver(std::unique_ptr<Observer>);
+    void addObserver(std::shared_ptr<Observer>);
 };
 
 class EntityModel : public Subject {
+public:
+    [[nodiscard]] Position getPosition() const;
 protected:
     explicit EntityModel(const Position& pos) : pos(pos) {}
 private:

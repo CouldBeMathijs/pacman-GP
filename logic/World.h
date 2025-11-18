@@ -8,9 +8,10 @@
 
 class World {
 private:
-    std::vector<std::unique_ptr<EntityModel>> entities;
+    std::vector<std::shared_ptr<EntityModel>> entities;
 public:
-    void addEntity(std::unique_ptr<EntityModel>);
+    void addEntity(std::shared_ptr<EntityModel>);
+    std::vector<std::shared_ptr<EntityModel>> getEntities();
     void update() const;
     World() = default;
 };

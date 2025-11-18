@@ -15,6 +15,11 @@ Camera::Camera(sf::VideoMode mode, const sf::String& title, sf::Uint32 style)
     window.setView(view);
 }
 
+Camera& Camera::getInstance() {
+    static Camera instance(sf::VideoMode(800, 600), "Pacman GP", sf::Style::Close | sf::Style::Resize);
+    return instance;
+}
+
 void Camera::handleEvent(const sf::Event& event) {
     if (event.type == sf::Event::Resized) {
         resizeView(window, view);

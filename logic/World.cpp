@@ -6,12 +6,15 @@
 #include <iostream>
 #include <vector>
 
-void World::addEntity(std::unique_ptr<EntityModel> e) {
+void World::addEntity(std::shared_ptr<EntityModel> e) {
     entities.emplace_back(std::move(e));
+}
+std::vector<std::shared_ptr<EntityModel>> World::getEntities() {
+    return entities;
 }
 
 void World::update() const {
-    for (const auto& entity : entities) {
+    for (auto& entity : entities) {
         entity->update();
     }
 }

@@ -1,9 +1,9 @@
 #include "Game.h"
 
 #include <SFML/Graphics.hpp>
-Game::Game() : camera(sf::VideoMode(800, 600), "Pacman GP", sf::Style::Close | sf::Style::Resize) {}
 
 void Game::run() {
+    auto& camera = Camera::getInstance();
     sf::RenderWindow& window = camera.getWindow();
 
     while (window.isOpen()) {

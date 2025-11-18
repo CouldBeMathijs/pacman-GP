@@ -7,19 +7,18 @@
 class Camera {
 private:
     sf::RenderWindow window;
-    sf::View view; // Add an sf::View to handle resizing and camera movement
+    sf::View view;
 
-public:
-    // Constructor to create the window
     Camera(sf::VideoMode mode, const sf::String& title, sf::Uint32 style);
 
-    // New: Handles events related to the window/view (like resizing)
+public:
+    Camera(const Camera&) = delete;
+    Camera& operator=(const Camera&) = delete;
+    static Camera& getInstance();
     void handleEvent(const sf::Event& event);
 
-    // Accessor for the window
     sf::RenderWindow& getWindow();
 
-    // Optional: Method to apply the current view to the window
     void applyView();
 };
 

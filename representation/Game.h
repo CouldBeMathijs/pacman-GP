@@ -6,9 +6,8 @@
 class Game {
 private:
     Statemanager sm;
-    Camera camera;
 public:
-    Game();
+    Game() = default;
     void run();
 };
 
