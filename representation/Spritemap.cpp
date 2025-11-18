@@ -6,7 +6,7 @@ sf::Texture texture;
 bool initialized = false;
 
 using namespace Spritemap;
-const std::array spriteDefinitions = {
+const std::array<SpriteInfo, to_underlying(Count)> spriteDefinitions = {
 
     SpriteInfo{410, 358, 6, 6},    // SpriteDefinition::Coin
     SpriteInfo{601, 3, 35, 35},    // SpriteDefinition::Fruit

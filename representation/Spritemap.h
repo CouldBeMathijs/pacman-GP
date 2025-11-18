@@ -15,7 +15,8 @@ enum SpriteDefinition {
     GhostPanicBase,
     GhostPinkBase,
     GhostRedBase,
-    PacmanBase
+    PacmanBase,
+    Count
 };
 
 constexpr size_t to_underlying(const SpriteDefinition e) noexcept {
