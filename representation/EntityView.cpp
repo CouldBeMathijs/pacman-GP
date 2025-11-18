@@ -1,7 +1,6 @@
 #include "EntityView.h"
-#include <utility>
 
-EntityView::EntityView(Spritemap::SpriteInfo m) : base(m) {}
+EntityView::EntityView(const Spritemap::SpriteInfo m) : base(m) {}
 
 void EntityView::update() {}
 
@@ -12,10 +11,9 @@ CoinView::CoinView() :
 FruitView::FruitView() :
     EntityView(Spritemap::getSpriteInfo(Spritemap::FruitBase)) {}
 
-GhostView::GhostView() :  DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostBlueBase),2) {}
+GhostView::GhostView() :  DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostPinkBase),2) {}
 
 PacmanView::PacmanView() : DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::PacmanBase),3) {}
 
-WallView::WallView() {
-    EntityView();
-}
+WallView::WallView() :
+    EntityView(Spritemap::getSpriteInfo(Spritemap::GhostBlueBase)) {}
