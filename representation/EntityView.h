@@ -4,38 +4,45 @@
 #include "Observer.h"
 
 #include <SFML/Graphics.hpp>
-#include <vector>
+#include "Spritemap.h"
 
 class EntityView : public Observer {
 private:
-    std::vector<sf::Sprite> m_sprites;
+    Spritemap::SpriteInfo base;
 
 protected:
-    explicit EntityView(std::vector<sf::Sprite>);
+    explicit EntityView(Spritemap::SpriteInfo);
 public:
     void update() override;
 };
 
 class DirectionalEntityView : public EntityView {
-
+private:
+    unsigned int amountOfTextures;
+protected:
+    explicit DirectionalEntityView(Spritemap::SpriteInfo, unsigned int amountOfTextures);
 };
 
 class CoinView final : public EntityView {
 public:
     explicit CoinView();
 };
+
 class FruitView final : public EntityView {
 public:
     explicit FruitView();
 };
-class GhostView final : public EntityView {
+
+class GhostView final : public DirectionalEntityView {
 public:
     explicit GhostView();
 };
-class PacmanView final : public EntityView {
+
+class PacmanView final : public DirectionalEntityView {
 public:
     explicit PacmanView();
 };
+
 class WallView final : public EntityView {
 public:
     explicit WallView();

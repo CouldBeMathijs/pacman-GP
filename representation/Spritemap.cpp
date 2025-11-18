@@ -1,34 +1,25 @@
 #include "Spritemap.h"
 
 namespace {
-const std::map<std::string, Spritemap::SpriteInfo> spriteDefinitions = {
-    {"CoinBase", {410, 358, 6,6 }},
-    {"FruitBase", {601, 3, 35, 35}},
-    {"GhostBlue", {101, 4, 35, 35}},
-    {"GhostOrange", {151, 4, 35, 35}},
-    {"GhostPanic", {1, 554, 35, 35 }},
-    {"GhostPink", {51, 4, 35, 35}},
-    {"GhostRed", {1, 4, 35, 35}},
-    {"PacmanBase", {853, 5, 33, 33}},
-};
-
-
-
 sf::Texture texture;
 
 bool initialized = false;
+
+using namespace Spritemap;
+const std::array spriteDefinitions = {
+
+    SpriteInfo{410, 358, 6, 6},    // SpriteDefinition::Coin
+    SpriteInfo{601, 3, 35, 35},    // SpriteDefinition::Fruit
+    SpriteInfo{101, 4, 35, 35},    // SpriteDefinition::GhostBlue
+    SpriteInfo{151, 4, 35, 35},    // SpriteDefinition::GhostOrange
+    SpriteInfo{1, 554,35, 35},     // SpriteDefinition::GhostPanic
+    SpriteInfo{51, 4, 35, 35},     // SpriteDefinition::GhostPink
+    SpriteInfo{1, 4, 35, 35},      // SpriteDefinition::GhostRed
+    SpriteInfo{853, 5, 33, 33}     // SpriteDefinition::Pacman
+};
 } // namespace
 
-enum spriteDefinition {
-    CoinBase,
-    FruitBase,
-    GhostBlueBase,
-    GhostOrangeBase,
-    GhostPanicBase,
-    GhostPinkBase,
-    GhostRedBase,
-    PacmanBase,
-};
+
 
 void Spritemap::initialize() {
     if (initialized) {
@@ -41,11 +32,8 @@ void Spritemap::initialize() {
     initialized = true;
 }
 
-std::optional<Spritemap::SpriteInfo> Spritemap::getSpriteInfo(const std::string& name) {
-    if (const auto it = spriteDefinitions.find(name); it != spriteDefinitions.end()) {
-        return it->second;
-    }
-    return std::nullopt;
+SpriteInfo Spritemap::getSpriteInfo(SpriteDefinition d) {
+    return spriteDefinitions[to_underlying(d)];
 }
 
 const sf::Texture& Spritemap::getTexture() {

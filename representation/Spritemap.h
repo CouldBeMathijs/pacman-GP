@@ -1,16 +1,29 @@
 #ifndef PACMAN_SPRITEMAP_H
 #define PACMAN_SPRITEMAP_H
 
-#include <string>
-#include <optional>
 #include <iostream>
-#include <SFML/Graphics.hpp> // Include SFML Graphics header
+#include <SFML/Graphics.hpp>
 
 namespace Spritemap {
 using SpriteInfo = sf::IntRect;
 
-// Public functions, which act like the old static methods
-std::optional<SpriteInfo> getSpriteInfo(const std::string& name);
+enum SpriteDefinition {
+    CoinBase,
+    FruitBase,
+    GhostBlueBase,
+    GhostOrangeBase,
+    GhostPanicBase,
+    GhostPinkBase,
+    GhostRedBase,
+    PacmanBase
+};
+
+constexpr size_t to_underlying(const SpriteDefinition e) noexcept {
+    return static_cast<size_t>(e);
+}
+
+SpriteInfo getSpriteInfo(SpriteDefinition);
+
 const sf::Texture& getTexture();
 
 void initialize();

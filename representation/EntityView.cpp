@@ -1,25 +1,20 @@
 #include "EntityView.h"
 #include <utility>
 
-EntityView::EntityView(std::vector<sf::Sprite> m) : m_sprites(std::move(m)){}
+EntityView::EntityView(Spritemap::SpriteInfo m) : base(m) {}
 
 void EntityView::update() {}
 
-CoinView::CoinView() {
-    EntityView();
-}
+DirectionalEntityView::DirectionalEntityView(Spritemap::SpriteInfo m, unsigned int amountOfTextures) :  EntityView(m), amountOfTextures(amountOfTextures) {}
+CoinView::CoinView() :
+    EntityView(Spritemap::getSpriteInfo(Spritemap::CoinBase)) {}
 
-FruitView::FruitView() {
-    EntityView();
-}
+FruitView::FruitView() :
+    EntityView(Spritemap::getSpriteInfo(Spritemap::FruitBase)) {}
 
-GhostView::GhostView() {
-    EntityView();
-}
+GhostView::GhostView() :  DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostBlueBase),2) {}
 
-PacmanView::PacmanView() {
-    EntityView();
-}
+PacmanView::PacmanView() : DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::PacmanBase),3) {}
 
 WallView::WallView() {
     EntityView();
