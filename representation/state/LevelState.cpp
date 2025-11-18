@@ -9,8 +9,7 @@ LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
 }
 
 void LevelState::drawScreen(sf::RenderWindow& window) {
-    for (const auto& e : world.getEntities()) {
-    }
+   world.update();
 }
 
 std::unique_ptr<AbstractState> LevelState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {

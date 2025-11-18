@@ -12,14 +12,14 @@ Position& Position::operator=(const Position& other) {
 }
 Position Position::rescale(const Position& current_min, const Position& current_max,
                                                const Position& wanted_min, const Position& wanted_max) const {
-    Position range_current = current_max - current_min;
+    const Position range_current = current_max - current_min;
     if (range_current.x == 0.0 && range_current.y == 0.0) {
         throw std::runtime_error("Current range has zero size.");
     }
 
-    Position normalized = (*this - current_min) / range_current;
+    const Position normalized = (*this - current_min) / range_current;
 
-    Position range_wanted = wanted_max - wanted_min;
+    const Position range_wanted = wanted_max - wanted_min;
     return (normalized * range_wanted) + wanted_min;
 }
 Position operator+(const Position& lhs, const Position& rhs) {
