@@ -16,7 +16,7 @@ void World::update() const {
     }
 }
 
-World World::createWorldFromFile(const std::string& filename, const std::shared_ptr<AbstractEntityFactory>& factory) {
+World WorldCreator::createWorldFromFile(const std::string& filename, const std::shared_ptr<AbstractEntityFactory>& factory) {
     std::ifstream inputFile(filename);
     // Handeling the file
     if (!inputFile.is_open()) {

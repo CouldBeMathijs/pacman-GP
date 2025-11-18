@@ -13,6 +13,10 @@ public:
     void addEntity(std::unique_ptr<EntityModel>);
     void update() const;
     World() = default;
+};
+
+class WorldCreator {
+public:
     static World createWorldFromFile(const std::string& filename, const std::shared_ptr<AbstractEntityFactory>& factory);
 };
 

@@ -4,7 +4,6 @@
 #include "Position.h"
 
 #include <memory>
-#include <utility>
 #include <vector>
 
 class Subject {
@@ -18,7 +17,7 @@ public:
 
 class EntityModel : public Subject {
 protected:
-    explicit EntityModel(Position pos) : pos(std::move(pos)) {}
+    explicit EntityModel(const Position& pos) : pos(pos) {}
 private:
     Position pos;
 };
