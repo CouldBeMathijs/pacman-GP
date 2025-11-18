@@ -49,8 +49,8 @@ World WorldCreator::createWorldFromFile(const std::string& filename, const std::
     // Building the world object
     World out;
     size_t col_size = gridData.size();
-    for (size_t x = 0; x < col_size - 1; x++) {
-        for (size_t y = 0; y < row_size - 1; y++) {
+    for (size_t x = 0; x < col_size; x++) {
+        for (size_t y = 0; y < row_size; y++) {
             Position pos = Position(x, y).rescale({0,0},{static_cast<double>(row_size - 1), static_cast<double>(col_size - 1)}, {-1, -1}, {1, 1});
 
             char c = gridData[x][y];
