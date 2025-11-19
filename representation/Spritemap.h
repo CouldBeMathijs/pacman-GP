@@ -17,6 +17,7 @@ enum SpriteDefinition {
     GhostPinkBase,
     GhostRedBase,
     PacmanBase,
+    WallBase,
     Count
 };
 
@@ -32,7 +33,8 @@ const std::array<SpriteInfo, to_underlying(Count)> spriteDefinitions = {
     SpriteInfo{1, 554,35, 35},     // SpriteDefinition::GhostPanic
     SpriteInfo{51, 4, 35, 35},     // SpriteDefinition::GhostPink
     SpriteInfo{1, 4, 35, 35},      // SpriteDefinition::GhostRed
-    SpriteInfo{853, 5, 33, 33}     // SpriteDefinition::Pacman
+    SpriteInfo{853, 5, 33, 33},    // SpriteDefinition::Pacman
+    SpriteInfo{461, 267, 1, 1}     // SpriteDefinition::Wall
 };
 
 SpriteInfo getSpriteInfo(SpriteDefinition);

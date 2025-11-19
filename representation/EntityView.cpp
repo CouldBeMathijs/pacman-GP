@@ -48,4 +48,4 @@ PacmanView::PacmanView(std::shared_ptr<EntityModel> e) :
     DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::PacmanBase),std::move(e), 3) {}
 
 WallView::WallView(std::shared_ptr<EntityModel> e) :
-    EntityView(Spritemap::getSpriteInfo(Spritemap::GhostBlueBase), std::move(e)) {}
+    EntityView(Spritemap::getSpriteInfo(Spritemap::WallBase), std::move(e)) {}
