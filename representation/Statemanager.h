@@ -8,7 +8,7 @@
 class Statemanager : std::stack<std::unique_ptr<AbstractState>> {
 public:
     Statemanager();
-    void drawScreen(sf::RenderWindow&);
+    void drawScreen();
     void handleInput(const sf::Event&);
     bool empty() const;
 };

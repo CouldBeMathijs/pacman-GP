@@ -1,13 +1,14 @@
 #include "Statemanager.h"
 
+#include "Camera.h"
 #include "state/MenuState.h"
 
 Statemanager::Statemanager() {
     emplace(std::make_unique<MenuState>());
 }
 
-void Statemanager::drawScreen(sf::RenderWindow& window) {
-    this->top()->drawScreen(window);
+void Statemanager::drawScreen() {
+    this->top()->drawScreen();
 }
 
 void Statemanager::handleInput(const sf::Event& event) {

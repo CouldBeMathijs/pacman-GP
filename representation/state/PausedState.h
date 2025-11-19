@@ -10,7 +10,7 @@ private:
     sf::Text m_playText;
 public:
     PausedState();
-    void drawScreen(sf::RenderWindow&) override;
+    void drawScreen() override;
     std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 

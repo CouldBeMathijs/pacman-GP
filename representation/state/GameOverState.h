@@ -5,7 +5,7 @@
 
 class GameOverState final : public AbstractState {
 public:
-    void drawScreen(sf::RenderWindow&) override;
+    void drawScreen() override;
     std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned& amountOfPops) override;
 };
 

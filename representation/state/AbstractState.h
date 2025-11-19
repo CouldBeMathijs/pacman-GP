@@ -7,7 +7,7 @@
 class AbstractState {
 public:
     virtual ~AbstractState() = default;
-    virtual void drawScreen(sf::RenderWindow&) = 0;
+    virtual void drawScreen() = 0;
     virtual std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) = 0;
 protected:
     AbstractState() = default;

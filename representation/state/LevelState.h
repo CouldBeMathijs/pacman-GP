@@ -12,7 +12,7 @@ private:
     std::shared_ptr<ConcreteEntityFactory> factory;
 public:
     LevelState();
-    void drawScreen(sf::RenderWindow&) override;
+    void drawScreen() override;
     std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 

@@ -1,6 +1,10 @@
 
 #include "PausedState.h"
- PausedState::PausedState() {
+#include "../Camera.h"
+PausedState::PausedState() {
+    const auto& window = Camera::getInstance().getWindow();
+    const sf::Vector2u windowSize = window.getSize();
+
     if (!m_font.loadFromFile("./assets/BoldPixels/BoldPixels.ttf")) {
         throw std::runtime_error("Missing font BoldPixels");
     }
@@ -13,8 +17,8 @@
     sf::FloatRect pacmanBounds = m_pacmanText.getLocalBounds();
     m_pacmanText.setOrigin(pacmanBounds.left + pacmanBounds.width / 2.0f,
                            pacmanBounds.top + pacmanBounds.height / 2.0f);
-    m_pacmanText.setPosition(800.0f / 2.0f, 150.0f);
 
+    m_pacmanText.setPosition(windowSize.x / 2.0f, windowSize.y / 4.0f);
 
     m_playText.setFont(m_font);
     m_playText.setString("Game paused\npress Space to continue or Esc to exit");
@@ -22,12 +26,13 @@
     m_playText.setFillColor(sf::Color::White);
 
     sf::FloatRect playBounds = m_playText.getLocalBounds();
-    m_playText.setOrigin(playBounds.left + playBounds.width / 2.0f,
-                         playBounds.top + playBounds.height / 2.0f);
-    m_playText.setPosition(800.0f / 2.0f, 400.0f);
+    m_playText.setOrigin(playBounds.left + playBounds.width / 2.0f, playBounds.top + playBounds.height / 2.0f);
+
+    m_playText.setPosition(windowSize.x / 2.0f, windowSize.y * 3/4.0f);
 }
 
-void PausedState::drawScreen(sf::RenderWindow& window) {
+void PausedState::drawScreen() {
+    auto& window = Camera::getInstance().getWindow();
     window.clear(sf::Color::Black);
     window.draw(m_pacmanText);
     window.draw(m_playText);

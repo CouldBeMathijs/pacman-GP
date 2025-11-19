@@ -8,7 +8,7 @@ LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
     world = WorldCreator::createWorldFromFile("./assets/worldmap", factory);
 }
 
-void LevelState::drawScreen(sf::RenderWindow& window) {
+void LevelState::drawScreen() {
    world.update();
 }
 
