@@ -22,7 +22,6 @@ set(PACMAN_SOURCES
         representation/state/VictoryState.cpp
         representation/state/GameOverState.cpp
         representation/Spritemap.cpp
-        representation/Spritemap.h
 )
 
 add_executable(pacman ${PACMAN_SOURCES})

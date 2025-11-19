@@ -3,14 +3,26 @@
 #include <utility>
 
 #include "Camera.h"
+#include "GameConstants.h"
 #include "Position.h"
+#include <memory>
 
-EntityView::EntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n ) : base(m), coupledEntity(std::move(n)) {}
+
+EntityView::EntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n)
+    : base(m), coupledEntity(std::move(n))
+{
+}
+
 void EntityView::update() {
     auto& camera = Camera::getInstance();
     auto& window = camera.getWindow();
 
-    Position p = coupledEntity->getPosition().rescale({-1,-1},{1,1},{0,0},{static_cast<double>(window.getSize().x), static_cast<double>(window.getSize().y)});
+    Position p = coupledEntity->getPosition().rescale(
+        {-1,-1},
+        {1,1},
+        {0,0},
+        {Constants::VIEW_WIDTH, Constants::VIEW_HEIGHT}
+    );
 
     sf::Sprite sprite(Spritemap::getTexture(), base);
 
@@ -19,7 +31,8 @@ void EntityView::update() {
     window.draw(sprite);
 }
 
-DirectionalEntityView::DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n, int amountOfTextures) :
+DirectionalEntityView::DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n,
+                                             const int amountOfTextures) :
     EntityView(m,std::move(n)), amountOfTextures(amountOfTextures) {}
 
 CoinView::CoinView(std::shared_ptr<EntityModel> e) :

@@ -20,7 +20,6 @@ Position Position::rescale(const Position& current_min, const Position& current_
 
     const Position range_wanted = wanted_max - wanted_min;
     const Position out = (normalized * range_wanted) + wanted_min;
-    //std::cout << "Rescaling: " << *this << " to " << out << std::endl;
     return out;
 }
 Position operator+(const Position& lhs, const Position& rhs) {
