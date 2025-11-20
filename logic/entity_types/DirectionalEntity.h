@@ -5,9 +5,9 @@
 
 enum class Direction {
     EAST,
-    NORTH,
+    SOUTH,
     WEST,
-    SOUTH
+    NORTH
 };
 
 class DirectionalEntity : public EntityModel {
