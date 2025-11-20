@@ -26,6 +26,26 @@ protected:
     DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n, int amountOfTextures);
 };
 
+class BlueGhostView final : public DirectionalEntityView {
+public:
+    explicit BlueGhostView(std::shared_ptr<EntityModel>);
+};
+
+class OrangeGhostView final : public DirectionalEntityView {
+public:
+    explicit OrangeGhostView(std::shared_ptr<EntityModel>);
+};
+
+class PinkGhostView final : public DirectionalEntityView {
+public:
+    explicit PinkGhostView(std::shared_ptr<EntityModel>);
+};
+
+class RedGhostView final : public DirectionalEntityView {
+public:
+    explicit RedGhostView(std::shared_ptr<EntityModel>);
+};
+
 class CoinView final : public EntityView {
 public:
     explicit CoinView(std::shared_ptr<EntityModel>);
@@ -34,11 +54,6 @@ public:
 class FruitView final : public EntityView {
 public:
     explicit FruitView(std::shared_ptr<EntityModel>);
-};
-
-class GhostView final : public DirectionalEntityView {
-public:
-    explicit GhostView(std::shared_ptr<EntityModel>);
 };
 
 class PacmanView final : public DirectionalEntityView {

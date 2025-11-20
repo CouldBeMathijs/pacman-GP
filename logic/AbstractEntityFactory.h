@@ -1,33 +1,47 @@
 
 #ifndef PACMAN_ABSTRACTENTITYFACTORY_H
 #define PACMAN_ABSTRACTENTITYFACTORY_H
-#include "entity_types/Collectable.h"
-#include "entity_types/Ghost.h"
-#include "entity_types/Pacman.h"
-#include "entity_types/Wall.h"
+#include "Subject.h"
+
+#include <memory>
 
 class AbstractEntityFactory {
 protected:
     AbstractEntityFactory() = default;
 public:
     virtual ~AbstractEntityFactory() = default;
-    virtual std::shared_ptr<EntityModel> createPacman(Position) = 0;
+
+    virtual std::shared_ptr<EntityModel> createPacman(const Position& pos) = 0;
+    virtual std::shared_ptr<EntityModel> createBlueGhost(const Position& pos) = 0;
+    virtual std::shared_ptr<EntityModel> createPinkGhost(const Position& pos) = 0;
+    virtual std::shared_ptr<EntityModel> createOrangeGhost(const Position& pos) = 0;
+    virtual std::shared_ptr<EntityModel> createRedGhost(const Position& pos) = 0;
+    virtual std::shared_ptr<EntityModel> createWall(const Position& pos) = 0;
+    virtual std::shared_ptr<EntityModel> createCoin(const Position& pos) = 0;
+    virtual std::shared_ptr<EntityModel> createFruit(const Position& pos) = 0;
+
+
     std::shared_ptr<EntityModel> createPacman(const double x, const double y) {
         return createPacman({x, y});
     }
-    virtual std::shared_ptr<EntityModel> createGhost(Position) = 0;
-    std::shared_ptr<EntityModel> createGhost(const double x, const double y) {
-        return createGhost({x, y});
+    std::shared_ptr<EntityModel> createBlueGhost(const double x, const double y) {
+        return createBlueGhost({x, y});
     }
-    virtual std::shared_ptr<EntityModel> createWall(Position) = 0;
+    std::shared_ptr<EntityModel> createPinkGhost(const double x, const double y) {
+        return createPinkGhost({x, y});
+    }
+    std::shared_ptr<EntityModel> createOrangeGhost(const double x, const double y) {
+        return createOrangeGhost({x, y});
+    }
+    std::shared_ptr<EntityModel> createRedGhost(const double x, const double y) {
+        return createRedGhost({x, y});
+    }
     std::shared_ptr<EntityModel> createWall(const double x, const double y) {
         return createWall({x, y});
     }
-    virtual std::shared_ptr<EntityModel> createCoin(Position) = 0;
     std::shared_ptr<EntityModel> createCoin(const double x, const double y) {
         return createCoin({x, y});
     }
-    virtual std::shared_ptr<EntityModel> createFruit(Position) = 0;
     std::shared_ptr<EntityModel> createFruit(const double x, const double y) {
         return createFruit({x, y});
     }

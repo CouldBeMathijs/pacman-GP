@@ -52,8 +52,17 @@ CoinView::CoinView(std::shared_ptr<EntityModel> e) :
 FruitView::FruitView(std::shared_ptr<EntityModel> e) :
     EntityView(Spritemap::getSpriteInfo(Spritemap::FruitBase), std::move(e)) {}
 
-GhostView::GhostView(std::shared_ptr<EntityModel> e) :
+BlueGhostView::BlueGhostView(std::shared_ptr<EntityModel> e) :
+    DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostBlueBase),std::move(e),2) {}
+
+PinkGhostView::PinkGhostView(std::shared_ptr<EntityModel> e) :
     DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostPinkBase),std::move(e),2) {}
+
+OrangeGhostView::OrangeGhostView(std::shared_ptr<EntityModel> e) :
+    DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostOrangeBase),std::move(e),2) {}
+
+RedGhostView::RedGhostView(std::shared_ptr<EntityModel> e) :
+    DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostRedBase),std::move(e),2) {}
 
 PacmanView::PacmanView(std::shared_ptr<EntityModel> e) :
     DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::PacmanBase),std::move(e), 3) {}

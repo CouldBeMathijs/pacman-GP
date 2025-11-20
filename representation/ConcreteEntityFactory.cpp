@@ -2,28 +2,42 @@
 #include "ConcreteEntityFactory.h"
 
 #include "EntityView.h"
-std::shared_ptr<EntityModel> ConcreteEntityFactory::createGhost(Position p) {
-    auto ghost = std::make_shared<Ghost>(p);
-    ghost->addObserver(std::make_shared<GhostView>(ghost));
-    return std::move(ghost);
+#include "entity_types/Collectable.h"
+#include "entity_types/Wall.h"
+#include "entity_types/Pacman.h"
+#include "entity_types/Ghost.h"
+std::shared_ptr<EntityModel> ConcreteEntityFactory::createPacman(const Position& p) {
+    return createEntityWithView<Pacman, PacmanView>(p);
 }
-std::shared_ptr<EntityModel> ConcreteEntityFactory::createPacman(Position p) {
-    auto pacman = std::make_shared<Pacman>(p);
-    pacman->addObserver(std::make_shared<PacmanView>(pacman));
-    return std::move(pacman);
+
+std::shared_ptr<EntityModel> ConcreteEntityFactory::createWall(const Position& p) {
+    return createEntityWithView<Wall, WallView>(p);
 }
-std::shared_ptr<EntityModel> ConcreteEntityFactory::createWall(Position p) {
-    auto wall = std::make_shared<Wall>(p);
-    wall->addObserver(std::make_shared<WallView>(wall));
-    return std::move(wall);
+
+std::shared_ptr<EntityModel> ConcreteEntityFactory::createCoin(const Position& p) {
+    return createEntityWithView<Coin, CoinView>(p);
 }
-std::shared_ptr<EntityModel> ConcreteEntityFactory::createCoin(Position p) {
-    auto coin = std::make_shared<Coin>(p);
-    coin->addObserver(std::make_shared<CoinView>(coin));
-    return std::move(coin);
+
+std::shared_ptr<EntityModel> ConcreteEntityFactory::createFruit(const Position& p) {
+    return createEntityWithView<Fruit, FruitView>(p);
 }
-std::shared_ptr<EntityModel> ConcreteEntityFactory::createFruit(Position p) {
-    auto fruit = std::make_shared<Fruit>(p);
-    fruit->addObserver(std::make_shared<FruitView>(fruit));
-    return std::move(fruit);
+
+std::shared_ptr<EntityModel> ConcreteEntityFactory::createOrangeGhost(const Position& p) {
+    // Calls the template with OrangeGhost Model and OrangeGhostView
+    return createEntityWithView<OrangeGhost, OrangeGhostView>(p);
+}
+
+std::shared_ptr<EntityModel> ConcreteEntityFactory::createRedGhost(const Position& p) {
+    // Calls the template with RedGhost Model and RedGhostView
+    return createEntityWithView<RedGhost, RedGhostView>(p);
+}
+
+std::shared_ptr<EntityModel> ConcreteEntityFactory::createBlueGhost(const Position& p) {
+    // Calls the template with BlueGhost Model and BlueGhostView
+    return createEntityWithView<BlueGhost, BlueGhostView>(p);
+}
+
+std::shared_ptr<EntityModel> ConcreteEntityFactory::createPinkGhost(const Position& p) {
+    // Calls the template with PinkGhost Model and PinkGhostView
+    return createEntityWithView<PinkGhost, PinkGhostView>(p);
 }

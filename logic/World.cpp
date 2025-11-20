@@ -19,7 +19,7 @@ void World::update() const {
     }
 }
 
-World WorldCreator::createWorldFromFile(const std::string& filename, const std::shared_ptr<AbstractEntityFactory>& factory) {
+World WorldCreator::createWorldFromFile(const std::string& filename, std::shared_ptr<AbstractEntityFactory> factory) {
     std::ifstream inputFile(filename);
     // Handeling the file
     if (!inputFile.is_open()) {
@@ -53,7 +53,7 @@ World WorldCreator::createWorldFromFile(const std::string& filename, const std::
         for (size_t y = 0; y < col_size; y++) {
             Position pos = Position(x, y).rescale({0,0},{static_cast<double>(row_size), static_cast<double>(col_size)}, {-1, -1}, {1, 1});
 
-            switch (char c = gridData[y][x]) {
+            switch (gridData[y][x]) {
             case '#':
                 out.addEntity(factory->createWall(pos));
                 break;
@@ -67,10 +67,16 @@ World WorldCreator::createWorldFromFile(const std::string& filename, const std::
                 out.addEntity(factory->createPacman(pos));
                 break;
             case '1':
+                out.addEntity(factory->createBlueGhost(pos));
+                break;
             case '2':
+                out.addEntity(factory->createPinkGhost(pos));
+                break;
             case '3':
+                out.addEntity(factory->createOrangeGhost(pos));
+                break;
             case '4':
-                out.addEntity(factory->createGhost(pos));
+                out.addEntity(factory->createRedGhost(pos));
                 break;
             default:
                 break;
