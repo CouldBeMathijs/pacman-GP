@@ -36,10 +36,8 @@ MenuState::MenuState() {
 
 void MenuState::drawScreen() {
     auto& window = Camera::getInstance().getWindow();
-    window.clear(sf::Color::Black);
     window.draw(m_pacmanText);
     window.draw(m_playText);
-    window.display();
 }
 
 std::unique_ptr<AbstractState> MenuState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {

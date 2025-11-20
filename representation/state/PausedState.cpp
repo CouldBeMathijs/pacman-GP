@@ -33,10 +33,8 @@ PausedState::PausedState() {
 
 void PausedState::drawScreen() {
     auto& window = Camera::getInstance().getWindow();
-    window.clear(sf::Color::Black);
     window.draw(m_pacmanText);
     window.draw(m_playText);
-    window.display();
 }
 
 std::unique_ptr<AbstractState> PausedState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {

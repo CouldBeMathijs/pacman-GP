@@ -4,7 +4,7 @@
 #include <chrono>
 #include <thread>
 
-#define MAX_DELTA_TIME (1.0 / 60.0)
+constexpr float MAX_DELTA_TIME = 1.0 / 60.0;
 
 class Stopwatch {
 private:

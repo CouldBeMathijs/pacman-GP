@@ -13,10 +13,9 @@ void Stopwatch::tick() {
     TimePoint currentTime = Clock::now();
 
     std::chrono::duration<double> duration = currentTime - lastTickTime;
-    double rawDelta = duration.count();
 
-    if (rawDelta < MAX_DELTA_TIME) {
-        auto required_wait = std::chrono::duration<double>(MAX_DELTA_TIME - rawDelta);
+    if (const double rawDelta = duration.count(); rawDelta < MAX_DELTA_TIME) {
+        const auto required_wait = std::chrono::duration<double>(MAX_DELTA_TIME - rawDelta);
 
         std::this_thread::sleep_for(required_wait);
 
