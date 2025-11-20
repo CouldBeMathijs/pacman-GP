@@ -3,7 +3,6 @@
 
 #include "PausedState.h"
 
-#include <iostream>
 LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
     world = WorldCreator::createWorldFromFile("./assets/worldmap", factory);
 }

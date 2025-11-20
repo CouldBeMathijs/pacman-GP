@@ -18,6 +18,7 @@ enum SpriteDefinition {
     GhostRedBase,
     PacmanBase,
     WallBase,
+    PacmanDeathBase,
     Count
 };
 
@@ -26,15 +27,16 @@ constexpr size_t to_underlying(const SpriteDefinition e) noexcept {
 }
 
 const std::array<SpriteInfo, to_underlying(Count)> spriteDefinitions = {
-    SpriteInfo{410, 358, 6, 6},    // SpriteDefinition::Coin
-    SpriteInfo{601, 3, 35, 35},    // SpriteDefinition::Fruit
-    SpriteInfo{101, 4, 35, 35},    // SpriteDefinition::GhostBlue
-    SpriteInfo{151, 4, 35, 35},    // SpriteDefinition::GhostOrange
-    SpriteInfo{1, 554,35, 35},     // SpriteDefinition::GhostPanic
-    SpriteInfo{51, 4, 35, 35},     // SpriteDefinition::GhostPink
-    SpriteInfo{1, 4, 35, 35},      // SpriteDefinition::GhostRed
-    SpriteInfo{853, 5, 33, 33},    // SpriteDefinition::Pacman
-    SpriteInfo{461, 267, 1, 1}     // SpriteDefinition::Wall
+    SpriteInfo{395, 396, 50, 50},  // SpriteDefinition::Coin
+    SpriteInfo{594, -4, 50, 50},   // SpriteDefinition::Fruit
+    SpriteInfo{744, -4, 50, 50},   // SpriteDefinition::GhostBlue
+    SpriteInfo{794, -4, 50, 50},   // SpriteDefinition::GhostOrange
+    SpriteInfo{-6,  547,50, 50},   // SpriteDefinition::GhostPanic
+    SpriteInfo{694, -4, 50, 50},   // SpriteDefinition::GhostPink
+    SpriteInfo{644, -4, 50, 50},   // SpriteDefinition::GhostRed
+    SpriteInfo{844, -4, 50, 50},   // SpriteDefinition::Pacman
+    SpriteInfo{461, 267, 1, 1},    // SpriteDefinition::Wall
+    SpriteInfo{344, -4, 50, 50}    // SpriteDefinition::PacmanDeath
 };
 
 SpriteInfo getSpriteInfo(SpriteDefinition);
