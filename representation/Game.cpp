@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Stopwatch.h"
+#include "Subject.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -10,6 +11,8 @@ void Game::run() {
 
     auto& camera = Camera::getInstance();
     sf::RenderWindow& window = camera.getWindow();
+
+    Direction direction = Direction::EAST;
 
     while (window.isOpen()) {
         stopwatch.tick();
@@ -22,11 +25,28 @@ void Game::run() {
             }
             camera.handleEvent(event);
             sm.handleInput(event);
+            if (event.type == sf::Event::KeyPressed) {
+                switch (event.key.code) {
+                case sf::Keyboard::Right:
+                    direction = Direction::EAST;
+                    break;
+                case sf::Keyboard::Up:
+                    direction = Direction::NORTH;
+                    break;
+                case sf::Keyboard::Left:
+                    direction = Direction::WEST;
+                    break;
+                case sf::Keyboard::Down:
+                    direction = Direction::SOUTH;
+                    break;
+                    default:;
+                }
+            }
         }
-
         window.clear(sf::Color::Black);
         camera.applyView();
-        sm.drawScreen();
+        sm.update(direction);
+
         window.display();
     }
 }

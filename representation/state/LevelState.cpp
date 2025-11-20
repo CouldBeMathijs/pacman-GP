@@ -7,8 +7,8 @@ LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
     world = WorldCreator::createWorldFromFile("./assets/worldmap", factory);
 }
 
-void LevelState::drawScreen() {
-   world.update();
+void LevelState::update(Direction d) {
+   world.update(d);
 }
 
 std::unique_ptr<AbstractState> LevelState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {

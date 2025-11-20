@@ -1,5 +1,6 @@
 #ifndef PACMAN_STATEMANAGER_H
 #define PACMAN_STATEMANAGER_H
+#include "Direction.h"
 #include "state/AbstractState.h"
 
 #include <memory>
@@ -8,7 +9,7 @@
 class Statemanager : std::stack<std::unique_ptr<AbstractState>> {
 public:
     Statemanager();
-    void drawScreen();
+    void update(Direction);
     void handleInput(const sf::Event&);
     [[nodiscard]] bool empty() const;
 };

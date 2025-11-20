@@ -12,7 +12,7 @@ private:
 public:
     void addEntity(std::shared_ptr<EntityModel>);
     std::vector<std::shared_ptr<EntityModel>> getEntities();
-    void update() const;
+    void update(Direction) const;
     World() = default;
 };
 

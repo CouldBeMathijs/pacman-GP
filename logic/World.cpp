@@ -13,9 +13,9 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntities() {
     return entities;
 }
 
-void World::update() const {
+void World::update(Direction d) const {
     for (auto& entity : entities) {
-        entity->update();
+        entity->update(d);
     }
 }
 

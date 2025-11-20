@@ -14,6 +14,7 @@ set(LOGIC_SOURCES
         Score.h
         Position.h
         Position.cpp
+        Direction.h
 )
 add_compile_options(-Wall)
 

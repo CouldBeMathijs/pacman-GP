@@ -5,7 +5,7 @@
 
 class VictoryState final : public AbstractState {
 public:
-    void drawScreen() override;
+    void update(Direction) override {}
     std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 

@@ -1,6 +1,6 @@
 #include "Subject.h"
 Subject::~Subject() = default;
-void Subject::update() {
+void Subject::update(Direction) {
     for (const auto& o : observers) {
         o->update();
     }
@@ -13,3 +13,5 @@ Position EntityModel::getPosition() const {
 }
 
 Direction EntityModel::getDirection() const { return direction; }
+
+EntityModel::EntityModel(const Position& pos, const Direction d) : pos(pos), direction(d) {}

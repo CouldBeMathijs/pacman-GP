@@ -2,6 +2,7 @@
 #ifndef PACMAN_PAUSEDSTATE_H
 #define PACMAN_PAUSEDSTATE_H
 #include "AbstractState.h"
+#include "Direction.h"
 
 class PausedState final : public AbstractState {
 private:
@@ -10,7 +11,7 @@ private:
     sf::Text m_playText;
 public:
     PausedState();
-    void drawScreen() override;
+    void update(Direction) override;
     std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 

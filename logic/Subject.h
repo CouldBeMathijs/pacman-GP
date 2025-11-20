@@ -1,24 +1,18 @@
 #ifndef PACMAN_SUBJECT_H
 #define PACMAN_SUBJECT_H
+#include "Direction.h"
 #include "Observer.h"
 #include "Position.h"
 
 #include <memory>
 #include <vector>
 
-enum class Direction {
-    EAST,
-    SOUTH,
-    WEST,
-    NORTH
-};
-
 class Subject {
 private:
     std::vector<std::shared_ptr<Observer>> observers;
 public:
     virtual ~Subject();
-    virtual void update();
+    virtual void update(Direction);
     void addObserver(std::shared_ptr<Observer>);
 };
 
@@ -28,10 +22,9 @@ public:
     [[nodiscard]] Direction getDirection() const;
 
 protected:
-    explicit EntityModel(const Position& pos) : pos(pos) {}
-private:
+    explicit EntityModel(const Position& pos, Direction d = Direction::EAST);
     Position pos;
-    Direction direction = Direction::WEST;
+    Direction direction;
 };
 
 #endif // PACMAN_SUBJECT_H

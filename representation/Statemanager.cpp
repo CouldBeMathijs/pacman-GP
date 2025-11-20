@@ -7,8 +7,8 @@ Statemanager::Statemanager() {
     emplace(std::make_unique<MenuState>());
 }
 
-void Statemanager::drawScreen() {
-    this->top()->drawScreen();
+void Statemanager::update(Direction d) {
+    this->top()->update(d);
 }
 
 void Statemanager::handleInput(const sf::Event& event) {

@@ -2,6 +2,7 @@
 #ifndef PACMAN_MENUSTATE_H
 #define PACMAN_MENUSTATE_H
 #include "AbstractState.h"
+#include "Direction.h"
 
 class MenuState final : public AbstractState {
 private:
@@ -10,7 +11,7 @@ private:
     sf::Text m_playText;
 public:
     MenuState();
-    void drawScreen() override;
+    void update(Direction d) override;
     std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
 };
 
