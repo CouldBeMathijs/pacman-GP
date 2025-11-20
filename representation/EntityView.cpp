@@ -10,7 +10,7 @@
 #include <memory>
 
 EntityView::EntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n)
-    : coupledEntity(std::move(n)), base(m) {}
+    : coupledEntity(std::move(n)), currentSprite(m) {}
 
 void EntityView::update() {
     auto& camera = Camera::getInstance();
@@ -19,13 +19,13 @@ void EntityView::update() {
     const Position p =
         coupledEntity->getPosition().rescale({-1, -1}, {1, 1}, {0, 0}, {Constants::VIEW_WIDTH, Constants::VIEW_HEIGHT});
 
-    sf::Sprite sprite(Spritemap::getTexture(), base);
+    sf::Sprite sprite(Spritemap::getTexture(), currentSprite);
 
     constexpr float targetWidth = static_cast<float>(Constants::VIEW_WIDTH) / Constants::AMOUNT_OF_ENTITIES_WIDTH;
     constexpr float targetHeight = static_cast<float>(Constants::VIEW_HEIGHT) / Constants::AMOUNT_OF_ENTITIES_HEIGHT;
 
-    const auto currentWidth = static_cast<float>(base.width);
-    const auto currentHeight = static_cast<float>(base.height);
+    const auto currentWidth = static_cast<float>(currentSprite.width);
+    const auto currentHeight = static_cast<float>(currentSprite.height);
 
     const float scaleX = targetWidth / currentWidth;
     const float scaleY = targetHeight / currentHeight;
@@ -44,6 +44,7 @@ DirectionalEntityView::DirectionalEntityView(Spritemap::SpriteInfo m, std::share
 }
 
 void DirectionalEntityView::update() {
+    currentSprite.top = topBase + 50 * ( getCurrentTextureOffset() + amountOfTextures * static_cast<unsigned int>(getCoupledEntity()->getDirection()));
     EntityView::update();
 }
 
@@ -67,12 +68,16 @@ void EntityView::animate() {
 
     if (animationCycleMovingUp) {
         currentTextureOffset += 1;
-        base.top += 50;
+        currentSprite.top += 50;
     } else {
         currentTextureOffset -= 1;
-        base.top -= 50;
+        currentSprite.top -= 50;
     }
 }
+
+unsigned int EntityView::getCurrentTextureOffset() const { return currentTextureOffset; }
+
+std::shared_ptr<EntityModel> EntityView::getCoupledEntity() { return coupledEntity; }
 
 CoinView::CoinView(std::shared_ptr<EntityModel> e)
     : EntityView(Spritemap::getSpriteInfo(Spritemap::CoinBase), std::move(e)) {}

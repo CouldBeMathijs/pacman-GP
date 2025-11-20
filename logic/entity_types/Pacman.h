@@ -1,10 +1,10 @@
 #ifndef PACMAN_PACMAN_H
 #define PACMAN_PACMAN_H
-#include "DirectionalEntity.h"
+#include "Subject.h"
 
-class Pacman final : public DirectionalEntity {
+class Pacman final : public EntityModel {
 public:
-    explicit Pacman(const Position& pos) : DirectionalEntity(pos, Direction::EAST) {}
+    explicit Pacman(const Position& pos) : EntityModel(pos) {}
 };
 
 #endif // PACMAN_PACMAN_H

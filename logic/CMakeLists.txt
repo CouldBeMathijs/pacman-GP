@@ -14,8 +14,6 @@ set(LOGIC_SOURCES
         Score.h
         Position.h
         Position.cpp
-        entity_types/DirectionalEntity.cpp
-        entity_types/DirectionalEntity.h
 )
 add_compile_options(-Wall)
 

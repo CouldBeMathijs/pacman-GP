@@ -11,3 +11,5 @@ void Subject::addObserver(std::shared_ptr<Observer> n) { observers.push_back(std
 Position EntityModel::getPosition() const {
     return pos;
 }
+
+Direction EntityModel::getDirection() const { return direction; }

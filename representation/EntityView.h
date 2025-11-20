@@ -17,17 +17,19 @@ private:
     const double timePerFrame = 0.12;
     double timeAccumulator = 0.0;
 protected:
-    Spritemap::SpriteInfo base;
+    Spritemap::SpriteInfo currentSprite;
     unsigned int amountOfTextures = 1;
     explicit EntityView(Spritemap::SpriteInfo, std::shared_ptr<EntityModel>);
 public:
     void update() override;
     void animate();
+    [[nodiscard]] unsigned int getCurrentTextureOffset() const;
+    std::shared_ptr<EntityModel> getCoupledEntity();
 };
 
 class DirectionalEntityView : public EntityView {
 private:
-
+    int topBase = currentSprite.top;
 protected:
     DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n, int amountOfTextures);
 public:

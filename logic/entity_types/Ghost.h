@@ -1,10 +1,10 @@
 #ifndef PACMAN_GHOST_H
 #define PACMAN_GHOST_H
-#include "DirectionalEntity.h"
+#include "Subject.h"
 
-class Ghost : public DirectionalEntity {
+class Ghost : public EntityModel {
 protected:
-    explicit Ghost(const Position& pos) : DirectionalEntity(pos, Direction::EAST) {}
+    explicit Ghost(const Position& pos) : EntityModel(pos) {}
 };
 
 class BlueGhost final : public Ghost {
