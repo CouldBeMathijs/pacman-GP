@@ -11,19 +11,27 @@
 
 class EntityView : public Observer {
 private:
-    Spritemap::SpriteInfo base;
     std::shared_ptr<EntityModel> coupledEntity;
+    unsigned int currentTextureOffset = 0;
+    bool animationCycleMovingUp = true;
+    const double timePerFrame = 0.12;
+    double timeAccumulator = 0.0;
 protected:
+    Spritemap::SpriteInfo base;
+    unsigned int amountOfTextures = 1;
     explicit EntityView(Spritemap::SpriteInfo, std::shared_ptr<EntityModel>);
 public:
     void update() override;
+    void animate();
 };
 
 class DirectionalEntityView : public EntityView {
 private:
-    unsigned int amountOfTextures;
+
 protected:
     DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n, int amountOfTextures);
+public:
+    void update() override;
 };
 
 class BlueGhostView final : public DirectionalEntityView {

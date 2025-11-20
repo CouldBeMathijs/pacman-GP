@@ -10,7 +10,7 @@ public:
     Statemanager();
     void drawScreen();
     void handleInput(const sf::Event&);
-    bool empty() const;
+    [[nodiscard]] bool empty() const;
 };
 
 #endif // PACMAN_STATEMANAGER_H

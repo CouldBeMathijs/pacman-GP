@@ -4,6 +4,9 @@
 #include "Observer.h"
 
 class Score final : public Observer {
+private:
+    unsigned int currentScore = 0;
+public:
     void update() override;
 };
 
