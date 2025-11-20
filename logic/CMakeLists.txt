@@ -7,14 +7,9 @@ set(LOGIC_SOURCES
         entity_types/Pacman.cpp
         entity_types/Wall.cpp
         World.cpp
-        AbstractEntityFactory.h
         Observer.cpp
-        Observer.h
         Score.cpp
-        Score.h
-        Position.h
         Position.cpp
-        Direction.h
 )
 add_compile_options(-Wall)
 

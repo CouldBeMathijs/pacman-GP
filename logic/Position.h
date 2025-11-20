@@ -4,17 +4,36 @@
 #include <iosfwd>
 
 struct Position {
+    // --- Member Variables ---
     double x;
     double y;
 
-    Position(double x, double y) : x(x), y(y) {}
+    // --- Constructors ---
+    // Inline constructor for initialization
+    Position(const double x, const double y) : x(x), y(y) {}
 
+    // --- Assignment Operator ---
     Position& operator=(const Position& other);
 
+    // --- Compound Assignment Operators (The new additions) ---
+    Position& operator+=(const Position& other);
+    Position& operator-=(const Position& other);
+
+    // Component-wise multiplication/division with another Position
+    Position& operator*=(const Position& other);
+    Position& operator/=(const Position& other);
+
+    // Scalar multiplication/division
+    Position& operator*=(double scalar);
+    Position& operator/=(double scalar);
+
+    // --- Utility Method ---
+    // [[nodiscard]] suggests the return value should not be ignored
     [[nodiscard]] Position rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
-                     const Position& wanted_max) const;
+                                   const Position& wanted_max) const;
 };
 
+// --- Non-Member Arithmetic Operators ---
 Position operator*(const Position& lhs, const Position& rhs);
 Position operator*(const Position& lhs, double scalar);
 Position operator*(double scalar, const Position& rhs);
@@ -22,7 +41,11 @@ Position operator+(const Position& lhs, const Position& rhs);
 Position operator-(const Position& lhs, const Position& rhs);
 Position operator/(const Position& lhs, const Position& rhs);
 Position operator/(const Position& lhs, double scalar);
+
+// --- Comparison Operator ---
 bool operator==(const Position& lhs, const Position& rhs);
+
+// --- Stream Insertion Operator ---
 std::ostream& operator<<(std::ostream& os, const Position& p);
 
 #endif // PACMAN_POSITION_H

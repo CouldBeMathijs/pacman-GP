@@ -3,8 +3,8 @@
 #include <utility>
 
 #include "Camera.h"
-#include "GameConstants.h"
 #include "Position.h"
+#include "SfmlConstants.h"
 #include "Stopwatch.h"
 
 #include <memory>
@@ -17,12 +17,12 @@ void EntityView::update() {
     auto& window = camera.getWindow();
     animate();
     const Position p =
-        coupledEntity->getPosition().rescale({-1, -1}, {1, 1}, {0, 0}, {Constants::VIEW_WIDTH, Constants::VIEW_HEIGHT});
+        coupledEntity->getPosition().rescale({-1, -1}, {1, 1}, {0, 0}, {SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT});
 
     sf::Sprite sprite(Spritemap::getTexture(), currentSprite);
 
-    constexpr float targetWidth = static_cast<float>(Constants::VIEW_WIDTH) / Constants::AMOUNT_OF_ENTITIES_WIDTH;
-    constexpr float targetHeight = static_cast<float>(Constants::VIEW_HEIGHT) / Constants::AMOUNT_OF_ENTITIES_HEIGHT;
+    constexpr float targetWidth = static_cast<float>(SfmlConstants::VIEW_WIDTH) / LogicConstants::AMOUNT_OF_ENTITIES_WIDTH;
+    constexpr float targetHeight = static_cast<float>(SfmlConstants::VIEW_HEIGHT) / LogicConstants::AMOUNT_OF_ENTITIES_HEIGHT;
 
     const auto currentWidth = static_cast<float>(currentSprite.width);
     const auto currentHeight = static_cast<float>(currentSprite.height);
