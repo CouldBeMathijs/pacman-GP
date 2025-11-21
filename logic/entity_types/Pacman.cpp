@@ -3,16 +3,16 @@
 void Pacman::update(Direction d) {
     switch (d) {
     case Direction::SOUTH:
-        pos += {0, speedVertical};
+        pos += {0, speed};
         break;
     case Direction::WEST:
-        pos -= {speedHorizontal, 0};
+        pos -= {speed, 0};
         break;
     case Direction::NORTH:
-        pos -= {0, speedVertical};
+        pos -= {0, speed};
         break;
     case Direction::EAST:
-        pos += {speedHorizontal, 0};
+        pos += {speed, 0};
         break;
     }
     setDirection(d);

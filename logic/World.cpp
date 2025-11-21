@@ -1,6 +1,7 @@
 #include "World.h"
 
 #include "AbstractEntityFactory.h"
+#include "LogicConstants.h"
 
 #include <fstream>
 #include <iostream>
@@ -51,7 +52,10 @@ World WorldCreator::createWorldFromFile(const std::string& filename, std::shared
     size_t col_size = gridData.size();
     for (size_t x = 0; x < row_size; x++) {
         for (size_t y = 0; y < col_size; y++) {
-            Position pos = Position(x, y).rescale({0,0},{static_cast<double>(row_size), static_cast<double>(col_size)}, {-1, -1}, {1, 1});
+            Position pos = Position(x, y).rescale({0,0},
+                {static_cast<double>(row_size), static_cast<double>(col_size)},
+                {-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
+                {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO});
 
             switch (gridData[y][x]) {
             case '#':
