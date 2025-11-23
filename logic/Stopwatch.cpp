@@ -1,4 +1,5 @@
 #include "Stopwatch.h"
+
 Stopwatch::Stopwatch() {
     lastTickTime = Clock::now();
     deltaTime = 0.0;

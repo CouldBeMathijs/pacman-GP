@@ -10,6 +10,7 @@ set(LOGIC_SOURCES
         Observer.cpp
         Score.cpp
         Position.cpp
+        Visitor.cpp
 )
 add_compile_options(-Wall)
 
