@@ -5,6 +5,7 @@
 class Ghost : public EntityModel {
 protected:
     explicit Ghost(const Position& pos) : EntityModel(pos) {}
+    void accept(IEntityVisitor& visitor) override;
 };
 
 class BlueGhost final : public Ghost {

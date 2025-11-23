@@ -10,11 +10,13 @@ public:
 class Coin final : public Collectable {
 public:
     explicit Coin(const Position& pos) : Collectable(pos) {}
+    void accept(IEntityVisitor& visitor) override;
 };
 
 class Fruit final : public Collectable {
 public:
     explicit Fruit(const Position& pos) : Collectable(pos) {}
+    void accept(IEntityVisitor& visitor) override;
 };
 
 #endif // PACMAN_COLLECTABLE_H

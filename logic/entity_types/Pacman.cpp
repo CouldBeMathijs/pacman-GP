@@ -1,5 +1,7 @@
 #include "Pacman.h"
 
+#include "Visitor.h"
+
 void Pacman::update(Direction d) {
     switch (d) {
     case Direction::SOUTH:
@@ -20,3 +22,4 @@ void Pacman::update(Direction d) {
 }
 
 void Pacman::setDirection(Direction d) { direction = d; }
+void Pacman::accept(IEntityVisitor& visitor) { visitor.visit(*this); }

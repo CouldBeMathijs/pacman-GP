@@ -8,14 +8,30 @@
 #include <vector>
 
 void World::addEntity(std::shared_ptr<EntityModel> e) {
-    entities.emplace_back(std::move(e));
+    m_entities.emplace_back(std::move(e));
 }
 std::vector<std::shared_ptr<EntityModel>> World::getEntities() {
-    return entities;
+    return m_entities;
+}
+
+std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(Position topleft, Position bottomright) {
+    std::vector<std::shared_ptr<EntityModel>> results;
+
+    std::copy_if(
+        m_entities.begin(),
+        m_entities.end(),
+        std::back_inserter(results), // Efficiently adds elements to the results vector
+        [&topleft, &bottomright](const std::shared_ptr<EntityModel>& entity) {
+            // Check if the entity (which is a shared_ptr) is not null and is in bounds.
+            return entity && entity->isInBounds(topleft, bottomright);
+        }
+    );
+
+    return results;
 }
 
 void World::update(Direction d) const {
-    for (auto& entity : entities) {
+    for (auto& entity : m_entities) {
         entity->update(d);
     }
 }

@@ -8,10 +8,11 @@
 
 class World {
 private:
-    std::vector<std::shared_ptr<EntityModel>> entities;
+    std::vector<std::shared_ptr<EntityModel>> m_entities;
 public:
     void addEntity(std::shared_ptr<EntityModel>);
     std::vector<std::shared_ptr<EntityModel>> getEntities();
+    std::vector<std::shared_ptr<EntityModel>> getEntitiesInBounds(Position topleft, Position bottomright);
     void update(Direction) const;
     World() = default;
 };
