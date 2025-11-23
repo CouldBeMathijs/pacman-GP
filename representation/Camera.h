@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_CAMERA_H
 #define PACMAN_CAMERA_H
 

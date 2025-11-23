@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_ENTITYVIEW_H
 #define PACMAN_ENTITYVIEW_H
 #include "Observer.h"

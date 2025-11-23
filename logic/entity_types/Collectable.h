@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_COLLECTABLE_H
 #define PACMAN_COLLECTABLE_H
 #include "Subject.h"

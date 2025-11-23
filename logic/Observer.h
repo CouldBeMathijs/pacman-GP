@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_OBSERVER_H
 #define PACMAN_OBSERVER_H
 

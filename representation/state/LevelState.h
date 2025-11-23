@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_LEVELSTATE_H
 #define PACMAN_LEVELSTATE_H
 #include "../Camera.h"

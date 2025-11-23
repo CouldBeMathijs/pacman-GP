@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_SCORE_H
 #define PACMAN_SCORE_H
 #include "Observer.h"

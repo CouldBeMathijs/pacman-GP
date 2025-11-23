@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_VICTORYSTATE_H
 #define PACMAN_VICTORYSTATE_H
 #include "AbstractState.h"

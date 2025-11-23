@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_SFMLCONSTANTS_H
 #define PACMAN_SFMLCONSTANTS_H
 #include "LogicConstants.h"

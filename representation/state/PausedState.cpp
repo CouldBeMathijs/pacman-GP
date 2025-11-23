@@ -1,4 +1,3 @@
-
 #include "PausedState.h"
 #include "../Camera.h"
 PausedState::PausedState() {

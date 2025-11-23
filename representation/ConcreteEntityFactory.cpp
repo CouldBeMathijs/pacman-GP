@@ -1,4 +1,3 @@
-
 #include "ConcreteEntityFactory.h"
 
 #include "EntityView.h"

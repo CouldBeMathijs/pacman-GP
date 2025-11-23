@@ -1,4 +1,3 @@
-
 #include "LevelState.h"
 
 #include "PausedState.h"

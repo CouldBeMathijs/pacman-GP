@@ -1,4 +1,3 @@
-
 #include "Camera.h"
 #include "SfmlConstants.h"
 

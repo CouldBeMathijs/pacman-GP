@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_GAMEOVERSTATE_H
 #define PACMAN_GAMEOVERSTATE_H
 #include "AbstractState.h"
