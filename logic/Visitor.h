@@ -1,5 +1,6 @@
 #ifndef PACMAN_VISITOR_H
 #define PACMAN_VISITOR_H
+#include "entity_types/Collectable.h"
 #include "entity_types/Ghost.h"
 #include "entity_types/Pacman.h"
 
@@ -65,13 +66,13 @@ public:
     void visit(Coin& target) override {
         // Pacman vs Coin: Pickup
         m_result.interactionOccurred = true;
-        // Actual pickup logic (e.g., Coin::bePickedUp()) should happen here or right after.
+        target.bePickedUp();
     }
 
     void visit(Fruit& target) override {
         // Pacman vs Fruit: Pickup
         m_result.interactionOccurred = true;
-        // Actual pickup logic (e.g., Fruit::bePickedUp()) should happen here or right after.
+        target.bePickedUp();
     }
 };
 

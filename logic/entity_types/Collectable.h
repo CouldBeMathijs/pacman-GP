@@ -3,8 +3,12 @@
 #include "Subject.h"
 
 class Collectable : public EntityModel {
+protected:
+    bool isPickedUp = false;
 public:
     explicit Collectable(const Position& pos, const Direction d, const TypeOfEntity t) : EntityModel(pos, d, t) {}
+    void bePickedUp();
+    void update(Direction) override;
 };
 
 class Coin final : public Collectable {

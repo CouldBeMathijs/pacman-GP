@@ -3,9 +3,7 @@
 #include "LogicConstants.h"
 Subject::~Subject() = default;
 void Subject::update(Direction) {
-    for (const auto& o : observers) {
-        o->update();
-    }
+    updateObservers();
 }
 
 void Subject::addObserver(std::shared_ptr<Observer> n) { observers.push_back(std::move(n)); }
@@ -50,6 +48,12 @@ bool EntityModel::isInBounds(const Position& topLeft, const Position& bottomRigh
 
     // The entity is in bounds (i.e., overlaps with the bounding box) only if both overlaps are true.
     return x_overlap && y_overlap;
+}
+
+void Subject::updateObservers() const {
+    for (const auto& o : observers) {
+        o->update();
+    }
 }
 
 EntityModel::EntityModel(const Position& pos, const Direction d, const TypeOfEntity t) : pos(pos), direction(d), type(t) {}

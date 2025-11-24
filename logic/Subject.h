@@ -26,6 +26,7 @@ public:
     virtual void update(Direction);
     void addObserver(std::shared_ptr<Observer>);
     virtual void accept(IEntityVisitor& visitor) = 0;
+    void updateObservers() const;
 };
 
 class EntityModel : public Subject {
