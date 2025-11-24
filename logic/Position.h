@@ -2,6 +2,7 @@
 #define PACMAN_POSITION_H
 #include <iosfwd>
 
+
 struct Position {
     // --- Member Variables ---
     double x;
@@ -46,5 +47,11 @@ bool operator==(const Position& lhs, const Position& rhs);
 
 // --- Stream Insertion Operator ---
 std::ostream& operator<<(std::ostream& os, const Position& p);
+
+struct Rectangle {
+    Position topLeft;
+    Position bottomRight;
+    Rectangle(const Position& top_left, const Position& bottom_right);
+};
 
 #endif // PACMAN_POSITION_H

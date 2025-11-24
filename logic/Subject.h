@@ -9,6 +9,15 @@
 
 class IEntityVisitor;
 
+enum TypeOfEntity {
+    PACMAN,
+    GHOST,
+    WALL,
+    COIN,
+    FRUIT,
+    BROKEN
+};
+
 class Subject {
 private:
     std::vector<std::shared_ptr<Observer>> observers;
@@ -21,9 +30,10 @@ public:
 
 class EntityModel : public Subject {
 protected:
-    explicit EntityModel(const Position& pos, Direction d = Direction::EAST);
+    EntityModel(const Position& pos, Direction, TypeOfEntity t);
     Position pos;
     Direction direction;
+    const TypeOfEntity type;
 public:
     [[nodiscard]] Position getPosition() const;
     [[nodiscard]] Direction getDirection() const;

@@ -30,4 +30,4 @@ bool EntityModel::isInBounds(const Position& topLeft, const Position& bottomRigh
     return x_in_bounds && y_in_bounds;
 }
 
-EntityModel::EntityModel(const Position& pos, const Direction d) : pos(pos), direction(d) {}
+EntityModel::EntityModel(const Position& pos, const Direction d, const TypeOfEntity t) : pos(pos), direction(d), type(t) {}

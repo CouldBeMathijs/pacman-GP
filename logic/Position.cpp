@@ -190,3 +190,5 @@ std::ostream& operator<<(std::ostream& os, const Position& p) {
     os << "(" << p.x << ", " << p.y << ")";
     return os;
 }
+Rectangle::Rectangle(const Position& top_left, const Position& bottom_right)
+    : topLeft(top_left), bottomRight(bottom_right) {}

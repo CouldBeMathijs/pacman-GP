@@ -6,9 +6,9 @@
 #include "entity_types/Pacman.h"
 
 #include <algorithm>
-#include <ranges>
 #include <fstream>
 #include <iostream>
+#include <ranges>
 #include <vector>
 
 void World::addEntity(std::shared_ptr<EntityModel> e) { m_entities.emplace_back(std::move(e)); }
@@ -42,115 +42,90 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(Position to
 void World::update(Direction d) {
     std::shared_ptr<Pacman> pacman = nullptr;
 
-    // --- Step 1: Find Pacman and perform controlled movement/collision ---
+    // --- Step 1: Find Pacman and set his direction ---
 
-    // Find Pacman by iterating through all entities.
+    // Find Pacman (Optimized search: use a dedicated member variable in a real project)
     for (auto& entity_ptr : m_entities) {
-        pacman = std::dynamic_pointer_cast<Pacman>(entity_ptr);
-        if (pacman) {
-            // Found Pacman, break the search loop
+        if ((pacman = std::dynamic_pointer_cast<Pacman>(entity_ptr))) {
             break;
         }
-        // Reset pacman to nullptr if the dynamic_cast failed for this entity
-        pacman = nullptr;
     }
 
-    // Check if Pacman was successfully found before proceeding with collision logic
     if (pacman) {
-        // --- Pacman Movement and Collision Resolution ---
-
         pacman->setDirection(d);
 
-        // Calculate the potential new position
+        // --- Calculate Potential Future Position ---
         const Position current_pos = pacman->getPosition();
         Position future_pos = current_pos;
         const double current_speed = pacman->getSpeed();
 
         switch (d) {
-            // Calculate future_pos based on direction and speed
             case Direction::SOUTH: future_pos.y += current_speed; break;
             case Direction::WEST:  future_pos.x -= current_speed; break;
             case Direction::NORTH: future_pos.y -= current_speed; break;
             case Direction::EAST:  future_pos.x += current_speed; break;
         }
 
-        // Initialize flags BEFORE the target loop
-        bool moveBlocked = false;
-        bool interactionOccurred = false;
+        // --- Collision Search Setup ---
+        bool moveBlocked = false; // Flag to determine if movement is allowed.
+        constexpr double EPSILON = 0.001; // For robust floating-point comparison
+        constexpr double pacman_width = LogicConstants::ENTITY_WIDTH;
+        constexpr double pacman_height = LogicConstants::ENTITY_HEIGHT;
 
-        // Define an epsilon buffer to handle floating-point imprecision and ensure slight overlap
-        const double EPSILON = 0.001;
-
-        // Use the full width/height of Pacman
-        const double pacman_width = LogicConstants::ENTITY_WIDTH;
-        const double pacman_height = LogicConstants::ENTITY_HEIGHT;
-
-        // --- Bounding Box Calculation (Robust for all quadrants) ---
-        // Calculate the minimum and maximum coordinates for the search area,
-        // expanded by EPSILON for robust collision detection.
+        // Bounding Box Calculation for the search area
         const double min_x = future_pos.x - EPSILON;
         const double max_x = future_pos.x + pacman_width + EPSILON;
         const double min_y = future_pos.y - EPSILON;
         const double max_y = future_pos.y + pacman_height + EPSILON;
 
-        // Define the search area corners (Top-Left and Bottom-Right)
         const Position search_top_left = {min_x, min_y};
         const Position search_bottom_right = {max_x, max_y};
 
-        // Retrieve all entities potentially overlapping with the future position.
+        // Get all entities potentially overlapping with the future position.
         const auto target_entities = getEntitiesInBounds(search_top_left, search_bottom_right);
 
-        // Loop through ALL targets to determine the cumulative collision outcome (Blocking vs. Interaction).
+        // --- Collision Resolution Loop ---
+        // This loop handles BOTH movement blocking AND interaction/pickup logic.
         for (const auto& target_ptr : target_entities) {
             // Do not check collision with self
             if (target_ptr.get() == pacman.get()) continue;
 
+            // 1. Initiate Double Dispatch: Target (B) accepts the handler
             CollisionHandler handler(*pacman);
-            target_ptr->accept(handler);
+            target_ptr->accept(handler); // This triggers the A-vs-B logic inside the visitors.
 
             const CollisionResult& result = handler.getResult();
 
             // CONSOLIDATE RESULTS:
             if (result.moveBlocked) {
-                moveBlocked = true; // Once a block is found, the move is always blocked.
-                break; // Optimization: Stop checking if movement is blocked.
+                moveBlocked = true;
+                // Optimization: Stop checking if movement is blocked.
+                // Interactions will be implicitly blocked if movement is stopped.
+                break;
             }
-            if (result.interactionOccurred) {
-                interactionOccurred = true; // Note if any interaction occurred.
-            }
+            // Note: If interactionOccurred is true, the *actual* game state change
+            // (e.g., scoring, removal of item, death) is assumed to have occurred
+            // directly within the PacmanCollisionVisitor::visit() methods.
         }
 
-        // FINAL DECISION: Apply movement and interaction outside the loop.
-        if (moveBlocked) {
-            // Position is NOT updated. Pacman stays at current_pos.
-        } else {
-            // Position is updated (even if target_entities was empty).
+        // --- FINAL DECISION: Apply Movement ---
+        if (!moveBlocked) {
+            // Position is updated.
             pacman->setPosition(future_pos);
-
-            if (interactionOccurred) {
-                // If interaction occurred, run the pickup/game logic on ALL targets
-                // that were in the future bounds.
-                PickupVisitor pickup_logic;
-                for (const auto& target_ptr : target_entities) {
-                    if (target_ptr.get() == pacman.get()) continue;
-                    target_ptr->accept(pickup_logic);
-                }
-            }
         }
 
-        // Call Pacman's non-movement update (e.g., animation, base class logic)
+        // Call Pacman's non-movement update (e.g., animation, power-up timers)
         pacman->update(d);
     }
 
     // --- Step 2: Update all other entities (e.g., Ghosts, Coins, Walls, etc.) ---
 
-    // This loop calls the simplified update on ALL entities, skipping Pacman if he was handled.
+    // This loop calls the simplified update on ALL entities.
     for (const auto& entity_ptr : m_entities) {
         // If Pacman was found and updated in Step 1, skip him here.
         if (pacman && entity_ptr == pacman) continue;
 
-        // Update all non-Pacman entities (or all entities if Pacman wasn't found).
-        // The Direction 'd' is passed, but is typically ignored by non-player entities.
+        // Update all non-Pacman entities.
         entity_ptr->update(d);
     }
 }

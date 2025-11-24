@@ -2,15 +2,10 @@
 
 #include "Visitor.h"
 
+Pacman::Pacman(const Position& pos) : EntityModel(pos, Direction::EAST, PACMAN) {}
 void Pacman::update(Direction d) {
-    // 1. Only handle direction change.
     setDirection(d);
-
-    // 2. Call the base class update for any non-collision, non-movement updates
-    // (e.g., animation state, timer updates).
     EntityModel::update(d);
-
-    // The previous movement logic (pos += {..., ...}) is GONE.
 }
 
 // You will also need a setter for position, which World uses:

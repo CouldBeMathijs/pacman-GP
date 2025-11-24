@@ -6,6 +6,7 @@
 #include "Position.h"
 #include "SfmlConstants.h"
 #include "Stopwatch.h"
+#include "entity_types/Wall.h"
 
 #include <memory>
 

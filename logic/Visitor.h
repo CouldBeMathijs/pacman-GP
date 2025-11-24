@@ -1,9 +1,8 @@
 #ifndef PACMAN_VISITOR_H
 #define PACMAN_VISITOR_H
-#include "Subject.h"
+#include "entity_types/Ghost.h"
+#include "entity_types/Pacman.h"
 
-// --- Forward Declarations ---
-// These are necessary because the Visitor knows about all Entities
 class EntityModel;
 class Fruit;
 class Coin;
@@ -11,17 +10,17 @@ class Wall;
 class Ghost;
 class Pacman;
 
-// ====================================================================
-// SECTION 1: VISITOR INTERFACE (IEntityVisitor) and RESULTS
-// ====================================================================
-
-// --- Collision Result Structure ---
-// Used to pass back information about the collision without relying on global state.
+/**
+ * @brief Used to pass back information about the collision.
+ */
 struct CollisionResult {
     bool moveBlocked = false;
-    bool interactionOccurred = false; // e.g., Game Over, Ghost Eaten
+    bool interactionOccurred = false; // e.g., Game Over, Ghost Eaten, Item Picked Up
 };
 
+/**
+ * @brief The core Visitor Interface for all dispatch layers.
+ */
 class IEntityVisitor {
 public:
     virtual ~IEntityVisitor() = default;
@@ -35,50 +34,27 @@ public:
 };
 
 // ====================================================================
-// SECTION 2: CONCRETE OPERATION VISITORS
-// ====================================================================
-
-/**
- * @brief Visitor for handling item pickup logic (Coin, Fruit).
- * This is a simple single-dispatch operation.
- */
-class PickupVisitor final : public IEntityVisitor {
-public:
-    void visit(Pacman& pacman) override {}
-    void visit(Ghost& ghost) override {}
-    void visit(Wall& wall) override {}
-
-    void visit(Coin& coin) override {
-        // Logic: Add score, remove coin from map
-    }
-
-    void visit(Fruit& fruit) override {
-        // Logic: Add bonus score, remove fruit from map
-    }
-};
-
-// ====================================================================
-// SECTION 3: COLLISION RESOLVER VISITORS (The Second Dispatch Layer)
-// These visitors contain the specific A-vs-B logic.
+// SECTION 2: CONCRETE COLLISION HANDLERS (The Double Dispatch Layers)
 // ====================================================================
 
 /**
  * @brief Handles the second half of the dispatch for Pacman collisions (Pacman vs X).
  * It is *accepted* by the Target (X).
+ * This combines movement blocking, combat, and pickup logic.
  */
-class PacmanCollisionResolver final : public IEntityVisitor {
+class PacmanCollisionVisitor final : public IEntityVisitor {
 private:
     CollisionResult& m_result;
 
 public:
-    explicit PacmanCollisionResolver(CollisionResult& result) : m_result(result) {}
+    explicit PacmanCollisionVisitor(CollisionResult& result) : m_result(result) {}
 
     void visit(Pacman& target) override {} // Pacman vs Pacman is ignored
 
     void visit(Ghost& target) override {
         // Pacman vs Ghost: Game Over or Eat Ghost
         m_result.interactionOccurred = true;
-        // Logic to handle game state change (e.g., Pacman::die() or Ghost::beEaten())
+        // Logic to handle Pacman::die() or Ghost::beEaten()
     }
 
     void visit(Wall& target) override {
@@ -86,28 +62,36 @@ public:
         m_result.moveBlocked = true;
     }
 
-    // Pacman does not collide with items in the way that blocks movement
-    void visit(Coin& target) override {}
-    void visit(Fruit& target) override {}
+    void visit(Coin& target) override {
+        // Pacman vs Coin: Pickup
+        m_result.interactionOccurred = true;
+        // Actual pickup logic (e.g., Coin::bePickedUp()) should happen here or right after.
+    }
+
+    void visit(Fruit& target) override {
+        // Pacman vs Fruit: Pickup
+        m_result.interactionOccurred = true;
+        // Actual pickup logic (e.g., Fruit::bePickedUp()) should happen here or right after.
+    }
 };
 
 /**
  * @brief Handles the second half of the dispatch for Ghost collisions (Ghost vs X).
  * It is *accepted* by the Target (X).
  */
-class GhostCollisionResolver final : public IEntityVisitor {
+class GhostCollisionVisitor final : public IEntityVisitor {
 private:
     CollisionResult& m_result;
 
 public:
-    explicit GhostCollisionResolver(CollisionResult& result) : m_result(result) {}
+    explicit GhostCollisionVisitor(CollisionResult& result) : m_result(result) {}
 
     void visit(Ghost& target) override {} // Ghost vs Ghost is ignored
 
     void visit(Pacman& target) override {
-        // Ghost vs Pacman: Game Over or Run Away (if Pacman is powered up)
+        // Ghost vs Pacman: Game Over or Run Away
         m_result.interactionOccurred = true;
-        // Logic to handle game state change (e.g., Pacman::die() or Ghost::flee())
+        // Logic to handle Pacman::die() or Ghost::flee()
     }
 
     void visit(Wall& target) override {
@@ -116,126 +100,11 @@ public:
         // Logic to force Ghost to choose a new direction
     }
 
-    // Ghosts ignore items in terms of blocking movement
+    // Ghosts ignore items in terms of blocking movement or interaction
     void visit(Coin& target) override {}
     void visit(Fruit& target) override {}
 };
 
-// ====================================================================
-// SECTION 4: THE PRIMARY COLLISION VISITOR (The First Dispatch Layer)
-// This visitor is *accepted* by the TARGET entity and bridges to the second layer.
-// ====================================================================
-
-/**
- * @brief The primary collision visitor. It is accepted by the TARGET entity (B).
- * It then generates the appropriate RESOLVER visitor (based on A's type)
- * and has the TARGET (B) accept the RESOLVER.
- */
-class CollisionVisitor final {
-private:
-    EntityModel& m_initiator; // Entity A (the moving entity)
-    CollisionResult m_result; // State to pass back the outcome
-
-public:
-    explicit CollisionVisitor(EntityModel& initiator) : m_initiator(initiator) {}
-
-    // Public getter to check the result after the dispatch has completed
-    [[nodiscard]] const CollisionResult& getResult() const { return m_result; }
-
-    // --- The bridging methods (first dispatch) ---
-    // These methods create the correct RESOLVER visitor based on the initiator's type (m_initiator)
-    // and then call the SECOND DISPATCH on the TARGET.
-
-    // Note: Since CollisionVisitor is NOT derived from IEntityVisitor, these methods
-    // must be called manually via the movement logic or we need an intermediate class.
-    // To strictly stick to the IEntityVisitor interface for the first dispatch,
-    // we would need a helper class (as shown below).
-};
-/**
- * @brief Handles the second half of the dispatch for Coin collisions (A vs Coin).
- * It is *accepted* by the Initiator (A).
- */
-class CoinCollisionResolver final : public IEntityVisitor {
-private:
-    CollisionResult& m_result;
-
-public:
-    explicit CoinCollisionResolver(CollisionResult& result) : m_result(result) {}
-
-    // When Pacman (A) visits the resolver (Target is Coin):
-    void visit(Pacman& initiator) override {
-        // Pacman vs Coin: Interaction occurs (pickup)
-        m_result.interactionOccurred = true;
-        // NOTE: The *actual* pickup logic (add score, remove coin)
-        // is typically handled after the collision check, using a separate
-        // mechanism (like your 'PickupVisitor' or a direct call).
-        // This resolver just signals a successful collision.
-    }
-
-    // Ghosts (A) ignore Coins (Target):
-    void visit(Ghost& initiator) override {}
-
-    // Items and Walls ignore Coins:
-    void visit(Wall& initiator) override {}
-    void visit(Coin& initiator) override {} // Coin vs Coin is ignored
-    void visit(Fruit& initiator) override {}
-}; /**
-    * @brief Handles the second half of the dispatch for Fruit collisions (A vs Fruit).
-    * It is *accepted* by the Initiator (A).
-    */
-class FruitCollisionResolver final : public IEntityVisitor {
-private:
-    CollisionResult& m_result;
-
-public:
-    explicit FruitCollisionResolver(CollisionResult& result) : m_result(result) {}
-
-    // When Pacman (A) visits the resolver (Target is Fruit):
-    void visit(Pacman& initiator) override {
-        // Pacman vs Fruit: Interaction occurs (pickup)
-        m_result.interactionOccurred = true;
-        // Again, actual scoring/removal logic is handled elsewhere.
-    }
-
-    // Ghosts (A) ignore Fruits (Target):
-    void visit(Ghost& initiator) override {}
-
-    // Items and Walls ignore Fruits:
-    void visit(Wall& initiator) override {}
-    void visit(Coin& initiator) override {}
-    void visit(Fruit& initiator) override {} // Fruit vs Fruit is ignored
-};
-
-/**
- * @brief Handles the second half of the dispatch for Wall collisions (A vs Wall).
- * It is *accepted* by the Initiator (A).
- */
-class WallCollisionResolver final : public IEntityVisitor {
-private:
-    CollisionResult& m_result;
-
-public:
-    explicit WallCollisionResolver(CollisionResult& result) : m_result(result) {}
-
-    // When Pacman (A) visits the resolver (Target is Wall):
-    void visit(Pacman& initiator) override {
-        // Pacman vs Wall: Always blocked
-        m_result.moveBlocked = true;
-    }
-
-    // When Ghost (A) visits the resolver (Target is Wall):
-    void visit(Ghost& initiator) override {
-        // Ghost vs Wall: Always blocked
-        m_result.moveBlocked = true;
-        // The ghost's AI will need to re-route based on this result.
-    }
-
-    // Walls are generally static and don't interact with other static elements or items
-    void visit(Wall& initiator) override {}
-    void visit(Coin& initiator) override {}
-    void visit(Fruit& initiator) override {}
-};
-// --- Helper Class to fit Collision Logic into IEntityVisitor (Recommended) ---
 /**
  * @brief This class acts as the true IEntityVisitor for the first dispatch.
  * When Entity B calls B.accept(CollisionHandler), this class starts the process.
@@ -249,32 +118,51 @@ public:
     explicit CollisionHandler(EntityModel& initiator) : m_initiator(initiator) {}
     [[nodiscard]] const CollisionResult& getResult() const { return m_result; }
 
-    // This method is called when the TARGET (B) accepts the visitor: B.accept(handler)
+    // --- The bridging methods (first dispatch: Target B calls B.accept(handler)) ---
+
+    // 1. Target B is a dynamic entity (Pacman or Ghost). We use the double dispatch.
     void visit(Pacman& target) override {
-        // B is a Pacman. Now, let the Initiator (A) resolve the A-vs-B collision.
-        PacmanCollisionResolver resolver(m_result);
+        // B is a Pacman. Let the Initiator (A) resolve the A-vs-B collision.
+        PacmanCollisionVisitor resolver(m_result);
         m_initiator.accept(resolver); // **SECOND DISPATCH** (A.accept(Resolver))
     }
 
     void visit(Ghost& target) override {
-        // B is a Ghost. Now, let the Initiator (A) resolve the A-vs-B collision.
-        GhostCollisionResolver resolver(m_result);
-        m_initiator.accept(resolver); // **SECOND DISPATCH**
-    }
-    void visit(Wall& target) override {
-        // B is a Wall. Now, let the Initiator (A) resolve the A-vs-B collision.
-        WallCollisionResolver resolver(m_result); // (You'd need a WallCollisionResolver)
-        m_initiator.accept(resolver);             // **SECOND DISPATCH**
+        // B is a Ghost. Let the Initiator (A) resolve the A-vs-B collision.
+        GhostCollisionVisitor resolver(m_result);
+        m_initiator.accept(resolver); // **SECOND DISPATCH** (A.accept(Resolver))
     }
 
-    // Items should typically not block the move, so they can use a generic resolver
-    void visit(Coin& target) override {
-        CoinCollisionResolver resolver(m_result);
-        m_initiator.accept(resolver);
+    // 2. Target B is a static/passive entity (Wall, Coin, Fruit).
+    //    We must trigger the correct VISIT method on the RESOLVER directly.
+    void visit(Wall& target) override {
+        if (dynamic_cast<Pacman*>(&m_initiator)) {
+            PacmanCollisionVisitor resolver(m_result);
+            resolver.visit(target); // **DIRECT VISIT** -> runs PacmanCollisionVisitor::visit(Wall& target)
+        } else if (dynamic_cast<Ghost*>(&m_initiator)) {
+            GhostCollisionVisitor resolver(m_result);
+            resolver.visit(target); // **DIRECT VISIT** -> runs GhostCollisionVisitor::visit(Wall& target)
+        }
     }
+
+    void visit(Coin& target) override {
+        if (dynamic_cast<Pacman*>(&m_initiator)) {
+            PacmanCollisionVisitor resolver(m_result);
+            resolver.visit(target); // **DIRECT VISIT** -> runs PacmanCollisionVisitor::visit(Coin& target)
+        } else if (dynamic_cast<Ghost*>(&m_initiator)) {
+            GhostCollisionVisitor resolver(m_result);
+            resolver.visit(target); // **DIRECT VISIT** -> runs GhostCollisionVisitor::visit(Coin& target)
+        }
+    }
+
     void visit(Fruit& target) override {
-        FruitCollisionResolver resolver(m_result);
-        m_initiator.accept(resolver);
+        if (dynamic_cast<Pacman*>(&m_initiator)) {
+            PacmanCollisionVisitor resolver(m_result);
+            resolver.visit(target); // **DIRECT VISIT** -> runs PacmanCollisionVisitor::visit(Fruit& target)
+        } else if (dynamic_cast<Ghost*>(&m_initiator)) {
+            GhostCollisionVisitor resolver(m_result);
+            resolver.visit(target); // **DIRECT VISIT** -> runs PacmanCollisionVisitor::visit(Fruit& target)
+        }
     }
 };
 

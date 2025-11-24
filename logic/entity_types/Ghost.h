@@ -4,7 +4,7 @@
 
 class Ghost : public EntityModel {
 protected:
-    explicit Ghost(const Position& pos) : EntityModel(pos) {}
+    explicit Ghost(const Position& pos) : EntityModel(pos, Direction::EAST, GHOST) {}
     void accept(IEntityVisitor& visitor) override;
 };
 
