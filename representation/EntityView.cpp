@@ -17,15 +17,15 @@ void EntityView::update() {
     auto& camera = Camera::getInstance();
     auto& window = camera.getWindow();
     animate();
-    const Position p =
-        coupledEntity->getPosition().rescale({-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
+    const Rectangle p =
+        coupledEntity->getHitBox().rescale({-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
             {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO}, {0, 0},
             {SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT});
 
     sf::Sprite sprite(Spritemap::getTexture(), currentSprite);
 
-    constexpr float targetWidth = static_cast<float>(SfmlConstants::VIEW_WIDTH) / LogicConstants::AMOUNT_OF_ENTITIES_WIDTH;
-    constexpr float targetHeight = static_cast<float>(SfmlConstants::VIEW_HEIGHT) / LogicConstants::AMOUNT_OF_ENTITIES_HEIGHT;
+    const float targetWidth = static_cast<float>(std::abs(p.topLeft.x - p.bottomRight.x));
+    const float targetHeight = static_cast<float>(std::abs(p.topLeft.y - p.bottomRight.y));
 
     const auto currentWidth = static_cast<float>(currentSprite.width);
     const auto currentHeight = static_cast<float>(currentSprite.height);
@@ -35,7 +35,7 @@ void EntityView::update() {
 
     sprite.setScale(scaleX, scaleY);
 
-    sprite.setPosition(static_cast<float>(p.x), static_cast<float>(p.y));
+    sprite.setPosition(static_cast<float>(p.topLeft.x), static_cast<float>(p.topLeft.y));
 
     window.draw(sprite);
 }

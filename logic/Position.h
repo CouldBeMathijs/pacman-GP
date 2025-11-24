@@ -51,7 +51,16 @@ std::ostream& operator<<(std::ostream& os, const Position& p);
 struct Rectangle {
     Position topLeft;
     Position bottomRight;
+
     Rectangle(const Position& top_left, const Position& bottom_right);
+
+    void moveTo(const Position& newTopLeft);
+    void moveBy(double deltaX, double deltaY);
+    void scaleBy(double scale);
+
+    [[nodiscard]] Rectangle rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
+                                   const Position& wanted_max) const;
+
 };
 
 #endif // PACMAN_POSITION_H

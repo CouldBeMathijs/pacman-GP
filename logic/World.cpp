@@ -14,14 +14,14 @@
 void World::addEntity(std::shared_ptr<EntityModel> e) { m_entities.emplace_back(std::move(e)); }
 std::vector<std::shared_ptr<EntityModel>> World::getEntities() { return m_entities; }
 
-std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(Position topLeft, Position bottomRight) {
+std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(const Rectangle& boundBox) {
     std::vector<std::shared_ptr<EntityModel>> results;
 
     std::ranges::copy_if(m_entities,
                          std::back_inserter(results), // Efficiently adds elements to the results vector
-                         [&topLeft, &bottomRight](const std::shared_ptr<EntityModel>& entity) {
+                         [&boundBox](const std::shared_ptr<EntityModel>& entity) {
                              // Check if the entity (which is a shared_ptr) is not null and is in bounds.
-                             return entity && entity->isInBounds(topLeft, bottomRight);
+                             return entity && entity->isInBounds(boundBox);
                          });
 
     return results;
@@ -48,31 +48,41 @@ void World::update(Direction d) {
         // --- NEW STEP 1.5: Direction Change Pre-Check (4-Step Lookahead) ---
         const Direction current_direction = pacman->getDirection();
 
-        // Only perform the lookahead check if the proposed direction 'd' is different
+        // Only perform the lookahead check if the prohbed direction 'd' is different
         // from the current direction.
         if (d != current_direction) {
-            const double lookahead_distance = pacman->getSpeed() * 10.0;
-            const Position current_pos = pacman->getPosition();
-            constexpr double pacman_width = LogicConstants::ENTITY_WIDTH;
-            constexpr double pacman_height = LogicConstants::ENTITY_HEIGHT;
+            const double current_speed = pacman->getSpeed() * 10.0;
+            const Rectangle hitBox = pacman->getHitBox();
 
-            // Calculate the position after the lookahead distance in the *new* direction 'd'.
-            Position future_pos_check = current_pos;
+            // Calculate the hbition after the lookahead distance in the *new* direction 'd'.
+            Rectangle future_hb_check = hitBox;
             switch (d) {
-                case Direction::SOUTH: future_pos_check.y += lookahead_distance; break;
-                case Direction::WEST:  future_pos_check.x -= lookahead_distance; break;
-                case Direction::NORTH: future_pos_check.y -= lookahead_distance; break;
-                case Direction::EAST:  future_pos_check.x += lookahead_distance; break;
+            case Direction::SOUTH:
+                // Move the rectangle down (hbitive Y)
+                future_hb_check.moveBy(0.0, current_speed);
+                break;
+
+            case Direction::WEST:
+                // Move the rectangle left (negative X)
+                future_hb_check.moveBy(-current_speed, 0.0);
+                break;
+
+            case Direction::NORTH:
+                // Move the rectangle up (negative Y)
+                future_hb_check.moveBy(0.0, -current_speed);
+                break;
+
+            case Direction::EAST:
+                // Move the rectangle right (hbitive X)
+                future_hb_check.moveBy(current_speed, 0.0);
+                break;
             }
 
-            // Define the bounding box for the lookahead position.
-            const Position search_top_left = {future_pos_check.x, future_pos_check.y};
-            const Position search_bottom_right = {future_pos_check.x + pacman_width, future_pos_check.y + pacman_height};
-
+            // Define the bounding box for the lookahead hbition.
             bool lookaheadBlocked = false;
 
-            // Check for blocking entities (like walls) at the lookahead position.
-            for (const auto blocking_targets = getEntitiesInBounds(search_top_left, search_bottom_right);
+            // Check for blocking entities (like walls) at the lookahead hbition.
+            for (const auto blocking_targets = getEntitiesInBounds(future_hb_check);
                  const auto& target_ptr : blocking_targets) {
                 if (target_ptr.get() == pacman.get()) continue;
 
@@ -97,20 +107,14 @@ void World::update(Direction d) {
         // Set the (potentially modified) direction for the rest of the update
         pacman->setDirection(d);
 
-        const Position current_pos = pacman->getPosition();
+        const Rectangle current_hb = pacman->getHitBox();
         const double current_speed = pacman->getSpeed();
-        // pacman_width/height are already defined above
-        constexpr double pacman_width = LogicConstants::ENTITY_WIDTH;
-        constexpr double pacman_height = LogicConstants::ENTITY_HEIGHT;
 
         // --- 2. Interaction/Pickup Search (At Current Position) ---
         // ... (Original Code for Interaction Check) ...
         {
-            // Define the bounding box at the CURRENT position for interaction checks.
-            const Position interaction_top_left = {current_pos.x, current_pos.y};
-            const Position interaction_bottom_right = {current_pos.x + pacman_width, current_pos.y + pacman_height};
-
-            const auto interaction_targets = getEntitiesInBounds(interaction_top_left, interaction_bottom_right);
+            // Define the bounding box at the CURRENT hbition for interaction checks.
+            const auto interaction_targets = getEntitiesInBounds(current_hb);
 
             for (const auto& target_ptr : interaction_targets) {
                 if (target_ptr.get() == pacman.get()) continue;
@@ -122,14 +126,29 @@ void World::update(Direction d) {
         }
 
         // --- 3. Calculate Potential Future Position ---
-        Position future_pos = current_pos;
+        Rectangle future_hb = current_hb;
 
         // The direction 'd' here is the direction set in the NEW STEP 1.5
         switch (d) {
-            case Direction::SOUTH: future_pos.y += current_speed; break;
-            case Direction::WEST:  future_pos.x -= current_speed; break;
-            case Direction::NORTH: future_pos.y -= current_speed; break;
-            case Direction::EAST:  future_pos.x += current_speed; break;
+        case Direction::SOUTH:
+            // Move the rectangle down (hbitive Y)
+            future_hb.moveBy(0.0, current_speed);
+            break;
+
+        case Direction::WEST:
+            // Move the rectangle left (negative X)
+            future_hb.moveBy(-current_speed, 0.0);
+            break;
+
+        case Direction::NORTH:
+            // Move the rectangle up (negative Y)
+            future_hb.moveBy(0.0, -current_speed);
+            break;
+
+        case Direction::EAST:
+            // Move the rectangle right (hbitive X)
+            future_hb.moveBy(current_speed, 0.0);
+            break;
         }
 
         // --- 4. Movement Blocking Search (At Future Position) ---
@@ -138,16 +157,16 @@ void World::update(Direction d) {
         constexpr double EPSILON = 0;
 
         // Bounding Box Calculation for the search area (slightly expanded for robustness)
-        const double min_x = future_pos.x - EPSILON;
-        const double max_x = future_pos.x + pacman_width + EPSILON;
-        const double min_y = future_pos.y - EPSILON;
-        const double max_y = future_pos.y + pacman_height + EPSILON;
+        const double min_x = future_hb.topLeft.x - EPSILON;
+        const double max_x = future_hb.bottomRight.x + EPSILON;
+        const double min_y = future_hb.topLeft.y - EPSILON;
+        const double max_y = future_hb.bottomRight.y + EPSILON;
 
         const Position search_top_left = {min_x, min_y};
         const Position search_bottom_right = {max_x, max_y};
 
         // Collision Resolution Loop (Movement Block Only)
-        for (const auto blocking_targets = getEntitiesInBounds(search_top_left, search_bottom_right);
+        for (const auto blocking_targets = getEntitiesInBounds({search_top_left, search_bottom_right});
              const auto& target_ptr : blocking_targets) {
             if (target_ptr.get() == pacman.get()) continue;
 
@@ -165,7 +184,7 @@ void World::update(Direction d) {
         // --- 5. FINAL DECISION: Apply Movement ---
         if (!moveBlocked) {
             // Position is updated.
-            pacman->setPosition(future_pos);
+            pacman->setHitBox(future_hb);
         }
 
         // Call Pacman's non-movement update (e.g., animation, power-up timers)
@@ -179,7 +198,6 @@ void World::update(Direction d) {
         entity_ptr->update(d);
     }
 }
-
 World WorldCreator::createWorldFromFile(const std::string& filename,
                                         const std::shared_ptr<AbstractEntityFactory>& factory) {
     std::ifstream inputFile(filename);
@@ -190,9 +208,9 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
     std::vector<std::vector<char>> gridData;
     std::string line;
 
+    // 1. Read the file into gridData (Correct: gridData[row][column])
     while (std::getline(inputFile, line)) {
         std::vector<char> row;
-
         for (char c : line) {
             row.push_back(c);
         }
@@ -201,47 +219,75 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
 
     inputFile.close();
 
-    size_t row_size = gridData[0].size();
+    // Ensure the map is not empty
+    if (gridData.empty() || gridData[0].empty()) {
+        throw std::runtime_error("World map is empty.");
+    }
+
+    // 2. Define dimensions clearly
+    size_t num_rows_y = gridData.size();       // Y-dimension (height)
+    size_t num_cols_x = gridData[0].size();    // X-dimension (width)
+
+    // 3. Validate map consistency
     for (const auto& row : gridData) {
-        if (row_size != row.size()) {
+        if (num_cols_x != row.size()) {
             throw std::runtime_error("Invalid world map; every line must have the same number of characters");
         }
     }
+
     // Building the world object
     World out;
-    size_t col_size = gridData.size();
-    for (size_t x = 0; x < row_size; x++) {
-        for (size_t y = 0; y < col_size; y++) {
-            Position pos = Position(x, y).rescale(
-                {0, 0}, {static_cast<double>(row_size), static_cast<double>(col_size)},
-                {-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO}, {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO});
 
+    // 4. Loop in the standard [Y][X] order (Row by Row, then Column by Column)
+    for (size_t y = 0; y < num_rows_y; y++) { // Loop over rows (Y coordinate)
+        for (size_t x = 0; x < num_cols_x; x++) { // Loop over columns (X coordinate)
+
+            // Step A: Calculate the top-left corner of the current grid cell (x, y)
+            // This represents the start of the cell.
+            Position pos_start = Position(static_cast<double>(x), static_cast<double>(y)).rescale(
+                {0, 0}, {static_cast<double>(num_cols_x), static_cast<double>(num_rows_y)},
+                {-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
+                {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO});
+
+            // Step B: Calculate the bottom-right corner of the current grid cell (x+1, y+1)
+            // This represents the end of the cell.
+            Position pos_end = Position(static_cast<double>(x + 1), static_cast<double>(y + 1)).rescale(
+                {0, 0}, {static_cast<double>(num_cols_x), static_cast<double>(num_rows_y)},
+                {-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
+                {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO});
+
+            // Hitbox (hb) spans the entire grid cell (100% size) for ALL entities,
+            // ensuring they are all the same size relative to the grid.
+            Rectangle hb = {pos_start, pos_end};
+
+            // Access the grid using [row][column] which is [y][x]
             switch (gridData[y][x]) {
             case '#':
-                out.addEntity(factory->createWall(pos));
+                out.addEntity(factory->createWall(hb));
                 break;
             case '*':
-                out.addEntity(factory->createCoin(pos));
+                out.addEntity(factory->createCoin(hb));
                 break;
             case 'F':
-                out.addEntity(factory->createFruit(pos));
+                out.addEntity(factory->createFruit(hb));
                 break;
             case 'P':
-                out.addEntity(factory->createPacman(pos));
+                out.addEntity(factory->createPacman(hb));
                 break;
             case '1':
-                out.addEntity(factory->createBlueGhost(pos));
+                out.addEntity(factory->createBlueGhost(hb));
                 break;
             case '2':
-                out.addEntity(factory->createPinkGhost(pos));
+                out.addEntity(factory->createPinkGhost(hb));
                 break;
             case '3':
-                out.addEntity(factory->createOrangeGhost(pos));
+                out.addEntity(factory->createOrangeGhost(hb));
                 break;
             case '4':
-                out.addEntity(factory->createRedGhost(pos));
+                out.addEntity(factory->createRedGhost(hb));
                 break;
             default:
+                // Do nothing for empty space ' '
                 break;
             }
         }

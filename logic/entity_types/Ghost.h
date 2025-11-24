@@ -4,28 +4,28 @@
 
 class Ghost : public EntityModel {
 protected:
-    explicit Ghost(const Position& pos) : EntityModel(pos, Direction::EAST, GHOST) {}
+    explicit Ghost(const Rectangle& pos) : EntityModel(pos, Direction::EAST, GHOST) {}
     void accept(IEntityVisitor& visitor) override;
 };
 
 class BlueGhost final : public Ghost {
 public:
-    explicit BlueGhost(const Position& pos) : Ghost(pos) {};
+    explicit BlueGhost(const Rectangle& pos) : Ghost(pos) {};
 };
 
 class PinkGhost final : public Ghost {
 public:
-    explicit PinkGhost(const Position& pos) : Ghost(pos) {};
+    explicit PinkGhost(const Rectangle& pos) : Ghost(pos) {};
 };
 
 class OrangeGhost final : public Ghost {
 public:
-    explicit OrangeGhost(const Position& pos) : Ghost(pos) {};
+    explicit OrangeGhost(const Rectangle& pos) : Ghost(pos) {};
 };
 
 class RedGhost final : public Ghost {
 public:
-    explicit RedGhost(const Position& pos) : Ghost(pos) {};
+    explicit RedGhost(const Rectangle& pos) : Ghost(pos) {};
 };
 
 #endif // PACMAN_GHOST_H

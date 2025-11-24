@@ -12,7 +12,7 @@ private:
 public:
     void addEntity(std::shared_ptr<EntityModel>);
     std::vector<std::shared_ptr<EntityModel>> getEntities();
-    std::vector<std::shared_ptr<EntityModel>> getEntitiesInBounds(Position topLeft, Position bottomRight);
+    std::vector<std::shared_ptr<EntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
     void update(Direction);
     World() = default;
 };

@@ -31,15 +31,15 @@ public:
 
 class EntityModel : public Subject {
 protected:
-    EntityModel(const Position& pos, Direction, TypeOfEntity t);
-    Position pos;
+    EntityModel(const Rectangle& hitBox, Direction, TypeOfEntity t);
+    Rectangle hitBox;
     Direction direction;
     const TypeOfEntity type;
 public:
-    [[nodiscard]] Position getPosition() const;
+    [[nodiscard]] Rectangle getHitBox() const;
     [[nodiscard]] Direction getDirection() const;
     [[nodiscard]] TypeOfEntity getType() const;
-    [[nodiscard]] bool isInBounds(const Position& topLeft, const Position& bottomRight) const;
+    [[nodiscard]] bool isInBounds(const Rectangle& boundBox) const;
 };
 
 #endif // PACMAN_SUBJECT_H

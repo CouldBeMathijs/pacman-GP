@@ -4,7 +4,7 @@
 
 class Wall final : public EntityModel {
 public:
-    explicit Wall(const Position& pos);
+    explicit Wall(const Rectangle& pos);
     void accept(IEntityVisitor& visitor) override;
 };
 

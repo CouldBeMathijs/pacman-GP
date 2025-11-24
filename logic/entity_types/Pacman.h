@@ -8,9 +8,9 @@ class Pacman final : public EntityModel {
 private:
     double speed = LogicConstants::BASE_SPEED;
 public:
-    explicit Pacman(const Position& pos);
+    explicit Pacman(const Rectangle& pos);
     void update(Direction) override;
-    void setPosition(const Position& p);
+    void setHitBox(const Rectangle& hb);
     void setDirection(Direction d);
     void accept(IEntityVisitor& visitor) override;
     [[nodiscard]] double getSpeed() const;

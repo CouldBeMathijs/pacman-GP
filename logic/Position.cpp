@@ -97,8 +97,8 @@ Position& Position::operator/=(double scalar) {
  * @param wanted_max The maximum bound of the desired range.
  * @return The rescaled Position.
  */
-Position Position::rescale(const Position& current_min, const Position& current_max,
-                           const Position& wanted_min, const Position& wanted_max) const {
+Position Position::rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
+                           const Position& wanted_max) const {
     const Position range_current = current_max - current_min;
 
     // Check for zero range to prevent division by zero in the normalization step
@@ -123,37 +123,27 @@ Position Position::rescale(const Position& current_min, const Position& current_
 /**
  * @brief Component-wise addition operator (lhs + rhs).
  */
-Position operator+(const Position& lhs, const Position& rhs) {
-    return {lhs.x + rhs.x, lhs.y + rhs.y};
-}
+Position operator+(const Position& lhs, const Position& rhs) { return {lhs.x + rhs.x, lhs.y + rhs.y}; }
 
 /**
  * @brief Component-wise subtraction operator (lhs - rhs).
  */
-Position operator-(const Position& lhs, const Position& rhs) {
-    return {lhs.x - rhs.x, lhs.y - rhs.y};
-}
+Position operator-(const Position& lhs, const Position& rhs) { return {lhs.x - rhs.x, lhs.y - rhs.y}; }
 
 /**
  * @brief Component-wise multiplication operator (lhs * rhs).
  */
-Position operator*(const Position& lhs, const Position& rhs) {
-    return {lhs.x * rhs.x, lhs.y * rhs.y};
-}
+Position operator*(const Position& lhs, const Position& rhs) { return {lhs.x * rhs.x, lhs.y * rhs.y}; }
 
 /**
  * @brief Scalar multiplication (Position * scalar).
  */
-Position operator*(const Position& lhs, double scalar) {
-    return {lhs.x * scalar, lhs.y * scalar};
-}
+Position operator*(const Position& lhs, double scalar) { return {lhs.x * scalar, lhs.y * scalar}; }
 
 /**
  * @brief Scalar multiplication (scalar * Position).
  */
-Position operator*(double scalar, const Position& rhs) {
-    return {scalar * rhs.x, scalar * rhs.y};
-}
+Position operator*(double scalar, const Position& rhs) { return {scalar * rhs.x, scalar * rhs.y}; }
 
 /**
  * @brief Component-wise division operator (lhs / rhs).
@@ -179,9 +169,7 @@ Position operator/(const Position& lhs, double scalar) {
 /**
  * @brief Equality comparison operator.
  */
-bool operator==(const Position& lhs, const Position& rhs) {
-    return lhs.x == rhs.x && lhs.y == rhs.y;
-}
+bool operator==(const Position& lhs, const Position& rhs) { return lhs.x == rhs.x && lhs.y == rhs.y; }
 
 /**
  * @brief Stream insertion operator for easy printing.
@@ -190,5 +178,64 @@ std::ostream& operator<<(std::ostream& os, const Position& p) {
     os << "(" << p.x << ", " << p.y << ")";
     return os;
 }
+
 Rectangle::Rectangle(const Position& top_left, const Position& bottom_right)
     : topLeft(top_left), bottomRight(bottom_right) {}
+void Rectangle::moveTo(const Position& newTopLeft) {
+    // Calculate the current width and height of the rectangle
+    double width = bottomRight.x - topLeft.x;
+    double height = bottomRight.y - topLeft.y; // Assumes y increases downwards
+
+    // Update the topLeft position
+    topLeft = newTopLeft;
+
+    // Use the calculated width/height to determine the new bottomRight position
+    bottomRight.x = newTopLeft.x + width;
+    bottomRight.y = newTopLeft.y + height;
+}
+
+void Rectangle::moveBy(double deltaX, double deltaY) {
+    // Apply the delta to the x-coordinate of both corners
+    topLeft.x += deltaX;
+    bottomRight.x += deltaX;
+
+    // Apply the delta to the y-coordinate of both corners
+    topLeft.y += deltaY;
+    bottomRight.y += deltaY;
+}
+
+void Rectangle::scaleBy(double scale) {
+    scale = std::abs(scale);
+    // 1. Calculate the current center point (which remains fixed)
+    const double center_x = (topLeft.x + bottomRight.x) / 2.0;
+    const double center_y = (topLeft.y + bottomRight.y) / 2.0;
+
+    // 2. Calculate current dimensions
+    const double current_width = bottomRight.x - topLeft.x;
+    const double current_height = bottomRight.y - topLeft.y;
+
+    // 3. Calculate new dimensions
+    const double new_width = current_width * scale;
+    const double new_height = current_height * scale;
+
+    // 4. Calculate the new half-dimensions (used to offset from the center)
+    const double new_half_width = new_width / 2.0;
+    const double new_half_height = new_height / 2.0;
+
+    // 5. Update the corners relative to the fixed center
+
+    // New TopLeft (Center - Half Dimensions)
+    topLeft.x = center_x - new_half_width;
+    topLeft.y = center_y - new_half_height;
+
+    // New BottomRight (Center + Half Dimensions)
+    bottomRight.x = center_x + new_half_width;
+    bottomRight.y = center_y + new_half_height;
+}
+Rectangle Rectangle::rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
+                             const Position& wanted_max) const {
+    return {
+        topLeft.rescale(current_min, current_max, wanted_min, wanted_max),
+            bottomRight.rescale(current_min, current_max, wanted_min, wanted_max)
+    };
+}
