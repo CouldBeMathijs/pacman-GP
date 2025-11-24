@@ -14,6 +14,8 @@ Position EntityModel::getPosition() const {
 
 Direction EntityModel::getDirection() const { return direction; }
 
+TypeOfEntity EntityModel::getType() const { return type; }
+
 bool EntityModel::isInBounds(const Position& topLeft, const Position& bottomRight) const {
     const double minX = std::min(topLeft.x, bottomRight.x);
     const double maxX = std::max(topLeft.x, bottomRight.x);

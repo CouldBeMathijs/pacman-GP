@@ -37,6 +37,7 @@ protected:
 public:
     [[nodiscard]] Position getPosition() const;
     [[nodiscard]] Direction getDirection() const;
+    [[nodiscard]] TypeOfEntity getType() const;
     [[nodiscard]] bool isInBounds(const Position& topLeft, const Position& bottomRight) const;
 };
 
