@@ -1,3 +1,6 @@
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(LOGIC_SOURCES
         Random.cpp
         Stopwatch.cpp
