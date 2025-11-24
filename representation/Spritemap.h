@@ -36,7 +36,7 @@ const std::array<SpriteInfo, to_underlying(Count)> spriteDefinitions = {
     SpriteInfo{694, -4, 50, 50},   // SpriteDefinition::GhostPink
     SpriteInfo{644, -4, 50, 50},   // SpriteDefinition::GhostRed
     SpriteInfo{844, -4, 50, 50},   // SpriteDefinition::Pacman
-    SpriteInfo{51, 412, 50, 50},   // SpriteDefinition::Wall
+    SpriteInfo{644, 395, 50, 50},   // SpriteDefinition::Wall
     SpriteInfo{344, -4, 50, 50},   // SpriteDefinition::PacmanDeath
     SpriteInfo{244, -4, 50, 50},   // SpriteDefinition::GhostDeath
 };

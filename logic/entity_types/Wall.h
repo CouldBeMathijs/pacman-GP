@@ -6,7 +6,6 @@ class Wall final : public EntityModel {
 public:
     explicit Wall(const Position& pos);
     void accept(IEntityVisitor& visitor) override;
-    bool colliding = false;
 };
 
 #endif // PACMAN_WALL_H

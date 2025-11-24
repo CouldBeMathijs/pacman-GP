@@ -4,8 +4,10 @@
 #include "LogicConstants.h"
 #include "Visitor.h"
 #include "entity_types/Pacman.h"
+#include "entity_types/Wall.h"
 
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <ranges>
@@ -31,75 +33,104 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(Position to
  * @brief Updates the state of the game world, handling Pacman's movement,
  * collision resolution, interactions (like picking up pellets), and
  * the updates of all other entities.
- * * This method performs a two-step update:
- * 1. Controlled update for Pacman: calculates potential movement, performs collision
- * checks against obstacles (Walls) and interactions against consumables (Pellets, PowerPills),
- * and applies the final movement and interaction effects.
- * 2. Simplified update for all other entities (Ghosts, consumables, etc.),
- * allowing them to execute their own movement/game logic.
- * * @param d The direction input received from the user for Pacman's intended movement.
+ *
+ * @param d The direction input received from the user for Pacman's intended movement.
  */
 void World::update(Direction d) {
-    for (const auto& entity_ptr : m_entities) {
-        if (entity_ptr->getType() == PACMAN) {
-            const auto& pacman = std::dynamic_pointer_cast<Pacman>(entity_ptr);
-            pacman->setDirection(d);
+    std::shared_ptr<Pacman> pacman = nullptr;
 
-            // --- Calculate Potential Future Position ---
-            const Position current_pos = pacman->getPosition();
-            Position future_pos = current_pos;
-            const double current_speed = pacman->getSpeed();
+    // --- 1. Find Pacman and set his direction ---
+    for (auto& entity_ptr : m_entities) {
+        if ((pacman = std::dynamic_pointer_cast<Pacman>(entity_ptr))) {
+            break;
+        }
+    }
 
-            switch (d) {
-            case Direction::SOUTH:
-                future_pos.y += current_speed;
-                break;
-            case Direction::WEST:
-                future_pos.x -= current_speed;
-                break;
-            case Direction::NORTH:
-                future_pos.y -= current_speed;
-                break;
-            case Direction::EAST:
-                future_pos.x += current_speed;
-                break;
-            }
+    if (pacman) {
+        pacman->setDirection(d);
 
-            // --- Collision Search Setup ---
-            bool moveBlocked = false;         // Flag to determine if movement is allowed.
-            constexpr double EPSILON = 0.001; // For robust floating-point comparison
-            constexpr double pacman_width = LogicConstants::ENTITY_WIDTH;
-            constexpr double pacman_height = LogicConstants::ENTITY_HEIGHT;
+        const Position current_pos = pacman->getPosition();
+        const double current_speed = pacman->getSpeed();
+        constexpr double pacman_width = LogicConstants::ENTITY_WIDTH;
+        constexpr double pacman_height = LogicConstants::ENTITY_HEIGHT;
 
-            // Bounding Box Calculation for the search area
-            const double min_x = future_pos.x - EPSILON;
-            const double max_x = future_pos.x + pacman_width + EPSILON;
-            const double min_y = future_pos.y - EPSILON;
-            const double max_y = future_pos.y + pacman_height + EPSILON;
+        // --- 2. Interaction/Pickup Search (At Current Position) ---
+        // We must check the current location for items Pacman is currently overlapping or standing on.
+        {
+            // Define the bounding box at the CURRENT position for interaction checks.
+            const Position interaction_top_left = {current_pos.x, current_pos.y};
+            const Position interaction_bottom_right = {current_pos.x + pacman_width, current_pos.y + pacman_height};
 
-            const Position search_top_left = {min_x, min_y};
-            const Position search_bottom_right = {max_x, max_y};
+            const auto interaction_targets = getEntitiesInBounds(interaction_top_left, interaction_bottom_right);
 
-            const auto target_entities = getEntitiesInBounds(search_top_left, search_bottom_right);
+            for (const auto& target_ptr : interaction_targets) {
+                if (target_ptr.get() == pacman.get()) continue;
 
-            for (const auto& target_ptr : target_entities) {
-                if (target_ptr.get() == pacman.get())
-                    continue;
-
+                // Handle the interaction (e.g., Pacman eats a Pellet, or touches a Ghost)
                 CollisionHandler handler(*pacman);
-                target_ptr->accept(handler); // This triggers the A-vs-B logic inside the visitors.
+                target_ptr->accept(handler);
 
-                const CollisionResult& result = handler.getResult();
-
-                if (result.moveBlocked) {
-                    moveBlocked = true;
-                    break;
-                }
-            }
-            if (!moveBlocked) {
-                pacman->setPosition(future_pos);
+                // Interaction results (score update, item removal, death) are assumed to happen
+                // within the visitor logic, regardless of movement success.
             }
         }
+
+        // --- 3. Calculate Potential Future Position ---
+        Position future_pos = current_pos;
+
+        switch (d) {
+            case Direction::SOUTH: future_pos.y += current_speed; break;
+            case Direction::WEST:  future_pos.x -= current_speed; break;
+            case Direction::NORTH: future_pos.y -= current_speed; break;
+            case Direction::EAST:  future_pos.x += current_speed; break;
+        }
+
+        // --- 4. Movement Blocking Search (At Future Position) ---
+        // Check if the move to future_pos is blocked by a wall or solid object.
+        bool moveBlocked = false;
+        constexpr double EPSILON = 0.000; // Positive epsilon for slightly expanding the search box
+
+        // Bounding Box Calculation for the search area (slightly expanded for robustness)
+        const double min_x = future_pos.x - EPSILON;
+        const double max_x = future_pos.x + pacman_width + EPSILON;
+        const double min_y = future_pos.y - EPSILON;
+        const double max_y = future_pos.y + pacman_height + EPSILON;
+
+        const Position search_top_left = {min_x, min_y};
+        const Position search_bottom_right = {max_x, max_y};
+
+        // Get all entities potentially overlapping with the future position.
+        const auto blocking_targets = getEntitiesInBounds(search_top_left, search_bottom_right);
+
+        // --- Collision Resolution Loop (Movement Block Only) ---
+        for (const auto& target_ptr : blocking_targets) {
+            if (target_ptr.get() == pacman.get()) continue;
+
+            // Use the CollisionHandler specifically to check for *blocking* entities (like walls).
+            CollisionHandler handler(*pacman);
+            target_ptr->accept(handler);
+            const CollisionResult& result = handler.getResult();
+
+            if (result.moveBlocked) {
+                moveBlocked = true;
+                break; // Stop checking if movement is blocked.
+            }
+        }
+
+        // --- 5. FINAL DECISION: Apply Movement ---
+        if (!moveBlocked) {
+            // Position is updated.
+            pacman->setPosition(future_pos);
+        }
+
+        // Call Pacman's non-movement update (e.g., animation, power-up timers)
+        pacman->update(d);
+    }
+
+    // --- 6. Update all other entities (e.g., Ghosts, Coins, Walls, etc.) ---
+    for (const auto& entity_ptr : m_entities) {
+        if (pacman && entity_ptr == pacman) continue; // Skip Pacman
+
         entity_ptr->update(d);
     }
 }
