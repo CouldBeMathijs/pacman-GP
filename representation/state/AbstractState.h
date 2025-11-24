@@ -1,5 +1,5 @@
-#ifndef PACMAN_STATE_H
-#define PACMAN_STATE_H
+#ifndef PACMAN_ABSTRACTSTATE_H
+#define PACMAN_ABSTRACTSTATE_H
 
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -14,4 +14,4 @@ protected:
     AbstractState() = default;
 };
 
-#endif // PACMAN_STATE_H
+#endif // PACMAN_ABSTRACTSTATE_H

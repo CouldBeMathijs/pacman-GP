@@ -151,7 +151,90 @@ public:
     // To strictly stick to the IEntityVisitor interface for the first dispatch,
     // we would need a helper class (as shown below).
 };
+/**
+ * @brief Handles the second half of the dispatch for Coin collisions (A vs Coin).
+ * It is *accepted* by the Initiator (A).
+ */
+class CoinCollisionResolver final : public IEntityVisitor {
+private:
+    CollisionResult& m_result;
 
+public:
+    explicit CoinCollisionResolver(CollisionResult& result) : m_result(result) {}
+
+    // When Pacman (A) visits the resolver (Target is Coin):
+    void visit(Pacman& initiator) override {
+        // Pacman vs Coin: Interaction occurs (pickup)
+        m_result.interactionOccurred = true;
+        // NOTE: The *actual* pickup logic (add score, remove coin)
+        // is typically handled after the collision check, using a separate
+        // mechanism (like your 'PickupVisitor' or a direct call).
+        // This resolver just signals a successful collision.
+    }
+
+    // Ghosts (A) ignore Coins (Target):
+    void visit(Ghost& initiator) override {}
+
+    // Items and Walls ignore Coins:
+    void visit(Wall& initiator) override {}
+    void visit(Coin& initiator) override {} // Coin vs Coin is ignored
+    void visit(Fruit& initiator) override {}
+}; /**
+    * @brief Handles the second half of the dispatch for Fruit collisions (A vs Fruit).
+    * It is *accepted* by the Initiator (A).
+    */
+class FruitCollisionResolver final : public IEntityVisitor {
+private:
+    CollisionResult& m_result;
+
+public:
+    explicit FruitCollisionResolver(CollisionResult& result) : m_result(result) {}
+
+    // When Pacman (A) visits the resolver (Target is Fruit):
+    void visit(Pacman& initiator) override {
+        // Pacman vs Fruit: Interaction occurs (pickup)
+        m_result.interactionOccurred = true;
+        // Again, actual scoring/removal logic is handled elsewhere.
+    }
+
+    // Ghosts (A) ignore Fruits (Target):
+    void visit(Ghost& initiator) override {}
+
+    // Items and Walls ignore Fruits:
+    void visit(Wall& initiator) override {}
+    void visit(Coin& initiator) override {}
+    void visit(Fruit& initiator) override {} // Fruit vs Fruit is ignored
+};
+
+/**
+ * @brief Handles the second half of the dispatch for Wall collisions (A vs Wall).
+ * It is *accepted* by the Initiator (A).
+ */
+class WallCollisionResolver final : public IEntityVisitor {
+private:
+    CollisionResult& m_result;
+
+public:
+    explicit WallCollisionResolver(CollisionResult& result) : m_result(result) {}
+
+    // When Pacman (A) visits the resolver (Target is Wall):
+    void visit(Pacman& initiator) override {
+        // Pacman vs Wall: Always blocked
+        m_result.moveBlocked = true;
+    }
+
+    // When Ghost (A) visits the resolver (Target is Wall):
+    void visit(Ghost& initiator) override {
+        // Ghost vs Wall: Always blocked
+        m_result.moveBlocked = true;
+        // The ghost's AI will need to re-route based on this result.
+    }
+
+    // Walls are generally static and don't interact with other static elements or items
+    void visit(Wall& initiator) override {}
+    void visit(Coin& initiator) override {}
+    void visit(Fruit& initiator) override {}
+};
 // --- Helper Class to fit Collision Logic into IEntityVisitor (Recommended) ---
 /**
  * @brief This class acts as the true IEntityVisitor for the first dispatch.
@@ -178,23 +261,21 @@ public:
         GhostCollisionResolver resolver(m_result);
         m_initiator.accept(resolver); // **SECOND DISPATCH**
     }
-    /*
-        void visit(Wall& target) override {
-            // B is a Wall. Now, let the Initiator (A) resolve the A-vs-B collision.
-            WallCollisionResolver resolver(m_result); // (You'd need a WallCollisionResolver)
-            m_initiator.accept(resolver);             // **SECOND DISPATCH**
-        }
+    void visit(Wall& target) override {
+        // B is a Wall. Now, let the Initiator (A) resolve the A-vs-B collision.
+        WallCollisionResolver resolver(m_result); // (You'd need a WallCollisionResolver)
+        m_initiator.accept(resolver);             // **SECOND DISPATCH**
+    }
 
-        // Items should typically not block the move, so they can use a generic resolver
-        void visit(Coin& target) override {
-            CoinCollisionResolver resolver(m_result);
-            m_initiator.accept(resolver);
-        }
-        void visit(Fruit& target) override {
-            FruitCollisionResolver resolver(m_result);
-            m_initiator.accept(resolver);
-        }
-    */
+    // Items should typically not block the move, so they can use a generic resolver
+    void visit(Coin& target) override {
+        CoinCollisionResolver resolver(m_result);
+        m_initiator.accept(resolver);
+    }
+    void visit(Fruit& target) override {
+        FruitCollisionResolver resolver(m_result);
+        m_initiator.accept(resolver);
+    }
 };
 
 #endif // PACMAN_VISITOR_H

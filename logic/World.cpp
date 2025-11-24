@@ -3,6 +3,7 @@
 #include "AbstractEntityFactory.h"
 #include "LogicConstants.h"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -14,16 +15,16 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntities() {
     return m_entities;
 }
 
-std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(Position topleft, Position bottomright) {
+std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(Position topLeft, Position bottomright) {
     std::vector<std::shared_ptr<EntityModel>> results;
 
     std::copy_if(
         m_entities.begin(),
         m_entities.end(),
         std::back_inserter(results), // Efficiently adds elements to the results vector
-        [&topleft, &bottomright](const std::shared_ptr<EntityModel>& entity) {
+        [&topLeft, &bottomright](const std::shared_ptr<EntityModel>& entity) {
             // Check if the entity (which is a shared_ptr) is not null and is in bounds.
-            return entity && entity->isInBounds(topleft, bottomright);
+            return entity && entity->isInBounds(topLeft, bottomright);
         }
     );
 
