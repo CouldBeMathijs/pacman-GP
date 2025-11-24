@@ -58,7 +58,7 @@ void World::update(Direction d) {
             Rectangle future_hb_check = hitBox;
             switch (d) {
             case Direction::SOUTH:
-                // Move the rectangle down (hbitive Y)
+                // Move the rectangle down (positive Y)
                 future_hb_check.moveBy(0.0, current_speed);
                 break;
 
@@ -73,7 +73,7 @@ void World::update(Direction d) {
                 break;
 
             case Direction::EAST:
-                // Move the rectangle right (hbitive X)
+                // Move the rectangle right (positive X)
                 future_hb_check.moveBy(current_speed, 0.0);
                 break;
             }
@@ -131,7 +131,7 @@ void World::update(Direction d) {
         // The direction 'd' here is the direction set in the NEW STEP 1.5
         switch (d) {
         case Direction::SOUTH:
-            // Move the rectangle down (hbitive Y)
+            // Move the rectangle down (positive Y)
             future_hb.moveBy(0.0, current_speed);
             break;
 
@@ -146,27 +146,17 @@ void World::update(Direction d) {
             break;
 
         case Direction::EAST:
-            // Move the rectangle right (hbitive X)
+            // Move the rectangle right (positive X)
             future_hb.moveBy(current_speed, 0.0);
             break;
         }
 
         // --- 4. Movement Blocking Search (At Future Position) ---
-        // ... (Original Code for Movement Blocking Check) ...
         bool moveBlocked = false;
-        constexpr double EPSILON = 0;
-
-        // Bounding Box Calculation for the search area (slightly expanded for robustness)
-        const double min_x = future_hb.topLeft.x - EPSILON;
-        const double max_x = future_hb.bottomRight.x + EPSILON;
-        const double min_y = future_hb.topLeft.y - EPSILON;
-        const double max_y = future_hb.bottomRight.y + EPSILON;
-
-        const Position search_top_left = {min_x, min_y};
-        const Position search_bottom_right = {max_x, max_y};
+        const auto search_future_hb = future_hb.scaledBy(0.99);
 
         // Collision Resolution Loop (Movement Block Only)
-        for (const auto blocking_targets = getEntitiesInBounds({search_top_left, search_bottom_right});
+        for (const auto blocking_targets = getEntitiesInBounds(search_future_hb);
              const auto& target_ptr : blocking_targets) {
             if (target_ptr.get() == pacman.get()) continue;
 
@@ -198,6 +188,7 @@ void World::update(Direction d) {
         entity_ptr->update(d);
     }
 }
+
 World WorldCreator::createWorldFromFile(const std::string& filename,
                                         const std::shared_ptr<AbstractEntityFactory>& factory) {
     std::ifstream inputFile(filename);

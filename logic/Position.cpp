@@ -181,6 +181,9 @@ std::ostream& operator<<(std::ostream& os, const Position& p) {
 
 Rectangle::Rectangle(const Position& top_left, const Position& bottom_right)
     : topLeft(top_left), bottomRight(bottom_right) {}
+Rectangle::Rectangle()
+    : topLeft{std::numeric_limits<float>::signaling_NaN(), std::numeric_limits<float>::signaling_NaN()},
+      bottomRight(topLeft) {}
 void Rectangle::moveTo(const Position& newTopLeft) {
     // Calculate the current width and height of the rectangle
     double width = bottomRight.x - topLeft.x;
@@ -204,33 +207,31 @@ void Rectangle::moveBy(double deltaX, double deltaY) {
     bottomRight.y += deltaY;
 }
 
-void Rectangle::scaleBy(double scale) {
+Rectangle Rectangle::scaledBy(double scale) const {
+
     scale = std::abs(scale);
-    // 1. Calculate the current center point (which remains fixed)
     const double center_x = (topLeft.x + bottomRight.x) / 2.0;
     const double center_y = (topLeft.y + bottomRight.y) / 2.0;
 
-    // 2. Calculate current dimensions
     const double current_width = bottomRight.x - topLeft.x;
     const double current_height = bottomRight.y - topLeft.y;
 
-    // 3. Calculate new dimensions
+
     const double new_width = current_width * scale;
     const double new_height = current_height * scale;
 
-    // 4. Calculate the new half-dimensions (used to offset from the center)
     const double new_half_width = new_width / 2.0;
     const double new_half_height = new_height / 2.0;
 
-    // 5. Update the corners relative to the fixed center
+    Rectangle scaled_rectangle;
 
-    // New TopLeft (Center - Half Dimensions)
-    topLeft.x = center_x - new_half_width;
-    topLeft.y = center_y - new_half_height;
+    scaled_rectangle.topLeft.x = center_x - new_half_width;
+    scaled_rectangle.topLeft.y = center_y - new_half_height;
+    scaled_rectangle.bottomRight.x = center_x + new_half_width;
+    scaled_rectangle.bottomRight.y = center_y + new_half_height;
 
-    // New BottomRight (Center + Half Dimensions)
-    bottomRight.x = center_x + new_half_width;
-    bottomRight.y = center_y + new_half_height;
+    return scaled_rectangle;
+
 }
 Rectangle Rectangle::rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
                              const Position& wanted_max) const {
