@@ -30,10 +30,10 @@ bool EntityModel::isInBounds(const Position& topLeft, const Position& bottomRigh
     const double box_maxY = std::max(topLeft.y, bottomRight.y);
 
 
-    const double entity_minX = this->pos.x - entity_width * 7/8; // Left edge
-    const double entity_maxX = this->pos.x + entity_width * 15/8; // Right edge
-    const double entity_minY = this->pos.y;             // Top edge (no change)
-    const double entity_maxY = this->pos.y + entity_height; // Bottom edge (no change)
+    const double entity_minX = this->pos.x - entity_width * 0.99; // Left edge
+    const double entity_maxX = this->pos.x + entity_width * 2 * 0.99; // Right edge
+    const double entity_minY = this->pos.y * 1.03;             // Top edge (no change)
+    const double entity_maxY = this->pos.y + entity_height * 1.03; // Bottom edge (no change)
 
     // --- 3. AABB Intersection Check ---
     // The two boxes intersect (overlap) if and only if they overlap on all axes.

@@ -4,10 +4,8 @@
 #include "LogicConstants.h"
 #include "Visitor.h"
 #include "entity_types/Pacman.h"
-#include "entity_types/Wall.h"
 
 #include <algorithm>
-#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <ranges>
@@ -47,15 +45,66 @@ void World::update(Direction d) {
     }
 
     if (pacman) {
+        // --- NEW STEP 1.5: Direction Change Pre-Check (4-Step Lookahead) ---
+        const Direction current_direction = pacman->getDirection();
+
+        // Only perform the lookahead check if the proposed direction 'd' is different
+        // from the current direction.
+        if (d != current_direction) {
+            const double lookahead_distance = pacman->getSpeed() * 10.0;
+            const Position current_pos = pacman->getPosition();
+            constexpr double pacman_width = LogicConstants::ENTITY_WIDTH;
+            constexpr double pacman_height = LogicConstants::ENTITY_HEIGHT;
+
+            // Calculate the position after the lookahead distance in the *new* direction 'd'.
+            Position future_pos_check = current_pos;
+            switch (d) {
+                case Direction::SOUTH: future_pos_check.y += lookahead_distance; break;
+                case Direction::WEST:  future_pos_check.x -= lookahead_distance; break;
+                case Direction::NORTH: future_pos_check.y -= lookahead_distance; break;
+                case Direction::EAST:  future_pos_check.x += lookahead_distance; break;
+            }
+
+            // Define the bounding box for the lookahead position.
+            const Position search_top_left = {future_pos_check.x, future_pos_check.y};
+            const Position search_bottom_right = {future_pos_check.x + pacman_width, future_pos_check.y + pacman_height};
+
+            bool lookaheadBlocked = false;
+
+            // Check for blocking entities (like walls) at the lookahead position.
+            for (const auto blocking_targets = getEntitiesInBounds(search_top_left, search_bottom_right);
+                 const auto& target_ptr : blocking_targets) {
+                if (target_ptr.get() == pacman.get()) continue;
+
+                // Use CollisionHandler to check for a *blocking* collision.
+                CollisionHandler handler(*pacman);
+                target_ptr->accept(handler);
+
+                if (handler.getResult().moveBlocked) {
+                    lookaheadBlocked = true;
+                    break;
+                }
+            }
+
+            // If the lookahead is blocked, *REJECT* the new direction 'd'.
+            if (lookaheadBlocked) {
+                // Keep the current direction for the movement in step 3.
+                d = current_direction;
+                // Note: The original 'd' (the user input) is now ignored for this update.
+            }
+        }
+
+        // Set the (potentially modified) direction for the rest of the update
         pacman->setDirection(d);
 
         const Position current_pos = pacman->getPosition();
         const double current_speed = pacman->getSpeed();
+        // pacman_width/height are already defined above
         constexpr double pacman_width = LogicConstants::ENTITY_WIDTH;
         constexpr double pacman_height = LogicConstants::ENTITY_HEIGHT;
 
         // --- 2. Interaction/Pickup Search (At Current Position) ---
-        // We must check the current location for items Pacman is currently overlapping or standing on.
+        // ... (Original Code for Interaction Check) ...
         {
             // Define the bounding box at the CURRENT position for interaction checks.
             const Position interaction_top_left = {current_pos.x, current_pos.y};
@@ -69,15 +118,13 @@ void World::update(Direction d) {
                 // Handle the interaction (e.g., Pacman eats a Pellet, or touches a Ghost)
                 CollisionHandler handler(*pacman);
                 target_ptr->accept(handler);
-
-                // Interaction results (score update, item removal, death) are assumed to happen
-                // within the visitor logic, regardless of movement success.
             }
         }
 
         // --- 3. Calculate Potential Future Position ---
         Position future_pos = current_pos;
 
+        // The direction 'd' here is the direction set in the NEW STEP 1.5
         switch (d) {
             case Direction::SOUTH: future_pos.y += current_speed; break;
             case Direction::WEST:  future_pos.x -= current_speed; break;
@@ -86,9 +133,9 @@ void World::update(Direction d) {
         }
 
         // --- 4. Movement Blocking Search (At Future Position) ---
-        // Check if the move to future_pos is blocked by a wall or solid object.
+        // ... (Original Code for Movement Blocking Check) ...
         bool moveBlocked = false;
-        constexpr double EPSILON = 0.000; // Positive epsilon for slightly expanding the search box
+        constexpr double EPSILON = 0;
 
         // Bounding Box Calculation for the search area (slightly expanded for robustness)
         const double min_x = future_pos.x - EPSILON;
@@ -99,11 +146,9 @@ void World::update(Direction d) {
         const Position search_top_left = {min_x, min_y};
         const Position search_bottom_right = {max_x, max_y};
 
-        // Get all entities potentially overlapping with the future position.
-        const auto blocking_targets = getEntitiesInBounds(search_top_left, search_bottom_right);
-
-        // --- Collision Resolution Loop (Movement Block Only) ---
-        for (const auto& target_ptr : blocking_targets) {
+        // Collision Resolution Loop (Movement Block Only)
+        for (const auto blocking_targets = getEntitiesInBounds(search_top_left, search_bottom_right);
+             const auto& target_ptr : blocking_targets) {
             if (target_ptr.get() == pacman.get()) continue;
 
             // Use the CollisionHandler specifically to check for *blocking* entities (like walls).
