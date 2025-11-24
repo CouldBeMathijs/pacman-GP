@@ -3,23 +3,23 @@
 #include "Visitor.h"
 
 void Pacman::update(Direction d) {
-    switch (d) {
-    case Direction::SOUTH:
-        pos += {0, speed};
-        break;
-    case Direction::WEST:
-        pos -= {speed, 0};
-        break;
-    case Direction::NORTH:
-        pos -= {0, speed};
-        break;
-    case Direction::EAST:
-        pos += {speed, 0};
-        break;
-    }
+    // 1. Only handle direction change.
     setDirection(d);
+
+    // 2. Call the base class update for any non-collision, non-movement updates
+    // (e.g., animation state, timer updates).
     EntityModel::update(d);
+
+    // The previous movement logic (pos += {..., ...}) is GONE.
 }
 
-void Pacman::setDirection(Direction d) { direction = d; }
+// You will also need a setter for position, which World uses:
+void Pacman::setPosition(const Position& p) {
+    pos = p;
+}
+
+void Pacman::setDirection(const Direction d) { direction = d; }
+
 void Pacman::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
+
+double Pacman::getSpeed() const { return speed; }

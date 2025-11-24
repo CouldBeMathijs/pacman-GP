@@ -12,14 +12,14 @@ private:
 public:
     void addEntity(std::shared_ptr<EntityModel>);
     std::vector<std::shared_ptr<EntityModel>> getEntities();
-    std::vector<std::shared_ptr<EntityModel>> getEntitiesInBounds(Position topLeft, Position bottomright);
-    void update(Direction) const;
+    std::vector<std::shared_ptr<EntityModel>> getEntitiesInBounds(Position topLeft, Position bottomRight);
+    void update(Direction);
     World() = default;
 };
 
 class WorldCreator {
 public:
-    static World createWorldFromFile(const std::string& filename, std::shared_ptr<AbstractEntityFactory> factory);
+    static World createWorldFromFile(const std::string& filename, const std::shared_ptr<AbstractEntityFactory>& factory);
 };
 
 #endif // PACMAN_WORLD_H

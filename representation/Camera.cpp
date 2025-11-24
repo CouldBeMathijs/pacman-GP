@@ -32,7 +32,7 @@ Camera& Camera::getInstance() {
     return instance;
 }
 
-Camera::Camera(sf::VideoMode mode, const sf::String& title, sf::Uint32 style)
+Camera::Camera(const sf::VideoMode mode, const sf::String& title, const sf::Uint32 style)
     : window(mode, title, style),
       view(sf::FloatRect(0.f, 0.f, SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT))
 {

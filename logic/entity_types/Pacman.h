@@ -7,12 +7,13 @@
 class Pacman final : public EntityModel {
 private:
     double speed = LogicConstants::BASE_SPEED;
-    bool moveBlocked = true;
 public:
     explicit Pacman(const Position& pos) : EntityModel(pos) {}
     void update(Direction) override;
+    void setPosition(const Position& p);
     void setDirection(Direction d);
     void accept(IEntityVisitor& visitor) override;
+    [[nodiscard]] double getSpeed() const;
 };
 
 #endif // PACMAN_PACMAN_H
