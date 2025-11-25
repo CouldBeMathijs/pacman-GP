@@ -36,13 +36,12 @@ void PausedState::update(Direction) {
     window.draw(m_playText);
 }
 
-std::unique_ptr<AbstractState> PausedState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {
+void PausedState::handleInput(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Space) {
-            amountOfPops = 1;
+            requestedPops = 1;
         } else if (event.key.code == sf::Keyboard::Escape) {
-            amountOfPops = 2;
+            requestedPops = 2;
         }
     }
-    return nullptr;
 }

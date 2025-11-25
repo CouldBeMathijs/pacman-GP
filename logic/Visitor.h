@@ -88,12 +88,15 @@ private:
 public:
     explicit GhostCollisionVisitor(CollisionResult& result) : m_result(result) {}
 
-    void visit(Ghost& target) override {} // Ghost vs Ghost is ignored
+    void visit(Ghost& target) override {
+        m_result.moveBlocked = true;
+    } // Ghost vs Ghost is ignored
 
     void visit(Pacman& target) override {
         // Ghost vs Pacman: Game Over or Run Away
         m_result.interactionOccurred = true;
         // Logic to handle Pacman::die() or Ghost::flee()
+        target.ghostTouches();
     }
 
     void visit(Wall& target) override {

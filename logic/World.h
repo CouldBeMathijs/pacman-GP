@@ -9,16 +9,19 @@
 
 class World {
 private:
-    std::vector<std::shared_ptr<EntityModel>> m_entities;
+    bool gameRunning = true;
     std::shared_ptr<Pacman> pacman;
+    std::vector<std::shared_ptr<EntityModel>> m_entities;
+    unsigned int amountOfLives = 3;
 public:
-    void addEntity(std::shared_ptr<EntityModel>);
+    World() = default;
+    std::shared_ptr<Pacman> getPacman();
     std::vector<std::shared_ptr<EntityModel>> getEntities();
     std::vector<std::shared_ptr<EntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
+    void addEntity(std::shared_ptr<EntityModel>);
     void setPacman(const std::shared_ptr<Pacman>& p);
-    std::shared_ptr<Pacman> getPacman();
     void update(Direction);
-    World() = default;
+    [[nodiscard]] bool isRunning() const;
 };
 
 class WorldCreator {

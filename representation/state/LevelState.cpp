@@ -1,5 +1,6 @@
 #include "LevelState.h"
 
+#include "GameOverState.h"
 #include "PausedState.h"
 
 LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
@@ -7,13 +8,16 @@ LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
 }
 
 void LevelState::update(Direction d) {
+    if (!world.isRunning()) {
+        requestedPops = 1;
+        requestedState = std::make_unique<GameOverState>();
+    }
    world.update(d);
 }
 
-std::unique_ptr<AbstractState> LevelState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {
+void LevelState::handleInput(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     {
-        return std::make_unique<PausedState>();
+        requestedState = std::make_unique<PausedState>();
     }
-    return nullptr;
 }

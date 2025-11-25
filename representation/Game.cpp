@@ -46,7 +46,10 @@ void Game::run() {
         window.clear(sf::Color::Black);
         camera.applyView();
         sm.update(direction);
-
+        if (sm.empty()) {
+            window.close();
+            return;
+        }
         window.display();
     }
 }

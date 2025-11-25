@@ -1,5 +1,6 @@
 #include "MenuState.h"
 
+#include "../Camera.h"
 #include "LevelState.h"
 
 MenuState::MenuState() {
@@ -15,7 +16,7 @@ MenuState::MenuState() {
     m_pacmanText.setCharacterSize(80);
     m_pacmanText.setFillColor(sf::Color::Yellow);
 
-    sf::FloatRect pacmanBounds = m_pacmanText.getLocalBounds();
+    const sf::FloatRect pacmanBounds = m_pacmanText.getLocalBounds();
     m_pacmanText.setOrigin(pacmanBounds.left + pacmanBounds.width / 2.0f,
                            pacmanBounds.top + pacmanBounds.height / 2.0f);
 
@@ -39,15 +40,12 @@ void MenuState::update(Direction d) {
     window.draw(m_playText);
 }
 
-std::unique_ptr<AbstractState> MenuState::handleInput(const sf::Event& event, unsigned int& amountOfPops) {
+void MenuState::handleInput(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed)
     {
         if (event.key.code == sf::Keyboard::Escape) {
-            amountOfPops = 1;
-            return nullptr;
+            requestedPops = 1;
         }
-        return std::make_unique<LevelState>();
-    } else {
-        return nullptr;
+        requestedState = std::make_unique<LevelState>();
     }
 }

@@ -40,6 +40,16 @@ void World::update(Direction d) {
     if (!pacman) {
         throw std::runtime_error("Pacman not defined");
     }
+
+    if (pacman->hasTouchedGhost()) {
+        pacman->goToSpawn();
+        pacman->resetGhostTouch();
+        amountOfLives--;
+        if (amountOfLives == 0) {
+            gameRunning = false;
+            return;
+        }
+    }
     {
         constexpr double EPSILON = 0.01;
         const Rectangle current_hb = pacman->getHitBox();
@@ -145,7 +155,7 @@ void World::update(Direction d) {
         entity_ptr->update(d);
     }
 }
-
+bool World::isRunning() const { return gameRunning; }
 
 World WorldCreator::createWorldFromFile(const std::string& filename,
                                         const std::shared_ptr<AbstractEntityFactory>& factory) {

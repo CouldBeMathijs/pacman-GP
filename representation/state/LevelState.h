@@ -1,6 +1,5 @@
 #ifndef PACMAN_LEVELSTATE_H
 #define PACMAN_LEVELSTATE_H
-#include "../Camera.h"
 #include "../ConcreteEntityFactory.h"
 #include "AbstractState.h"
 #include "World.h"
@@ -12,7 +11,7 @@ private:
 public:
     LevelState();
     void update(Direction) override;
-    std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
+    void handleInput(const sf::Event&) override;
 };
 
 #endif // PACMAN_LEVELSTATE_H

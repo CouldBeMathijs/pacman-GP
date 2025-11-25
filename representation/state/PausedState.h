@@ -11,7 +11,7 @@ private:
 public:
     PausedState();
     void update(Direction) override;
-    std::unique_ptr<AbstractState> handleInput(const sf::Event&, unsigned int& amountOfPops) override;
+    void handleInput(const sf::Event&) override;
 };
 
 

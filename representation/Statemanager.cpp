@@ -9,17 +9,21 @@ Statemanager::Statemanager() {
 
 void Statemanager::update(Direction d) {
     this->top()->update(d);
+    const unsigned int requestedPops = this->top()->getRequestedPops();
+    std::unique_ptr<AbstractState> stateToPush;
+    if (this->top()->isRequestedState()) {
+        stateToPush = (this->top()->getRequestedState());
+    }
+    for (unsigned int i = 0; i < requestedPops; i++) {
+        pop();
+    }
+    if (stateToPush) {
+        this->push(std::move(stateToPush));
+    }
 }
 
 void Statemanager::handleInput(const sf::Event& event) {
-    unsigned int amountOfPops = 0;
-    auto newState = this->top()->handleInput(event, amountOfPops);
-    for (unsigned int i = 0; i < amountOfPops; i++) {
-        pop();
-    }
-    if (newState) {
-        this->push(std::move(newState));
-    }
+    this->top()->handleInput(event);
 }
 
 bool Statemanager::empty() const {
