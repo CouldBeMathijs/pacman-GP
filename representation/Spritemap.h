@@ -28,7 +28,7 @@ constexpr size_t to_underlying(const SpriteDefinition e) noexcept {
 }
 
 const std::array<SpriteInfo, to_underlying(Count)> spriteDefinitions = {
-    SpriteInfo{395, 396, 50, 50},  // SpriteDefinition::Coin
+    SpriteInfo{414, 266, 10, 10},  // SpriteDefinition::Coin
     SpriteInfo{594, -4, 50, 50},   // SpriteDefinition::Fruit
     SpriteInfo{744, -4, 50, 50},   // SpriteDefinition::GhostBlue
     SpriteInfo{794, -4, 50, 50},   // SpriteDefinition::GhostOrange

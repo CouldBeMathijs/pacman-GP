@@ -46,15 +46,14 @@ void World::update(Direction d) {
 
     if (pacman) {
         // --- NEW STEP 1.5: Direction Change Pre-Check (4-Step Lookahead) ---
-        const Direction current_direction = pacman->getDirection();
 
-        // Only perform the lookahead check if the prohbed direction 'd' is different
+        // Only perform the lookahead check if the proposed direction 'd' is different
         // from the current direction.
-        if (d != current_direction) {
+        if (const Direction current_direction = pacman->getDirection(); d != current_direction) {
             const double current_speed = pacman->getSpeed() * 10.0;
-            const Rectangle hitBox = pacman->getHitBox();
+            const Rectangle hitBox = pacman->getHitBox().scaledBy(0.99);
 
-            // Calculate the hbition after the lookahead distance in the *new* direction 'd'.
+            // Calculate the position after the lookahead distance in the *new* direction 'd'.
             Rectangle future_hb_check = hitBox;
             switch (d) {
             case Direction::SOUTH:
@@ -78,10 +77,10 @@ void World::update(Direction d) {
                 break;
             }
 
-            // Define the bounding box for the lookahead hbition.
+            // Define the bounding box for the lookahead position.
             bool lookaheadBlocked = false;
 
-            // Check for blocking entities (like walls) at the lookahead hbition.
+            // Check for blocking entities (like walls) at the lookahead position.
             for (const auto blocking_targets = getEntitiesInBounds(future_hb_check);
                  const auto& target_ptr : blocking_targets) {
                 if (target_ptr.get() == pacman.get()) continue;
@@ -113,7 +112,7 @@ void World::update(Direction d) {
         // --- 2. Interaction/Pickup Search (At Current Position) ---
         // ... (Original Code for Interaction Check) ...
         {
-            // Define the bounding box at the CURRENT hbition for interaction checks.
+            // Define the bounding box at the CURRENT position for interaction checks.
             const auto interaction_targets = getEntitiesInBounds(current_hb);
 
             for (const auto& target_ptr : interaction_targets) {
@@ -250,6 +249,7 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
             // Hitbox (hb) spans the entire grid cell (100% size) for ALL entities,
             // ensuring they are all the same size relative to the grid.
             Rectangle hb = {pos_start, pos_end};
+            Rectangle hb_coin = hb.scaledBy(0.2);
 
             // Access the grid using [row][column] which is [y][x]
             switch (gridData[y][x]) {
@@ -257,7 +257,7 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
                 out.addEntity(factory->createWall(hb));
                 break;
             case '*':
-                out.addEntity(factory->createCoin(hb));
+                out.addEntity(factory->createCoin(hb_coin));
                 break;
             case 'F':
                 out.addEntity(factory->createFruit(hb));
