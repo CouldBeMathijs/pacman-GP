@@ -4,6 +4,7 @@
 #include "entity_types/Ghost.h"
 #include "entity_types/Pacman.h"
 
+// --- Forward Declarations ---
 class EntityModel;
 class Fruit;
 class Coin;
@@ -41,7 +42,7 @@ public:
 /**
  * @brief Handles the second half of the dispatch for Pacman collisions (Pacman vs X).
  * It is *accepted* by the Target (X).
- * This combines movement blocking, combat, and pickup logic.
+ * **Responsibility:** Set the CollisionResult flag.
  */
 class PacmanCollisionVisitor final : public IEntityVisitor {
 private:
@@ -64,15 +65,15 @@ public:
     }
 
     void visit(Coin& target) override {
-        // Pacman vs Coin: Pickup
+        // Pacman vs Coin: Pickup interaction noted
         m_result.interactionOccurred = true;
-        target.bePickedUp();
+        // Actual pickup logic is handled by CollectableVisitor elsewhere.
     }
 
     void visit(Fruit& target) override {
-        // Pacman vs Fruit: Pickup
+        // Pacman vs Fruit: Pickup interaction noted
         m_result.interactionOccurred = true;
-        target.bePickedUp();
+        // Actual pickup logic is handled by CollectableVisitor elsewhere.
     }
 };
 
@@ -105,6 +106,39 @@ public:
     void visit(Coin& target) override {}
     void visit(Fruit& target) override {}
 };
+
+// ====================================================================
+// SECTION 3: NEW PICKUP VISITOR
+// ====================================================================
+
+/**
+ * @brief Handles the pure pickup interaction for collectable items (Pacman vs Collectable).
+ * **Responsibility:** Perform the 'bePickedUp' action.
+ * This visitor does not set the CollisionResult.
+ */
+class CollectableVisitor final : public IEntityVisitor {
+public:
+    // This visitor only cares about Pacman vs Collectable interactions.
+    // All other visits are ignored as they are handled by the collision logic.
+
+    void visit(Pacman& pacman) override {}
+    void visit(Ghost& ghost) override {}
+    void visit(Wall& wall) override {}
+
+    void visit(Coin& coin) override {
+        // Pacman is the initiator, Coin is the target: Perform Pickup
+        coin.bePickedUp();
+    }
+
+    void visit(Fruit& fruit) override {
+        // Pacman is the initiator, Fruit is the target: Perform Pickup
+        fruit.bePickedUp();
+    }
+};
+
+// ====================================================================
+// SECTION 4: THE MAIN COLLISION DISPATCHER
+// ====================================================================
 
 /**
  * @brief This class acts as the true IEntityVisitor for the first dispatch.

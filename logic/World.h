@@ -9,6 +9,7 @@
 class World {
 private:
     std::vector<std::shared_ptr<EntityModel>> m_entities;
+    static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction d, double speed);
 public:
     void addEntity(std::shared_ptr<EntityModel>);
     std::vector<std::shared_ptr<EntityModel>> getEntities();

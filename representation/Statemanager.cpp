@@ -21,6 +21,7 @@ void Statemanager::handleInput(const sf::Event& event) {
         this->push(std::move(newState));
     }
 }
+
 bool Statemanager::empty() const {
     return std::stack<std::unique_ptr<AbstractState>>::empty();
 }

@@ -45,43 +45,26 @@ void World::update(Direction d) {
     }
 
     if (pacman) {
-        // --- NEW STEP 1.5: Direction Change Pre-Check (4-Step Lookahead) ---
+        constexpr double EPSILON = 0.01;
+        const Rectangle current_hb = pacman->getHitBox();
+        const double current_speed = pacman->getSpeed();
+        const Direction current_direction = pacman->getDirection();
 
-        // Only perform the lookahead check if the proposed direction 'd' is different
-        // from the current direction.
-        if (const Direction current_direction = pacman->getDirection(); d != current_direction) {
-            const double current_speed = pacman->getSpeed() * 10.0;
-            const Rectangle hitBox = pacman->getHitBox().scaledBy(0.99);
+        // --- NEW STEP 1.5: Direction Change Pre-Check (4-Step Lookahead) ---
+        if (d != current_direction) {
+            const double lookahead_speed = current_speed * 10.0;
 
             // Calculate the position after the lookahead distance in the *new* direction 'd'.
-            Rectangle future_hb_check = hitBox;
-            switch (d) {
-            case Direction::SOUTH:
-                // Move the rectangle down (positive Y)
-                future_hb_check.moveBy(0.0, current_speed);
-                break;
+            // The starting point for the check is a scaled-down version of the current hitbox.
+            const Rectangle future_hb_check_unscaled = calculateFutureHitBox(current_hb, d, lookahead_speed);
 
-            case Direction::WEST:
-                // Move the rectangle left (negative X)
-                future_hb_check.moveBy(-current_speed, 0.0);
-                break;
+            // Apply a scale for more forgiving lookahead collision detection
+            const Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1-EPSILON);
 
-            case Direction::NORTH:
-                // Move the rectangle up (negative Y)
-                future_hb_check.moveBy(0.0, -current_speed);
-                break;
-
-            case Direction::EAST:
-                // Move the rectangle right (positive X)
-                future_hb_check.moveBy(current_speed, 0.0);
-                break;
-            }
-
-            // Define the bounding box for the lookahead position.
             bool lookaheadBlocked = false;
 
             // Check for blocking entities (like walls) at the lookahead position.
-            for (const auto blocking_targets = getEntitiesInBounds(future_hb_check);
+            for (const auto blocking_targets = getEntitiesInBounds(future_hb_check_scaled);
                  const auto& target_ptr : blocking_targets) {
                 if (target_ptr.get() == pacman.get()) continue;
 
@@ -95,22 +78,16 @@ void World::update(Direction d) {
                 }
             }
 
-            // If the lookahead is blocked, *REJECT* the new direction 'd'.
+            // If the lookahead is blocked, REJECT the new direction 'd'.
             if (lookaheadBlocked) {
-                // Keep the current direction for the movement in step 3.
                 d = current_direction;
-                // Note: The original 'd' (the user input) is now ignored for this update.
             }
         }
 
         // Set the (potentially modified) direction for the rest of the update
         pacman->setDirection(d);
 
-        const Rectangle current_hb = pacman->getHitBox();
-        const double current_speed = pacman->getSpeed();
-
         // --- 2. Interaction/Pickup Search (At Current Position) ---
-        // ... (Original Code for Interaction Check) ...
         {
             // Define the bounding box at the CURRENT position for interaction checks.
             const auto interaction_targets = getEntitiesInBounds(current_hb);
@@ -118,41 +95,29 @@ void World::update(Direction d) {
             for (const auto& target_ptr : interaction_targets) {
                 if (target_ptr.get() == pacman.get()) continue;
 
-                // Handle the interaction (e.g., Pacman eats a Pellet, or touches a Ghost)
-                CollisionHandler handler(*pacman);
-                target_ptr->accept(handler);
+                // A. Collision Check (Sets 'interactionOccurred' for Ghost/Coin/Fruit)
+                CollisionHandler collision_handler(*pacman);
+                target_ptr->accept(collision_handler);
+
+                // B. Collectable Check (Performs 'bePickedUp')
+                // If the collision handler reported an interaction, we run the specialized
+                // CollectableVisitor to handle the pickup logic for Coins and Fruits.
+                if (collision_handler.getResult().interactionOccurred) {
+                    CollectableVisitor pickup_handler;
+                    target_ptr->accept(pickup_handler);
+                }
             }
         }
 
         // --- 3. Calculate Potential Future Position ---
-        Rectangle future_hb = current_hb;
-
-        // The direction 'd' here is the direction set in the NEW STEP 1.5
-        switch (d) {
-        case Direction::SOUTH:
-            // Move the rectangle down (positive Y)
-            future_hb.moveBy(0.0, current_speed);
-            break;
-
-        case Direction::WEST:
-            // Move the rectangle left (negative X)
-            future_hb.moveBy(-current_speed, 0.0);
-            break;
-
-        case Direction::NORTH:
-            // Move the rectangle up (negative Y)
-            future_hb.moveBy(0.0, -current_speed);
-            break;
-
-        case Direction::EAST:
-            // Move the rectangle right (positive X)
-            future_hb.moveBy(current_speed, 0.0);
-            break;
-        }
+        // Calculate the future position based on the (potentially modified) direction 'd'.
+        const Rectangle future_hb = calculateFutureHitBox(current_hb, d, current_speed);
 
         // --- 4. Movement Blocking Search (At Future Position) ---
         bool moveBlocked = false;
-        const auto search_future_hb = future_hb.scaledBy(0.99);
+
+        // Use the requested scaled-down hitbox for collision detection at the future position.
+        const auto search_future_hb = future_hb.scaledBy(1-EPSILON);
 
         // Collision Resolution Loop (Movement Block Only)
         for (const auto blocking_targets = getEntitiesInBounds(search_future_hb);
@@ -187,6 +152,36 @@ void World::update(Direction d) {
         entity_ptr->update(d);
     }
 }
+Rectangle World::calculateFutureHitBox(const Rectangle& current_hb, const Direction d, const double speed) {
+    Rectangle future_hb = current_hb;
+
+    switch (d) {
+    case Direction::SOUTH:
+        // Move the rectangle down (positive Y)
+        future_hb.moveBy(0.0, speed);
+        break;
+
+    case Direction::WEST:
+        // Move the rectangle left (negative X)
+        future_hb.moveBy(-speed, 0.0);
+        break;
+
+    case Direction::NORTH:
+        // Move the rectangle up (negative Y)
+        future_hb.moveBy(0.0, -speed);
+        break;
+
+    case Direction::EAST:
+        // Move the rectangle right (positive X)
+        future_hb.moveBy(speed, 0.0);
+        break;
+        // Assuming other directions (like NONE) result in no movement.
+    default:
+        break;
+    }
+
+    return future_hb;
+}
 
 World WorldCreator::createWorldFromFile(const std::string& filename,
                                         const std::shared_ptr<AbstractEntityFactory>& factory) {
@@ -215,8 +210,8 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
     }
 
     // 2. Define dimensions clearly
-    size_t num_rows_y = gridData.size();       // Y-dimension (height)
-    size_t num_cols_x = gridData[0].size();    // X-dimension (width)
+    size_t num_rows_y = gridData.size();    // Y-dimension (height)
+    size_t num_cols_x = gridData[0].size(); // X-dimension (width)
 
     // 3. Validate map consistency
     for (const auto& row : gridData) {
@@ -229,22 +224,23 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
     World out;
 
     // 4. Loop in the standard [Y][X] order (Row by Row, then Column by Column)
-    for (size_t y = 0; y < num_rows_y; y++) { // Loop over rows (Y coordinate)
+    for (size_t y = 0; y < num_rows_y; y++) {     // Loop over rows (Y coordinate)
         for (size_t x = 0; x < num_cols_x; x++) { // Loop over columns (X coordinate)
 
             // Step A: Calculate the top-left corner of the current grid cell (x, y)
             // This represents the start of the cell.
-            Position pos_start = Position(static_cast<double>(x), static_cast<double>(y)).rescale(
-                {0, 0}, {static_cast<double>(num_cols_x), static_cast<double>(num_rows_y)},
-                {-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
-                {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO});
+            Position pos_start =
+                Position(static_cast<double>(x), static_cast<double>(y))
+                    .rescale({0, 0}, {static_cast<double>(num_cols_x), static_cast<double>(num_rows_y)},
+                             {-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
+                             {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO});
 
             // Step B: Calculate the bottom-right corner of the current grid cell (x+1, y+1)
             // This represents the end of the cell.
-            Position pos_end = Position(static_cast<double>(x + 1), static_cast<double>(y + 1)).rescale(
-                {0, 0}, {static_cast<double>(num_cols_x), static_cast<double>(num_rows_y)},
-                {-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
-                {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO});
+            Position pos_end = Position(static_cast<double>(x + 1), static_cast<double>(y + 1))
+                                   .rescale({0, 0}, {static_cast<double>(num_cols_x), static_cast<double>(num_rows_y)},
+                                            {-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
+                                            {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO});
 
             // Hitbox (hb) spans the entire grid cell (100% size) for ALL entities,
             // ensuring they are all the same size relative to the grid.
