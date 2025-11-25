@@ -31,7 +31,7 @@ public:
 
 class EntityModel : public Subject {
 protected:
-    EntityModel(const Rectangle& hitBox, Direction, TypeOfEntity t);
+    EntityModel(Rectangle  hitBox, Direction, TypeOfEntity t);
     Rectangle hitBox;
     Direction direction;
     const TypeOfEntity type;
@@ -40,6 +40,7 @@ public:
     [[nodiscard]] Direction getDirection() const;
     [[nodiscard]] TypeOfEntity getType() const;
     [[nodiscard]] bool isInBounds(const Rectangle& boundBox) const;
+    static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction d, double speed);
 };
 
 #endif // PACMAN_SUBJECT_H

@@ -26,6 +26,8 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(const Recta
 
     return results;
 }
+void World::setPacman(const std::shared_ptr<Pacman>& p) { pacman = p; }
+std::shared_ptr<Pacman> World::getPacman() { return pacman; }
 
 /**
  * @brief Updates the state of the game world, handling Pacman's movement,
@@ -35,28 +37,21 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(const Recta
  * @param d The direction input received from the user for Pacman's intended movement.
  */
 void World::update(Direction d) {
-    std::shared_ptr<Pacman> pacman = nullptr;
-
-    // --- 1. Find Pacman and set his direction ---
-    for (auto& entity_ptr : m_entities) {
-        if ((pacman = std::dynamic_pointer_cast<Pacman>(entity_ptr))) {
-            break;
-        }
+    if (!pacman) {
+        throw std::runtime_error("Pacman not defined");
     }
-
-    if (pacman) {
+    {
         constexpr double EPSILON = 0.01;
         const Rectangle current_hb = pacman->getHitBox();
         const double current_speed = pacman->getSpeed();
-        const Direction current_direction = pacman->getDirection();
 
         // --- NEW STEP 1.5: Direction Change Pre-Check (4-Step Lookahead) ---
-        if (d != current_direction) {
+        if (const Direction current_direction = pacman->getDirection(); d != current_direction) {
             const double lookahead_speed = current_speed * 10.0;
 
             // Calculate the position after the lookahead distance in the *new* direction 'd'.
             // The starting point for the check is a scaled-down version of the current hitbox.
-            const Rectangle future_hb_check_unscaled = calculateFutureHitBox(current_hb, d, lookahead_speed);
+            const Rectangle future_hb_check_unscaled = EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
 
             // Apply a scale for more forgiving lookahead collision detection
             const Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1-EPSILON);
@@ -111,7 +106,7 @@ void World::update(Direction d) {
 
         // --- 3. Calculate Potential Future Position ---
         // Calculate the future position based on the (potentially modified) direction 'd'.
-        const Rectangle future_hb = calculateFutureHitBox(current_hb, d, current_speed);
+        const Rectangle future_hb = EntityModel::calculateFutureHitBox(current_hb, d, current_speed);
 
         // --- 4. Movement Blocking Search (At Future Position) ---
         bool moveBlocked = false;
@@ -147,41 +142,10 @@ void World::update(Direction d) {
 
     // --- 6. Update all other entities (e.g., Ghosts, Coins, Walls, etc.) ---
     for (const auto& entity_ptr : m_entities) {
-        if (pacman && entity_ptr == pacman) continue; // Skip Pacman
-
         entity_ptr->update(d);
     }
 }
-Rectangle World::calculateFutureHitBox(const Rectangle& current_hb, const Direction d, const double speed) {
-    Rectangle future_hb = current_hb;
 
-    switch (d) {
-    case Direction::SOUTH:
-        // Move the rectangle down (positive Y)
-        future_hb.moveBy(0.0, speed);
-        break;
-
-    case Direction::WEST:
-        // Move the rectangle left (negative X)
-        future_hb.moveBy(-speed, 0.0);
-        break;
-
-    case Direction::NORTH:
-        // Move the rectangle up (negative Y)
-        future_hb.moveBy(0.0, -speed);
-        break;
-
-    case Direction::EAST:
-        // Move the rectangle right (positive X)
-        future_hb.moveBy(speed, 0.0);
-        break;
-        // Assuming other directions (like NONE) result in no movement.
-    default:
-        break;
-    }
-
-    return future_hb;
-}
 
 World WorldCreator::createWorldFromFile(const std::string& filename,
                                         const std::shared_ptr<AbstractEntityFactory>& factory) {
@@ -259,7 +223,7 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
                 out.addEntity(factory->createFruit(hb));
                 break;
             case 'P':
-                out.addEntity(factory->createPacman(hb));
+                out.setPacman(std::dynamic_pointer_cast<Pacman>(factory->createPacman(hb)));
                 break;
             case '1':
                 out.addEntity(factory->createBlueGhost(hb));

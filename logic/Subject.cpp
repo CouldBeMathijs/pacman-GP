@@ -1,5 +1,7 @@
 #include "Subject.h"
 
+#include <utility>
+
 Subject::~Subject() = default;
 void Subject::update(Direction) {
     updateObservers();
@@ -29,4 +31,35 @@ void Subject::updateObservers() const {
     }
 }
 
-EntityModel::EntityModel(const Rectangle& hb, const Direction d, const TypeOfEntity t) : hitBox(hb), direction(d), type(t) {}
+EntityModel::EntityModel(Rectangle  hb, const Direction d, const TypeOfEntity t) : hitBox(std::move(hb)), direction(d), type(t) {}
+
+Rectangle EntityModel::calculateFutureHitBox(const Rectangle& current_hb, const Direction d, const double speed) {
+    Rectangle future_hb = current_hb;
+
+    switch (d) {
+    case Direction::SOUTH:
+        // Move the rectangle down (positive Y)
+        future_hb.moveBy(0.0, speed);
+        break;
+
+    case Direction::WEST:
+        // Move the rectangle left (negative X)
+        future_hb.moveBy(-speed, 0.0);
+        break;
+
+    case Direction::NORTH:
+        // Move the rectangle up (negative Y)
+        future_hb.moveBy(0.0, -speed);
+        break;
+
+    case Direction::EAST:
+        // Move the rectangle right (positive X)
+        future_hb.moveBy(speed, 0.0);
+        break;
+        // Assuming other directions (like NONE) result in no movement.
+    default:
+        break;
+    }
+
+    return future_hb;
+}

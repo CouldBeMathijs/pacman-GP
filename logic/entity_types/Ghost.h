@@ -1,11 +1,15 @@
 #ifndef PACMAN_GHOST_H
 #define PACMAN_GHOST_H
+#include "LogicConstants.h"
 #include "Subject.h"
 
 class Ghost : public EntityModel {
 protected:
+    double speed = LogicConstants::BASE_SPEED * 0.8;
+protected:
     explicit Ghost(const Rectangle& pos) : EntityModel(pos, Direction::EAST, GHOST) {}
     void accept(IEntityVisitor& visitor) override;
+    [[nodiscard]] double getSpeed() const;
 };
 
 class BlueGhost final : public Ghost {
