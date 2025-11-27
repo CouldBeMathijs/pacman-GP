@@ -6,6 +6,7 @@ enum class Direction {
     SOUTH,
     WEST,
     NORTH,
+    NONE,
 };
 
 /**
@@ -31,6 +32,9 @@ inline bool isOpposite(const Direction d1, const Direction d2) {
 
     case Direction::SOUTH:
         return d2 == Direction::NORTH;
+
+    case Direction::NONE:
+        return false;
     }
     return false;
 }

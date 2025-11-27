@@ -9,6 +9,7 @@ void Pacman::setHitBox(const Rectangle& hb) {
 }
 void Pacman::goToSpawn() {
     hitBox.moveTo(spawnPoint);
+    setDirection(Direction::NONE);
 }
 
 void Pacman::setDirection(const Direction d) { direction = d; }
