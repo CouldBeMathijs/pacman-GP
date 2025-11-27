@@ -2,7 +2,7 @@
 
 #include "Visitor.h"
 
-Pacman::Pacman(const Rectangle& pos) : EntityModel(pos, Direction::EAST, PACMAN) {}
+Pacman::Pacman(const Rectangle& pos) : EntityModel(pos, Direction::NONE, PACMAN) {}
 // You will also need a setter for position, which World uses:
 void Pacman::setHitBox(const Rectangle& hb) {
     hitBox = hb;

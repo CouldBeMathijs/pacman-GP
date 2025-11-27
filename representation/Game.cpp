@@ -12,7 +12,7 @@ void Game::run() {
     auto& camera = Camera::getInstance();
     sf::RenderWindow& window = camera.getWindow();
 
-    Direction direction = Direction::EAST;
+    auto direction = Direction::NONE;
 
     while (window.isOpen()) {
         stopwatch.tick();

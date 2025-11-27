@@ -144,6 +144,8 @@ void World::update(Direction d) {
         if (!moveBlocked) {
             // Position is updated.
             m_pacman->setHitBox(future_hb);
+        } else {
+            m_pacman->setDirection(Direction::NONE);
         }
 
         // Call Pacman's non-movement update (e.g., animation, power-up timers)
