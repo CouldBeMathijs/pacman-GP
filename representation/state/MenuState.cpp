@@ -45,6 +45,7 @@ void MenuState::handleInput(const sf::Event& event) {
     {
         if (event.key.code == sf::Keyboard::Escape) {
             requestedPops = 1;
+            return;
         }
         requestedState = std::make_unique<LevelState>();
     }
