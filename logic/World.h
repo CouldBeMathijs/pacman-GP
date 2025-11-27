@@ -7,10 +7,16 @@
 #include <string>
 #include <vector>
 
+enum WorldState {
+    RUNNING,
+    VICTORY,
+    GAME_OVER
+};
+
 class World {
 private:
-    bool gameRunning = true;
-    std::shared_ptr<Pacman> pacman;
+    WorldState m_worldState = RUNNING;
+    std::shared_ptr<Pacman> m_pacman;
     std::vector<std::shared_ptr<EntityModel>> m_entities;
     unsigned int amountOfLives = 3;
 public:
@@ -21,7 +27,7 @@ public:
     void addEntity(std::shared_ptr<EntityModel>);
     void setPacman(const std::shared_ptr<Pacman>& p);
     void update(Direction);
-    [[nodiscard]] bool isRunning() const;
+    [[nodiscard]] WorldState getState() const;
 };
 
 class WorldCreator {

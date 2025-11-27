@@ -8,7 +8,7 @@ LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
 }
 
 void LevelState::update(Direction d) {
-    if (!world.isRunning()) {
+    if (world.getState() == GAME_OVER) {
         requestedPops = 1;
         requestedState = std::make_unique<GameOverState>();
     }

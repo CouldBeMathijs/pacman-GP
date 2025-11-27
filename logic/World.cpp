@@ -26,8 +26,8 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(const Recta
 
     return results;
 }
-void World::setPacman(const std::shared_ptr<Pacman>& p) { pacman = p; }
-std::shared_ptr<Pacman> World::getPacman() { return pacman; }
+void World::setPacman(const std::shared_ptr<Pacman>& p) { m_pacman = p; }
+std::shared_ptr<Pacman> World::getPacman() { return m_pacman; }
 
 /**
  * @brief Updates the state of the game world, handling Pacman's movement,
@@ -37,26 +37,26 @@ std::shared_ptr<Pacman> World::getPacman() { return pacman; }
  * @param d The direction input received from the user for Pacman's intended movement.
  */
 void World::update(Direction d) {
-    if (!pacman) {
+    if (!m_pacman) {
         throw std::runtime_error("Pacman not defined");
     }
 
-    if (pacman->hasTouchedGhost()) {
-        pacman->goToSpawn();
-        pacman->resetGhostTouch();
+    if (m_pacman->hasTouchedGhost()) {
+        m_pacman->goToSpawn();
+        m_pacman->resetGhostTouch();
         amountOfLives--;
         if (amountOfLives == 0) {
-            gameRunning = false;
+            m_worldState = GAME_OVER;
             return;
         }
     }
     {
         constexpr double EPSILON = 0.01;
-        const Rectangle current_hb = pacman->getHitBox();
-        const double current_speed = pacman->getSpeed();
+        const Rectangle current_hb = m_pacman->getHitBox();
+        const double current_speed = m_pacman->getSpeed();
 
         // --- NEW STEP 1.5: Direction Change Pre-Check (4-Step Lookahead) ---
-        if (const Direction current_direction = pacman->getDirection(); d != current_direction) {
+        if (const Direction current_direction = m_pacman->getDirection(); d != current_direction) {
             const double lookahead_speed = current_speed * 10.0;
 
             // Calculate the position after the lookahead distance in the *new* direction 'd'.
@@ -71,10 +71,10 @@ void World::update(Direction d) {
             // Check for blocking entities (like walls) at the lookahead position.
             for (const auto blocking_targets = getEntitiesInBounds(future_hb_check_scaled);
                  const auto& target_ptr : blocking_targets) {
-                if (target_ptr.get() == pacman.get()) continue;
+                if (target_ptr.get() == m_pacman.get()) continue;
 
                 // Use CollisionHandler to check for a *blocking* collision.
-                CollisionHandler handler(*pacman);
+                CollisionHandler handler(*m_pacman);
                 target_ptr->accept(handler);
 
                 if (handler.getResult().moveBlocked) {
@@ -90,7 +90,7 @@ void World::update(Direction d) {
         }
 
         // Set the (potentially modified) direction for the rest of the update
-        pacman->setDirection(d);
+        m_pacman->setDirection(d);
 
         // --- 2. Interaction/Pickup Search (At Current Position) ---
         {
@@ -98,10 +98,10 @@ void World::update(Direction d) {
             const auto interaction_targets = getEntitiesInBounds(current_hb);
 
             for (const auto& target_ptr : interaction_targets) {
-                if (target_ptr.get() == pacman.get()) continue;
+                if (target_ptr.get() == m_pacman.get()) continue;
 
                 // A. Collision Check (Sets 'interactionOccurred' for Ghost/Coin/Fruit)
-                CollisionHandler collision_handler(*pacman);
+                CollisionHandler collision_handler(*m_pacman);
                 target_ptr->accept(collision_handler);
 
                 // B. Collectable Check (Performs 'bePickedUp')
@@ -127,10 +127,10 @@ void World::update(Direction d) {
         // Collision Resolution Loop (Movement Block Only)
         for (const auto blocking_targets = getEntitiesInBounds(search_future_hb);
              const auto& target_ptr : blocking_targets) {
-            if (target_ptr.get() == pacman.get()) continue;
+            if (target_ptr.get() == m_pacman.get()) continue;
 
             // Use the CollisionHandler specifically to check for *blocking* entities (like walls).
-            CollisionHandler handler(*pacman);
+            CollisionHandler handler(*m_pacman);
             target_ptr->accept(handler);
             const CollisionResult& result = handler.getResult();
 
@@ -143,11 +143,11 @@ void World::update(Direction d) {
         // --- 5. FINAL DECISION: Apply Movement ---
         if (!moveBlocked) {
             // Position is updated.
-            pacman->setHitBox(future_hb);
+            m_pacman->setHitBox(future_hb);
         }
 
         // Call Pacman's non-movement update (e.g., animation, power-up timers)
-        pacman->update(d);
+        m_pacman->update(d);
     }
 
     // --- 6. Update all other entities (e.g., Ghosts, Coins, Walls, etc.) ---
@@ -155,7 +155,7 @@ void World::update(Direction d) {
         entity_ptr->update(d);
     }
 }
-bool World::isRunning() const { return gameRunning; }
+WorldState World::getState() const { return m_worldState; }
 
 World WorldCreator::createWorldFromFile(const std::string& filename,
                                         const std::shared_ptr<AbstractEntityFactory>& factory) {
