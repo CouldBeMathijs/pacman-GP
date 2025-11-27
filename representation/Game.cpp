@@ -19,12 +19,12 @@ void Game::run() {
 
         sf::Event event{};
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed || sm.empty()) {
+            if (event.type == sf::Event::Closed || m_sm.empty()) {
                 window.close();
                 return;
             }
             camera.handleEvent(event);
-            sm.handleInput(event);
+            m_sm.handleInput(event);
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                 case sf::Keyboard::Right:
@@ -45,8 +45,8 @@ void Game::run() {
         }
         window.clear(sf::Color::Black);
         camera.applyView();
-        sm.update(direction);
-        if (sm.empty()) {
+        m_sm.update(direction);
+        if (m_sm.empty()) {
             window.close();
             return;
         }

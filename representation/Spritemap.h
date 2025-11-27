@@ -27,7 +27,7 @@ constexpr size_t to_underlying(const SpriteDefinition e) noexcept {
     return static_cast<size_t>(e);
 }
 
-const std::array<SpriteInfo, to_underlying(Count)> spriteDefinitions = {
+const std::array<SpriteInfo, to_underlying(Count)> k_spriteDefinitions = {
     SpriteInfo{414, 266, 10, 10},  // SpriteDefinition::Coin
     SpriteInfo{594, -4, 50, 50},   // SpriteDefinition::Fruit
     SpriteInfo{744, -4, 50, 50},   // SpriteDefinition::GhostBlue

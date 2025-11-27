@@ -1,10 +1,10 @@
 #ifndef PACMAN_GAME_H
 #define PACMAN_GAME_H
-#include "Statemanager.h"
+#include "StateManager.h"
 
 class Game {
 private:
-    Statemanager sm;
+    StateManager m_sm;
 public:
     Game() = default;
     void run();

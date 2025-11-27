@@ -27,7 +27,7 @@ private:
     sf::Font m_font;
     sf::Text m_victoryText;
     sf::Text m_pressAnyKeyText;
-    unsigned int level = 0;
+    unsigned int m_level = 0;
 };
 
 #endif // PACMAN_VICTORYSTATE_H

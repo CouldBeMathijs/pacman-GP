@@ -6,7 +6,7 @@
 
 class Random {
 private:
-    std::mt19937 generator;
+    std::mt19937 m_generator;
     Random();
 
 public:

@@ -11,9 +11,9 @@ private:
     using Clock = std::chrono::high_resolution_clock;
     using TimePoint = Clock::time_point;
 
-    double deltaTime;
+    double m_deltaTime;
 
-    TimePoint lastTickTime;
+    TimePoint m_lastTickTime;
 
     Stopwatch();
 

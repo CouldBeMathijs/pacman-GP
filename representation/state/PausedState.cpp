@@ -39,9 +39,9 @@ void PausedState::update(Direction) {
 void PausedState::handleInput(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Space) {
-            requestedPops = 1;
+            m_requestedPops = 1;
         } else if (event.key.code == sf::Keyboard::Escape) {
-            requestedPops = 2;
+            m_requestedPops = 2;
         }
     }
 }

@@ -6,8 +6,8 @@
 
 class LevelState final : public AbstractState {
 private:
-    World world;
-    std::shared_ptr<ConcreteEntityFactory> factory;
+    World m_world;
+    std::shared_ptr<ConcreteEntityFactory> m_factory;
 public:
     LevelState();
     void update(Direction) override;

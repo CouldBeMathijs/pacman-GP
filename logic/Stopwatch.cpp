@@ -1,8 +1,8 @@
 #include "Stopwatch.h"
 
 Stopwatch::Stopwatch() {
-    lastTickTime = Clock::now();
-    deltaTime = 0.0;
+    m_lastTickTime = Clock::now();
+    m_deltaTime = 0.0;
 }
 
 Stopwatch& Stopwatch::getInstance() {
@@ -13,7 +13,7 @@ Stopwatch& Stopwatch::getInstance() {
 void Stopwatch::tick() {
     TimePoint currentTime = Clock::now();
 
-    std::chrono::duration<double> duration = currentTime - lastTickTime;
+    std::chrono::duration<double> duration = currentTime - m_lastTickTime;
 
     if (const double rawDelta = duration.count(); rawDelta < MAX_DELTA_TIME) {
         const auto required_wait = std::chrono::duration<double>(MAX_DELTA_TIME - rawDelta);
@@ -21,16 +21,16 @@ void Stopwatch::tick() {
         std::this_thread::sleep_for(required_wait);
 
         currentTime = Clock::now();
-        duration = currentTime - lastTickTime;
-        deltaTime = duration.count();
+        duration = currentTime - m_lastTickTime;
+        m_deltaTime = duration.count();
 
     } else {
-        deltaTime = rawDelta;
+        m_deltaTime = rawDelta;
     }
 
-    lastTickTime = currentTime;
+    m_lastTickTime = currentTime;
 }
 
 double Stopwatch::getDeltaTime() const {
-    return deltaTime;
+    return m_deltaTime;
 }

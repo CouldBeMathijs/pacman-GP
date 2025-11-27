@@ -7,9 +7,9 @@
 
 class Camera {
 private:
-    sf::RenderWindow window;
-    sf::View view;
-    sf::FloatRect currentViewport;
+    sf::RenderWindow m_window;
+    sf::View m_view;
+    sf::FloatRect m_currentViewport;
 
     Camera(sf::VideoMode mode, const sf::String& title, sf::Uint32 style);
 

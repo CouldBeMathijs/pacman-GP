@@ -4,7 +4,7 @@
 
 class Collectable : public EntityModel {
 protected:
-    bool isPickedUp = false;
+    bool m_isPickedUp = false;
 public:
     explicit Collectable(const Rectangle& pos, const Direction d, const TypeOfEntity t) : EntityModel(pos, d, t) {}
     void bePickedUp();

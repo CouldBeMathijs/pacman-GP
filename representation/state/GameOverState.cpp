@@ -68,6 +68,6 @@ void GameOverState::handleInput(const sf::Event& event) {
     // Check if any key was pressed
     if (event.type == sf::Event::KeyPressed) {
         // Request to pop this state off the stack, returning to the previous state (MenuState)
-        requestedPops = 1;
+        m_requestedPops = 1;
     }
 }

@@ -4,7 +4,7 @@
 
 class Score final : public Observer {
 private:
-    unsigned int currentScore = 0;
+    unsigned int m_currentScore = 0;
 public:
     void update() override;
 };

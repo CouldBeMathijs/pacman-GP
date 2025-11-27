@@ -6,9 +6,9 @@
 #include <memory>
 #include <stack>
 
-class Statemanager : std::stack<std::unique_ptr<AbstractState>> {
+class StateManager : std::stack<std::unique_ptr<AbstractState>> {
 public:
-    Statemanager();
+    StateManager();
     void update(Direction);
     void handleInput(const sf::Event&);
     [[nodiscard]] bool empty() const;

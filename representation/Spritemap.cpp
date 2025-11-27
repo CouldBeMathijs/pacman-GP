@@ -23,7 +23,7 @@ void Spritemap::initialize() {
 }
 
 SpriteInfo Spritemap::getSpriteInfo(SpriteDefinition d) {
-    return spriteDefinitions[to_underlying(d)];
+    return k_spriteDefinitions[to_underlying(d)];
 }
 
 const sf::Texture& Spritemap::getTexture() {

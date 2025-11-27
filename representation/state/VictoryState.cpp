@@ -34,7 +34,7 @@ VictoryState::VictoryState() {
 
     // --- Setup 'Press Any Key' Text ---
     m_pressAnyKeyText.setFont(m_font);
-    m_pressAnyKeyText.setString("Press any key to start Level" + std::to_string(level));
+    m_pressAnyKeyText.setString("Press any key to start Level" + std::to_string(m_level));
     m_pressAnyKeyText.setCharacterSize(30);
     m_pressAnyKeyText.setFillColor(sf::Color::White);
 
@@ -66,7 +66,7 @@ void VictoryState::handleInput(const sf::Event& event) {
     // Check if any key was pressed
     if (event.type == sf::Event::KeyPressed) {
         // Request to pop this state off the stack, returning to the previous state (MenuState)
-        requestedPops = 1;
-        requestedState = std::make_unique<LevelState>();
+        m_requestedPops = 1;
+        m_requestedState = std::make_unique<LevelState>();
     }
 }

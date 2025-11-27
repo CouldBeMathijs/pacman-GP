@@ -44,8 +44,8 @@ void World::update(Direction d) {
     if (m_pacman->hasTouchedGhost()) {
         m_pacman->goToSpawn();
         m_pacman->resetGhostTouch();
-        amountOfLives--;
-        if (amountOfLives == 0) {
+        m_lives--;
+        if (m_lives == 0) {
             m_worldState = GAME_OVER;
             return;
         }

@@ -10,15 +10,15 @@
 
 class EntityView : public Observer {
 private:
-    bool animationCycleMovingUp = true;
-    const double timePerFrame = 0.12;
-    double timeAccumulator = 0.0;
-    std::shared_ptr<EntityModel> coupledEntity;
+    bool m_animationCycleMovingUp = true;
+    const double m_timePerFrame = 0.12;
+    double m_timeAccumulator = 0.0;
+    std::shared_ptr<EntityModel> m_coupledEntity;
 protected:
-    Spritemap::SpriteInfo currentSprite;
+    Spritemap::SpriteInfo m_currentSprite;
     explicit EntityView(Spritemap::SpriteInfo, std::shared_ptr<EntityModel>);
-    unsigned int amountOfTextures = 1;
-    unsigned int currentTextureOffset = 0;
+    unsigned int m_amountOfTextures = 1;
+    unsigned int m_currentTextureOffset = 0;
 public:
     void update() override;
     void animate();
@@ -28,7 +28,7 @@ public:
 
 class DirectionalEntityView : public EntityView {
 private:
-    int topBase = currentSprite.top;
+    int m_topBase = m_currentSprite.top;
 protected:
     DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n, int amountOfTextures);
 public:

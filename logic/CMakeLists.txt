@@ -10,7 +10,6 @@ set(LOGIC_SOURCES
         entity_types/Pacman.cpp
         entity_types/Wall.cpp
         World.cpp
-        Observer.cpp
         Score.cpp
         Position.cpp
         Visitor.cpp

@@ -12,7 +12,7 @@ add_subdirectory(logic)
 set(PACMAN_SOURCES
         main.cpp
         representation/Game.cpp
-        representation/Statemanager.cpp
+        representation/StateManager.cpp
         representation/Camera.cpp
         representation/ConcreteEntityFactory.cpp
         representation/EntityView.cpp

@@ -2,22 +2,30 @@
 
 #include "GameOverState.h"
 #include "PausedState.h"
+#include "VictoryState.h"
 
-LevelState::LevelState() : factory(std::make_shared<ConcreteEntityFactory>()) {
-    world = WorldCreator::createWorldFromFile("./assets/worldmap", factory);
+LevelState::LevelState() : m_factory(std::make_shared<ConcreteEntityFactory>()) {
+    m_world = WorldCreator::createWorldFromFile("./assets/worldmap", m_factory);
 }
 
-void LevelState::update(Direction d) {
-    if (world.getState() == GAME_OVER) {
-        requestedPops = 1;
-        requestedState = std::make_unique<GameOverState>();
+void LevelState::update(const Direction d) {
+    switch (m_world.getState()) {
+    case RUNNING:
+        m_world.update(d);
+        return;
+    case VICTORY:
+        m_requestedPops = 1;
+        m_requestedState = std::make_unique<VictoryState>();
+        return;
+    case GAME_OVER:
+        m_requestedPops = 1;
+        m_requestedState = std::make_unique<GameOverState>();
     }
-   world.update(d);
 }
 
 void LevelState::handleInput(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     {
-        requestedState = std::make_unique<PausedState>();
+        m_requestedState = std::make_unique<PausedState>();
     }
 }

@@ -11,24 +11,24 @@
 #include <memory>
 
 EntityView::EntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n)
-    : coupledEntity(std::move(n)), currentSprite(m) {}
+    : m_coupledEntity(std::move(n)), m_currentSprite(m) {}
 
 void EntityView::update() {
     auto& camera = Camera::getInstance();
     auto& window = camera.getWindow();
     animate();
     const Rectangle p =
-        coupledEntity->getHitBox().rescale({-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
+        m_coupledEntity->getHitBox().rescale({-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
             {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO}, {0, 0},
             {SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT});
 
-    sf::Sprite sprite(Spritemap::getTexture(), currentSprite);
+    sf::Sprite sprite(Spritemap::getTexture(), m_currentSprite);
 
     const float targetWidth = static_cast<float>(std::abs(p.topLeft.x - p.bottomRight.x));
     const float targetHeight = static_cast<float>(std::abs(p.topLeft.y - p.bottomRight.y));
 
-    const auto currentWidth = static_cast<float>(currentSprite.width);
-    const auto currentHeight = static_cast<float>(currentSprite.height);
+    const auto currentWidth = static_cast<float>(m_currentSprite.width);
+    const auto currentHeight = static_cast<float>(m_currentSprite.height);
 
     const float scaleX = targetWidth / currentWidth;
     const float scaleY = targetHeight / currentHeight;
@@ -43,45 +43,45 @@ void EntityView::update() {
 DirectionalEntityView::DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n,
                                              const int amountOfTextures)
     : EntityView(m, std::move(n)) {
-    this->amountOfTextures = amountOfTextures;
+    this->m_amountOfTextures = amountOfTextures;
 }
 
 void DirectionalEntityView::update() {
-    currentSprite.top = topBase + 50 *
-        ( getCurrentTextureOffset() + amountOfTextures * static_cast<unsigned int>(getCoupledEntity()->getDirection()));
+    m_currentSprite.top = m_topBase + 50 *
+        ( getCurrentTextureOffset() + m_amountOfTextures * static_cast<unsigned int>(getCoupledEntity()->getDirection()));
     EntityView::update();
 }
 
 void EntityView::animate() {
-    if (amountOfTextures <= 1) {
+    if (m_amountOfTextures <= 1) {
         return;
     }
-    timeAccumulator += Stopwatch::getInstance().getDeltaTime();
+    m_timeAccumulator += Stopwatch::getInstance().getDeltaTime();
 
-    if (timeAccumulator < timePerFrame) {
+    if (m_timeAccumulator < m_timePerFrame) {
         return;
     }
 
-    timeAccumulator -= timePerFrame;
+    m_timeAccumulator -= m_timePerFrame;
 
-    if (animationCycleMovingUp && currentTextureOffset == amountOfTextures - 1) {
-        animationCycleMovingUp = false;
-    } else if (!animationCycleMovingUp && currentTextureOffset == 0) {
-        animationCycleMovingUp = true;
+    if (m_animationCycleMovingUp && m_currentTextureOffset == m_amountOfTextures - 1) {
+        m_animationCycleMovingUp = false;
+    } else if (!m_animationCycleMovingUp && m_currentTextureOffset == 0) {
+        m_animationCycleMovingUp = true;
     }
 
-    if (animationCycleMovingUp) {
-        currentTextureOffset += 1;
-        currentSprite.top += 50;
+    if (m_animationCycleMovingUp) {
+        m_currentTextureOffset += 1;
+        m_currentSprite.top += 50;
     } else {
-        currentTextureOffset -= 1;
-        currentSprite.top -= 50;
+        m_currentTextureOffset -= 1;
+        m_currentSprite.top -= 50;
     }
 }
 
-unsigned int EntityView::getCurrentTextureOffset() const { return currentTextureOffset; }
+unsigned int EntityView::getCurrentTextureOffset() const { return m_currentTextureOffset; }
 
-std::shared_ptr<EntityModel> EntityView::getCoupledEntity() { return coupledEntity; }
+std::shared_ptr<EntityModel> EntityView::getCoupledEntity() { return m_coupledEntity; }
 
 CoinView::CoinView(std::shared_ptr<EntityModel> e)
     : EntityView(Spritemap::getSpriteInfo(Spritemap::CoinBase), std::move(e)) {}

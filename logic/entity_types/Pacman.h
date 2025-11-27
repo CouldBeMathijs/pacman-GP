@@ -6,9 +6,9 @@
 
 class Pacman final : public EntityModel {
 private:
-    Position spawnPoint = getHitBox().topLeft;
-    bool ghostTouch = false;
-    double speed = LogicConstants::BASE_SPEED;
+    Position m_spawnPoint = getHitBox().topLeft;
+    bool m_ghostTouch = false;
+    double m_speed = LogicConstants::BASE_SPEED;
 public:
     explicit Pacman(const Rectangle& pos);
     [[nodiscard]] bool hasTouchedGhost() const;

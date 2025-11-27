@@ -20,7 +20,7 @@ enum TypeOfEntity {
 
 class Subject {
 private:
-    std::vector<std::shared_ptr<Observer>> observers;
+    std::vector<std::shared_ptr<Observer>> m_observers;
 public:
     virtual ~Subject();
     virtual void update(Direction);
@@ -32,9 +32,9 @@ public:
 class EntityModel : public Subject {
 protected:
     EntityModel(Rectangle  hitBox, Direction, TypeOfEntity t);
-    Rectangle hitBox;
-    Direction direction;
-    const TypeOfEntity type;
+    Rectangle m_hitBox;
+    Direction m_direction;
+    const TypeOfEntity m_type;
 public:
     [[nodiscard]] Rectangle getHitBox() const;
     [[nodiscard]] Direction getDirection() const;

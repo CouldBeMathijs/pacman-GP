@@ -10,13 +10,13 @@ public:
     virtual ~AbstractState() = default;
     virtual void update(Direction) = 0;
     virtual void handleInput(const sf::Event&) = 0;
-    [[nodiscard]] unsigned int getRequestedPops() const { return requestedPops; }
-    [[nodiscard]] bool isRequestedState() const { return requestedState.get(); }
-    [[nodiscard]] std::unique_ptr<AbstractState> getRequestedState() { return std::move(requestedState); }
+    [[nodiscard]] unsigned int getRequestedPops() const { return m_requestedPops; }
+    [[nodiscard]] bool isRequestedState() const { return m_requestedState.get(); }
+    [[nodiscard]] std::unique_ptr<AbstractState> getRequestedState() { return std::move(m_requestedState); }
 protected:
     AbstractState() = default;
-    unsigned int requestedPops = 0;
-    std::unique_ptr<AbstractState> requestedState = nullptr;
+    unsigned int m_requestedPops = 0;
+    std::unique_ptr<AbstractState> m_requestedState = nullptr;
 };
 
 #endif // PACMAN_ABSTRACTSTATE_H

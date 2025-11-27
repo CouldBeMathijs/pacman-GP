@@ -18,7 +18,7 @@ private:
     WorldState m_worldState = RUNNING;
     std::shared_ptr<Pacman> m_pacman;
     std::vector<std::shared_ptr<EntityModel>> m_entities;
-    unsigned int amountOfLives = 3;
+    unsigned int m_lives = 3;
 public:
     World() = default;
     std::shared_ptr<Pacman> getPacman();

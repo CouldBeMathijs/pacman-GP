@@ -1,13 +1,13 @@
-#include "Statemanager.h"
+#include "StateManager.h"
 
 #include "Camera.h"
 #include "state/MenuState.h"
 
-Statemanager::Statemanager() {
+StateManager::StateManager() {
     emplace(std::make_unique<MenuState>());
 }
 
-void Statemanager::update(Direction d) {
+void StateManager::update(Direction d) {
     this->top()->update(d);
     const unsigned int requestedPops = this->top()->getRequestedPops();
     std::unique_ptr<AbstractState> stateToPush;
@@ -22,10 +22,10 @@ void Statemanager::update(Direction d) {
     }
 }
 
-void Statemanager::handleInput(const sf::Event& event) {
+void StateManager::handleInput(const sf::Event& event) {
     this->top()->handleInput(event);
 }
 
-bool Statemanager::empty() const {
+bool StateManager::empty() const {
     return std::stack<std::unique_ptr<AbstractState>>::empty();
 }

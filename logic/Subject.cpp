@@ -7,31 +7,31 @@ void Subject::update(Direction) {
     updateObservers();
 }
 
-void Subject::addObserver(std::shared_ptr<Observer> n) { observers.push_back(std::move(n)); }
+void Subject::addObserver(std::shared_ptr<Observer> n) { m_observers.push_back(std::move(n)); }
 
 Rectangle EntityModel::getHitBox() const {
-    return hitBox;
+    return m_hitBox;
 }
 
-Direction EntityModel::getDirection() const { return direction; }
+Direction EntityModel::getDirection() const { return m_direction; }
 
-TypeOfEntity EntityModel::getType() const { return type; }
+TypeOfEntity EntityModel::getType() const { return m_type; }
 
 bool EntityModel::isInBounds(const Rectangle& boundBox) const {
-    const bool x_overlap = hitBox.bottomRight.x > boundBox.topLeft.x &&
-                     hitBox.topLeft.x < boundBox.bottomRight.x;
-    const bool y_overlap = hitBox.bottomRight.y > boundBox.topLeft.y &&
-                     hitBox.topLeft.y < boundBox.bottomRight.y;
+    const bool x_overlap = m_hitBox.bottomRight.x > boundBox.topLeft.x &&
+                     m_hitBox.topLeft.x < boundBox.bottomRight.x;
+    const bool y_overlap = m_hitBox.bottomRight.y > boundBox.topLeft.y &&
+                     m_hitBox.topLeft.y < boundBox.bottomRight.y;
     return x_overlap && y_overlap;
 }
 
 void Subject::updateObservers() const {
-    for (const auto& o : observers) {
+    for (const auto& o : m_observers) {
         o->update();
     }
 }
 
-EntityModel::EntityModel(Rectangle  hb, const Direction d, const TypeOfEntity t) : hitBox(std::move(hb)), direction(d), type(t) {}
+EntityModel::EntityModel(Rectangle  hb, const Direction d, const TypeOfEntity t) : m_hitBox(std::move(hb)), m_direction(d), m_type(t) {}
 
 Rectangle EntityModel::calculateFutureHitBox(const Rectangle& current_hb, const Direction d, const double speed) {
     Rectangle future_hb = current_hb;

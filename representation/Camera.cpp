@@ -33,26 +33,26 @@ Camera& Camera::getInstance() {
 }
 
 Camera::Camera(const sf::VideoMode mode, const sf::String& title, const sf::Uint32 style)
-    : window(mode, title, style),
-      view(sf::FloatRect(0.f, 0.f, SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT))
+    : m_window(mode, title, style),
+      m_view(sf::FloatRect(0.f, 0.f, SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT))
 {
-    resizeView(window, view, currentViewport);
-    window.setView(view);
+    resizeView(m_window, m_view, m_currentViewport);
+    m_window.setView(m_view);
 }
 
 void Camera::handleEvent(const sf::Event& event) {
     if (event.type == sf::Event::Resized) {
-        resizeView(window, view, currentViewport);
-        window.setView(view);
+        resizeView(m_window, m_view, m_currentViewport);
+        m_window.setView(m_view);
     }
 }
 
 sf::RenderWindow& Camera::getWindow() {
-    return window;
+    return m_window;
 }
 
-const sf::FloatRect& Camera::getViewport() const { return currentViewport; }
+const sf::FloatRect& Camera::getViewport() const { return m_currentViewport; }
 
 void Camera::applyView() {
-    window.setView(view);
+    m_window.setView(m_view);
 }

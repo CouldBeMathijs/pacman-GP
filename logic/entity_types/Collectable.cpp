@@ -2,13 +2,13 @@
 
 #include "Visitor.h"
 void Collectable::bePickedUp() {
-    if (!isPickedUp) {
-        isPickedUp = true;
+    if (!m_isPickedUp) {
+        m_isPickedUp = true;
         updateObservers();
     }
 }
 void Collectable::update(Direction direction) {
-    if (isPickedUp) {
+    if (m_isPickedUp) {
         return;
     }
     EntityModel::update(direction);
