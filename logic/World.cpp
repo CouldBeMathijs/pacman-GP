@@ -27,6 +27,7 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(const Recta
     return results;
 }
 void World::setPacman(const std::shared_ptr<Pacman>& p) { m_pacman = p; }
+void World::setScore(const std::shared_ptr<ScoreKeeper>& s) { m_score = s; }
 std::shared_ptr<Pacman> World::getPacman() { return m_pacman; }
 
 /**
@@ -61,17 +62,19 @@ void World::update(Direction d) {
 
             // Calculate the position after the lookahead distance in the *new* direction 'd'.
             // The starting point for the check is a scaled-down version of the current hitbox.
-            const Rectangle future_hb_check_unscaled = EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
+            const Rectangle future_hb_check_unscaled =
+                EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
 
             // Apply a scale for more forgiving lookahead collision detection
-            const Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1-EPSILON);
+            const Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
 
             bool lookaheadBlocked = false;
 
             // Check for blocking entities (like walls) at the lookahead position.
             for (const auto blocking_targets = getEntitiesInBounds(future_hb_check_scaled);
                  const auto& target_ptr : blocking_targets) {
-                if (target_ptr.get() == m_pacman.get()) continue;
+                if (target_ptr.get() == m_pacman.get())
+                    continue;
 
                 // Use CollisionHandler to check for a *blocking* collision.
                 CollisionHandler handler(*m_pacman);
@@ -98,7 +101,8 @@ void World::update(Direction d) {
             const auto interaction_targets = getEntitiesInBounds(current_hb);
 
             for (const auto& target_ptr : interaction_targets) {
-                if (target_ptr.get() == m_pacman.get()) continue;
+                if (target_ptr.get() == m_pacman.get())
+                    continue;
 
                 // A. Collision Check (Sets 'interactionOccurred' for Ghost/Coin/Fruit)
                 CollisionHandler collision_handler(*m_pacman);
@@ -122,12 +126,13 @@ void World::update(Direction d) {
         bool moveBlocked = false;
 
         // Use the requested scaled-down hitbox for collision detection at the future position.
-        const auto search_future_hb = future_hb.scaledBy(1-EPSILON);
+        const auto search_future_hb = future_hb.scaledBy(1 - EPSILON);
 
         // Collision Resolution Loop (Movement Block Only)
         for (const auto blocking_targets = getEntitiesInBounds(search_future_hb);
              const auto& target_ptr : blocking_targets) {
-            if (target_ptr.get() == m_pacman.get()) continue;
+            if (target_ptr.get() == m_pacman.get())
+                continue;
 
             // Use the CollisionHandler specifically to check for *blocking* entities (like walls).
             CollisionHandler handler(*m_pacman);
@@ -198,6 +203,8 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
 
     // Building the world object
     World out;
+    auto score = std::make_shared<ScoreKeeper>();
+    out.setScore(score);
 
     // 4. Loop in the standard [Y][X] order (Row by Row, then Column by Column)
     for (size_t y = 0; y < num_rows_y; y++) {     // Loop over rows (Y coordinate)
@@ -228,12 +235,16 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
             case '#':
                 out.addEntity(factory->createWall(hb));
                 break;
-            case '*':
-                out.addEntity(factory->createCoin(hb_coin));
-                break;
-            case 'F':
-                out.addEntity(factory->createFruit(hb));
-                break;
+            case '*': {
+                auto c = factory->createCoin(hb_coin);
+                std::dynamic_pointer_cast<Coin>(c)->setScoreKeeper(score);
+                out.addEntity(std::move(c));
+            } break;
+            case 'F': {
+                auto f = factory->createFruit(hb);
+                std::dynamic_pointer_cast<Fruit>(f)->setScoreKeeper(score);
+                out.addEntity(std::move(f));
+            } break;
             case 'P':
                 out.setPacman(std::dynamic_pointer_cast<Pacman>(factory->createPacman(hb)));
                 break;

@@ -10,7 +10,7 @@ set(LOGIC_SOURCES
         entity_types/Pacman.cpp
         entity_types/Wall.cpp
         World.cpp
-        Score.cpp
+        ScoreKeeper.cpp
         Position.cpp
         Visitor.cpp
 )

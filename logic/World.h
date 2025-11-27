@@ -1,6 +1,7 @@
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
 #include "AbstractEntityFactory.h"
+#include "ScoreKeeper.h"
 #include "Subject.h"
 #include "entity_types/Pacman.h"
 
@@ -17,6 +18,7 @@ class World {
 private:
     WorldState m_worldState = RUNNING;
     std::shared_ptr<Pacman> m_pacman;
+    std::shared_ptr<ScoreKeeper> m_score;
     std::vector<std::shared_ptr<EntityModel>> m_entities;
     unsigned int m_lives = 3;
 public:
@@ -26,6 +28,7 @@ public:
     std::vector<std::shared_ptr<EntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
     void addEntity(std::shared_ptr<EntityModel>);
     void setPacman(const std::shared_ptr<Pacman>& p);
+    void setScore(const std::shared_ptr<ScoreKeeper>& s);
     void update(Direction);
     [[nodiscard]] WorldState getState() const;
 };

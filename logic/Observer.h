@@ -1,6 +1,7 @@
 #ifndef PACMAN_OBSERVER_H
 #define PACMAN_OBSERVER_H
 
+class Subject;
 class Observer {
 protected:
     Observer() = default;
