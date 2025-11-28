@@ -41,7 +41,10 @@ void World::update(Direction d) {
     if (!m_pacman) {
         throw std::runtime_error("Pacman not defined");
     }
-
+    if (!m_score->collectablesLeft()) {
+        m_worldState = VICTORY;
+        return;
+    }
     if (m_pacman->hasTouchedGhost()) {
         m_pacman->goToSpawn();
         m_pacman->resetGhostTouch();

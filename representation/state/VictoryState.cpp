@@ -8,7 +8,7 @@
  * @brief Constructor for VictoryState.
  * Initializes and positions the 'VICTORY' and 'Press any key' text elements.
  */
-VictoryState::VictoryState() {
+VictoryState::VictoryState(const unsigned int level) : m_level(level) {
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();
 
@@ -19,7 +19,7 @@ VictoryState::VictoryState() {
 
     // --- Setup 'VICTORY' Text ---
     m_victoryText.setFont(m_font);
-    m_victoryText.setString("Level completec!");
+    m_victoryText.setString("Level completed!");
     m_victoryText.setCharacterSize(80);
     // Use a celebratory color like Gold or Green
     m_victoryText.setFillColor(sf::Color(255, 215, 0)); // Gold
@@ -34,7 +34,7 @@ VictoryState::VictoryState() {
 
     // --- Setup 'Press Any Key' Text ---
     m_pressAnyKeyText.setFont(m_font);
-    m_pressAnyKeyText.setString("Press any key to start Level" + std::to_string(m_level));
+    m_pressAnyKeyText.setString("Press any key to start Level " + std::to_string(level));
     m_pressAnyKeyText.setCharacterSize(30);
     m_pressAnyKeyText.setFillColor(sf::Color::White);
 

@@ -5,11 +5,17 @@
 #include <SFML/Graphics.hpp>
 
 class VictoryState : public AbstractState {
+private:
+    sf::Font m_font;
+    sf::Text m_victoryText;
+    sf::Text m_pressAnyKeyText;
+    unsigned int m_level;
+
 public:
     /**
      * @brief Constructor for VictoryState.
      */
-    VictoryState();
+    explicit VictoryState(unsigned int level);
 
     /**
      * @brief Draws the text elements to the window.
@@ -22,12 +28,6 @@ public:
      * @param event The SFML event that occurred.
      */
     void handleInput(const sf::Event& event) override;
-
-private:
-    sf::Font m_font;
-    sf::Text m_victoryText;
-    sf::Text m_pressAnyKeyText;
-    unsigned int m_level = 0;
 };
 
 #endif // PACMAN_VICTORYSTATE_H
