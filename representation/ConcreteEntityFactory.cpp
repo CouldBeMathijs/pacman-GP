@@ -1,12 +1,17 @@
 #include "ConcreteEntityFactory.h"
 
 #include "EntityView.h"
+#include "ScoreView.h"
 #include "entity_types/Collectable.h"
-#include "entity_types/Wall.h"
-#include "entity_types/Pacman.h"
 #include "entity_types/Ghost.h"
+#include "entity_types/Pacman.h"
+#include "entity_types/Wall.h"
+
 std::shared_ptr<EntityModel> ConcreteEntityFactory::createPacman(const Rectangle& p) {
-    return createEntityWithView<Pacman, PacmanView>(p);
+    auto pacman = createEntityWithView<Pacman, PacmanView>(p);
+    const auto view = std::make_shared<ScoreView>();
+    pacman->addObserver(view);
+    return pacman;
 }
 
 std::shared_ptr<EntityModel> ConcreteEntityFactory::createWall(const Rectangle& p) {

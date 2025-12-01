@@ -4,7 +4,7 @@
 #include "AbstractState.h"
 #include <SFML/Graphics.hpp>
 
-class VictoryState : public AbstractState {
+class VictoryState final : public AbstractState {
 private:
     sf::Font m_font;
     sf::Text m_victoryText;

@@ -231,8 +231,8 @@ Rectangle Rectangle::scaledBy(double scale) const {
     scaled_rectangle.bottomRight.y = center_y + new_half_height;
 
     return scaled_rectangle;
-
 }
+
 Rectangle Rectangle::rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
                              const Position& wanted_max) const {
     return {

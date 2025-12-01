@@ -27,7 +27,6 @@ std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(const Recta
     return results;
 }
 void World::setPacman(const std::shared_ptr<Pacman>& p) { m_pacman = p; }
-void World::setScore(const std::shared_ptr<ScoreKeeper>& s) { m_score = s; }
 std::shared_ptr<Pacman> World::getPacman() { return m_pacman; }
 
 /**
@@ -41,9 +40,12 @@ void World::update(Direction d) {
     if (!m_pacman) {
         throw std::runtime_error("Pacman not defined");
     }
-    if (!m_score->collectablesLeft()) {
+    if (!ScoreKeeper::getInstance().collectablesLeft()) {
         m_worldState = VICTORY;
         return;
+    }
+    for (const auto& entity_ptr : m_entities) {
+        entity_ptr->update(d);
     }
     if (m_pacman->hasTouchedGhost()) {
         m_pacman->goToSpawn();
@@ -59,7 +61,6 @@ void World::update(Direction d) {
         const Rectangle current_hb = m_pacman->getHitBox();
         const double current_speed = m_pacman->getSpeed();
 
-        // --- NEW STEP 1.5: Direction Change Pre-Check (4-Step Lookahead) ---
         if (const Direction current_direction = m_pacman->getDirection(); d != current_direction) {
             const double lookahead_speed = current_speed * 10.0;
 
@@ -98,7 +99,6 @@ void World::update(Direction d) {
         // Set the (potentially modified) direction for the rest of the update
         m_pacman->setDirection(d);
 
-        // --- 2. Interaction/Pickup Search (At Current Position) ---
         {
             // Define the bounding box at the CURRENT position for interaction checks.
             const auto interaction_targets = getEntitiesInBounds(current_hb);
@@ -121,11 +121,9 @@ void World::update(Direction d) {
             }
         }
 
-        // --- 3. Calculate Potential Future Position ---
         // Calculate the future position based on the (potentially modified) direction 'd'.
         const Rectangle future_hb = EntityModel::calculateFutureHitBox(current_hb, d, current_speed);
 
-        // --- 4. Movement Blocking Search (At Future Position) ---
         bool moveBlocked = false;
 
         // Use the requested scaled-down hitbox for collision detection at the future position.
@@ -148,7 +146,6 @@ void World::update(Direction d) {
             }
         }
 
-        // --- 5. FINAL DECISION: Apply Movement ---
         if (!moveBlocked) {
             // Position is updated.
             m_pacman->setHitBox(future_hb);
@@ -156,14 +153,10 @@ void World::update(Direction d) {
             m_pacman->setDirection(Direction::NONE);
         }
 
-        // Call Pacman's non-movement update (e.g., animation, power-up timers)
         m_pacman->update(d);
     }
 
-    // --- 6. Update all other entities (e.g., Ghosts, Coins, Walls, etc.) ---
-    for (const auto& entity_ptr : m_entities) {
-        entity_ptr->update(d);
-    }
+
 }
 WorldState World::getState() const { return m_worldState; }
 
@@ -206,8 +199,7 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
 
     // Building the world object
     World out;
-    auto score = std::make_shared<ScoreKeeper>();
-    out.setScore(score);
+    auto& score = ScoreKeeper::getInstance();
 
     // 4. Loop in the standard [Y][X] order (Row by Row, then Column by Column)
     for (size_t y = 0; y < num_rows_y; y++) {     // Loop over rows (Y coordinate)
@@ -240,12 +232,12 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
                 break;
             case '*': {
                 auto c = factory->createCoin(hb_coin);
-                std::dynamic_pointer_cast<Coin>(c)->setScoreKeeper(score);
+                score.addCollectable();
                 out.addEntity(std::move(c));
             } break;
             case 'F': {
                 auto f = factory->createFruit(hb);
-                std::dynamic_pointer_cast<Fruit>(f)->setScoreKeeper(score);
+                score.addCollectable();
                 out.addEntity(std::move(f));
             } break;
             case 'P':
@@ -269,6 +261,6 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
             }
         }
     }
-
+    ScoreKeeper::getInstance().nextLevel();
     return out;
 }

@@ -1,7 +1,6 @@
 #ifndef PACMAN_POSITION_H
 #define PACMAN_POSITION_H
 #include <iosfwd>
-#include <math.h>
 
 struct Position {
     // --- Member Variables ---

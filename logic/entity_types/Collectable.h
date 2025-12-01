@@ -6,7 +6,6 @@
 class Collectable : public EntityModel {
 protected:
     bool m_isPickedUp = false;
-    std::shared_ptr<ScoreKeeper> m_scorekeeper;
     int m_value = 0;
 public:
     explicit Collectable(const Rectangle& pos, const Direction d, const TypeOfEntity t) : EntityModel(pos, d, t) {}

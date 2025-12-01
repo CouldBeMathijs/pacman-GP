@@ -3,9 +3,10 @@
 #include "Visitor.h"
 void Collectable::bePickedUp() {
     if (!m_isPickedUp) {
+        auto& score = ScoreKeeper::getInstance();
         m_isPickedUp = true;
-        m_scorekeeper->addToScore(m_value);
-        m_scorekeeper->removeCollectable();
+        score.addToScore(m_value);
+        score.removeCollectable();
         updateObservers();
     }
 }
@@ -15,11 +16,6 @@ void Collectable::update(const Direction direction) {
         return;
     }
     EntityModel::update(direction);
-}
-
-void Collectable::setScoreKeeper(const std::shared_ptr<ScoreKeeper>& s) {
-    m_scorekeeper = s;
-    s->addCollectable();
 }
 
 void Collectable::setValue(const int i) { m_value = i; }
