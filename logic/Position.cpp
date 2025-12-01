@@ -1,6 +1,7 @@
 #include "Position.h"
 
 #include <iostream>
+#include <limits>
 #include <stdexcept>
 /**
  * @brief Assignment operator.
