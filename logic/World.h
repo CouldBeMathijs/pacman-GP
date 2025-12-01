@@ -8,11 +8,7 @@
 #include <string>
 #include <vector>
 
-enum WorldState {
-    RUNNING,
-    VICTORY,
-    GAME_OVER
-};
+enum WorldState { RUNNING, VICTORY, GAME_OVER };
 
 class World {
 private:
@@ -20,6 +16,7 @@ private:
     std::shared_ptr<Pacman> m_pacman;
     std::vector<std::shared_ptr<EntityModel>> m_entities;
     unsigned int m_lives = 3;
+
 public:
     World() = default;
     std::shared_ptr<Pacman> getPacman();
@@ -33,7 +30,8 @@ public:
 
 class WorldCreator {
 public:
-    static World createWorldFromFile(const std::string& filename, const std::shared_ptr<AbstractEntityFactory>& factory);
+    static World createWorldFromFile(const std::string& filename,
+                                     const std::shared_ptr<AbstractEntityFactory>& factory);
 };
 
 #endif // PACMAN_WORLD_H

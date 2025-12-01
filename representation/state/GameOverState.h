@@ -8,6 +8,7 @@ private:
     sf::Text m_gameOverText;
     sf::Text m_playText;
     sf::Text m_pressAnyKeyText;
+
 public:
     void update(Direction) override;
     GameOverState();

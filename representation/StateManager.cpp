@@ -3,9 +3,7 @@
 #include "Camera.h"
 #include "state/MenuState.h"
 
-StateManager::StateManager() {
-    emplace(std::make_unique<MenuState>());
-}
+StateManager::StateManager() { emplace(std::make_unique<MenuState>()); }
 
 void StateManager::update(Direction d) {
     this->top()->update(d);
@@ -22,10 +20,6 @@ void StateManager::update(Direction d) {
     }
 }
 
-void StateManager::handleInput(const sf::Event& event) {
-    this->top()->handleInput(event);
-}
+void StateManager::handleInput(const sf::Event& event) { this->top()->handleInput(event); }
 
-bool StateManager::empty() const {
-    return std::stack<std::unique_ptr<AbstractState>>::empty();
-}
+bool StateManager::empty() const { return std::stack<std::unique_ptr<AbstractState>>::empty(); }

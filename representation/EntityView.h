@@ -14,11 +14,13 @@ private:
     const double m_timePerFrame = 0.12;
     double m_timeAccumulator = 0.0;
     std::shared_ptr<EntityModel> m_coupledEntity;
+
 protected:
     Assets::TextureLocation m_currentSprite;
     explicit EntityView(Assets::TextureLocation, std::shared_ptr<EntityModel>);
     unsigned int m_amountOfTextures = 1;
     unsigned int m_currentTextureOffset = 0;
+
 public:
     void update() override;
     void animate();
@@ -29,8 +31,10 @@ public:
 class DirectionalEntityView : public EntityView {
 private:
     int m_topBase = m_currentSprite.top;
+
 protected:
     DirectionalEntityView(Assets::TextureLocation m, std::shared_ptr<EntityModel> n, int amountOfTextures);
+
 public:
     void update() override;
 };

@@ -14,7 +14,6 @@ GameOverState::GameOverState() {
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();
 
-
     // --- Setup 'Game Over' Text ---
     m_gameOverText.setFont(Assets::getDefaultFont());
     m_gameOverText.setString("Game Over");

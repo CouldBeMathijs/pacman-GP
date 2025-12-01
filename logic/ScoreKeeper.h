@@ -8,6 +8,7 @@ private:
     unsigned int m_collectablesLeft = 0;
     unsigned int m_level = 0;
     ScoreKeeper() = default;
+
 public:
     ScoreKeeper(const ScoreKeeper&) = delete;
     ScoreKeeper& operator=(const ScoreKeeper&) = delete;

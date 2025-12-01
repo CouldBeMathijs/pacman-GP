@@ -4,7 +4,6 @@
 #include "ScoreKeeper.h"
 #include "Subject.h"
 
-
 class Pacman final : public EntityModel {
 private:
     Position m_spawnPoint = getHitBox().topLeft;

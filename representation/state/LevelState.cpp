@@ -24,8 +24,7 @@ void LevelState::update(const Direction d) {
 }
 
 void LevelState::handleInput(const sf::Event& event) {
-    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-    {
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
         m_requestedState = std::make_unique<PausedState>();
     }
 }

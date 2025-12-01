@@ -82,9 +82,7 @@ private:
 public:
     explicit GhostCollisionVisitor(CollisionResult& result) : m_result(result) {}
 
-    void visit(Ghost& target) override {
-         m_result.moveBlocked = true;
-    } // Ghost vs Ghost logic
+    void visit(Ghost& target) override { m_result.moveBlocked = true; } // Ghost vs Ghost logic
 
     void visit(Pacman& target) override {
         // Ghost vs Pacman: Game Over or Run Away
@@ -112,13 +110,9 @@ public:
     void visit(Ghost& ghost) override {}
     void visit(Wall& wall) override {}
 
-    void visit(Coin& coin) override {
-        coin.bePickedUp();
-    }
+    void visit(Coin& coin) override { coin.bePickedUp(); }
 
-    void visit(Fruit& fruit) override {
-        fruit.bePickedUp();
-    }
+    void visit(Fruit& fruit) override { fruit.bePickedUp(); }
 };
 
 // ====================================================================
@@ -140,8 +134,7 @@ private:
     CollisionResult& m_result;
 
 public:
-    CollisionResolver(TargetType& target, CollisionResult& res)
-        : m_target(target), m_result(res) {}
+    CollisionResolver(TargetType& target, CollisionResult& res) : m_target(target), m_result(res) {}
 
     // 1. If the Initiator identifies itself as Pacman:
     void visit(Pacman& initiator) override {

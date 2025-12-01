@@ -25,7 +25,7 @@ PausedState::PausedState() {
     sf::FloatRect playBounds = m_playText.getLocalBounds();
     m_playText.setOrigin(playBounds.left + playBounds.width / 2.0f, playBounds.top + playBounds.height / 2.0f);
 
-    m_playText.setPosition(windowSize.x / 2.0f, windowSize.y * 3/4.0f);
+    m_playText.setPosition(windowSize.x / 2.0f, windowSize.y * 3 / 4.0f);
 }
 
 void PausedState::update(Direction) {

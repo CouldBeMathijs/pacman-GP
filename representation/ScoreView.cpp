@@ -5,7 +5,6 @@
 #include "Camera.h"
 #include "ScoreKeeper.h"
 
-
 ScoreView::ScoreView() {
     // 2. Initialize the sf::Text object properties (Keep this in the constructor!)
     m_scoreText.setFont(Assets::getDefaultFont());
@@ -16,7 +15,6 @@ ScoreView::ScoreView() {
     // Set origin once (It's safe to do it here, or in update if the string changes frequently)
     const sf::FloatRect bounds = m_scoreText.getLocalBounds();
     m_scoreText.setOrigin(bounds.left, bounds.top);
-
 }
 
 void ScoreView::update() {
@@ -26,12 +24,12 @@ void ScoreView::update() {
     const std::string scoreString = "Score: " + std::to_string(currentScore);
     m_scoreText.setString(scoreString);
 
-
     auto& viewport = Camera::getInstance().getViewport();
 
     const sf::FloatRect bounds = m_scoreText.getLocalBounds();
 
-    // Ensure origin is set correctly once (or just leave it here for safety, though it's redundant if in the constructor)
+    // Ensure origin is set correctly once (or just leave it here for safety, though it's redundant if in the
+    // constructor)
     m_scoreText.setOrigin(bounds.left, bounds.top);
 
     // Position 20 pixels from the left and 20 pixels up from the bottom edge

@@ -1,9 +1,7 @@
 #include "Camera.h"
 #include "SfmlConstants.h"
 
-
-void resizeView(const sf::RenderWindow& window, sf::View& view, sf::FloatRect& currentViewport)
-{
+void resizeView(const sf::RenderWindow& window, sf::View& view, sf::FloatRect& currentViewport) {
     sf::Vector2u windowSize = window.getSize();
     float windowAspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 
@@ -27,15 +25,15 @@ void resizeView(const sf::RenderWindow& window, sf::View& view, sf::FloatRect& c
 }
 
 Camera& Camera::getInstance() {
-    static Camera instance(sf::VideoMode(static_cast<unsigned int>(SfmlConstants::VIEW_WIDTH), static_cast<unsigned int>(SfmlConstants::VIEW_HEIGHT)),
+    static Camera instance(sf::VideoMode(static_cast<unsigned int>(SfmlConstants::VIEW_WIDTH),
+                                         static_cast<unsigned int>(SfmlConstants::VIEW_HEIGHT)),
                            "Pacman GP", sf::Style::Close | sf::Style::Resize);
     return instance;
 }
 
 Camera::Camera(const sf::VideoMode mode, const sf::String& title, const sf::Uint32 style)
     : m_window(mode, title, style),
-      m_view(sf::FloatRect(0.f, 0.f, SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT))
-{
+      m_view(sf::FloatRect(0.f, 0.f, SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT)) {
     resizeView(m_window, m_view, m_currentViewport);
     m_window.setView(m_view);
 }
@@ -47,12 +45,8 @@ void Camera::handleEvent(const sf::Event& event) {
     }
 }
 
-sf::RenderWindow& Camera::getWindow() {
-    return m_window;
-}
+sf::RenderWindow& Camera::getWindow() { return m_window; }
 
 const sf::FloatRect& Camera::getViewport() const { return m_currentViewport; }
 
-void Camera::applyView() {
-    m_window.setView(m_view);
-}
+void Camera::applyView() { m_window.setView(m_view); }

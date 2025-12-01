@@ -10,8 +10,6 @@ using namespace Assets;
 
 } // namespace
 
-
-
 void Assets::initialize() {
     if (initialized) {
         return;
@@ -28,9 +26,7 @@ void Assets::initialize() {
     initialized = true;
 }
 
-TextureLocation Assets::getSpriteInfo(SpriteDefinition d) {
-    return k_spriteDefinitions[to_underlying(d)];
-}
+TextureLocation Assets::getSpriteInfo(SpriteDefinition d) { return k_spriteDefinitions[to_underlying(d)]; }
 
 const sf::Texture& Assets::getTexture() {
     initialize();

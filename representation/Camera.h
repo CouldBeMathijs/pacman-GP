@@ -3,8 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 
-
-
 class Camera {
 private:
     sf::RenderWindow m_window;

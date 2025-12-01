@@ -217,7 +217,6 @@ Rectangle Rectangle::scaledBy(double scale) const {
     const double current_width = bottomRight.x - topLeft.x;
     const double current_height = bottomRight.y - topLeft.y;
 
-
     const double new_width = current_width * scale;
     const double new_height = current_height * scale;
 
@@ -236,8 +235,6 @@ Rectangle Rectangle::scaledBy(double scale) const {
 
 Rectangle Rectangle::rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
                              const Position& wanted_max) const {
-    return {
-        topLeft.rescale(current_min, current_max, wanted_min, wanted_max),
-            bottomRight.rescale(current_min, current_max, wanted_min, wanted_max)
-    };
+    return {topLeft.rescale(current_min, current_max, wanted_min, wanted_max),
+            bottomRight.rescale(current_min, current_max, wanted_min, wanted_max)};
 }

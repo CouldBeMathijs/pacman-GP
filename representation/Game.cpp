@@ -39,7 +39,7 @@ void Game::run() {
                 case sf::Keyboard::Down:
                     direction = Direction::SOUTH;
                     break;
-                    default:;
+                default:;
                 }
             }
         }

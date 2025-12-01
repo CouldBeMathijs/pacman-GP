@@ -155,8 +155,6 @@ void World::update(Direction d) {
 
         m_pacman->update(d);
     }
-
-
 }
 WorldState World::getState() const { return m_worldState; }
 

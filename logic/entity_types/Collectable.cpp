@@ -21,14 +21,10 @@ void Collectable::update(const Direction direction) {
 
 void Collectable::setValue(const int i) { m_value = i; }
 
-Coin::Coin(const Rectangle& pos) : Collectable(pos, Direction::EAST, COIN) {
-    setValue(10);
-}
+Coin::Coin(const Rectangle& pos) : Collectable(pos, Direction::EAST, COIN) { setValue(10); }
 
 void Coin::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
-Fruit::Fruit(const Rectangle& pos) : Collectable(pos, Direction::EAST, FRUIT) {
-    setValue(20);
-}
+Fruit::Fruit(const Rectangle& pos) : Collectable(pos, Direction::EAST, FRUIT) { setValue(20); }
 
 void Fruit::accept(IEntityVisitor& visitor) { visitor.visit(*this); }

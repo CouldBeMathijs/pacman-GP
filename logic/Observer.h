@@ -5,6 +5,7 @@ class Subject;
 class Observer {
 protected:
     Observer() = default;
+
 public:
     virtual ~Observer() = default;
     virtual void update() = 0;

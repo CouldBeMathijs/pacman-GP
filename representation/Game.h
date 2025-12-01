@@ -5,6 +5,7 @@
 class Game {
 private:
     StateManager m_sm;
+
 public:
     Game() = default;
     void run();

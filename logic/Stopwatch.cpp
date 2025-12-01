@@ -31,6 +31,4 @@ void Stopwatch::tick() {
     m_lastTickTime = currentTime;
 }
 
-double Stopwatch::getDeltaTime() const {
-    return m_deltaTime;
-}
+double Stopwatch::getDeltaTime() const { return m_deltaTime; }

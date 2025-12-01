@@ -17,10 +17,9 @@ void EntityView::update() {
     auto& camera = Camera::getInstance();
     auto& window = camera.getWindow();
     animate();
-    const Rectangle p =
-        m_coupledEntity->getHitBox().rescale({-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
-            {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO}, {0, 0},
-            {SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT});
+    const Rectangle p = m_coupledEntity->getHitBox().rescale({-1, -LogicConstants::REVERSE_TARGET_ASPECT_RATIO},
+                                                             {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO}, {0, 0},
+                                                             {SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT});
 
     sf::Sprite sprite(Assets::getTexture(), m_currentSprite);
 
@@ -47,8 +46,9 @@ DirectionalEntityView::DirectionalEntityView(Assets::TextureLocation m, std::sha
 }
 
 void DirectionalEntityView::update() {
-    m_currentSprite.top = m_topBase + 50 *
-        ( getCurrentTextureOffset() + m_amountOfTextures * static_cast<unsigned int>(getCoupledEntity()->getDirection()));
+    m_currentSprite.top =
+        m_topBase + 50 * (getCurrentTextureOffset() +
+                          m_amountOfTextures * static_cast<unsigned int>(getCoupledEntity()->getDirection()));
     EntityView::update();
 }
 

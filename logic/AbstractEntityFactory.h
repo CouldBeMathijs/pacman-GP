@@ -7,6 +7,7 @@
 class AbstractEntityFactory {
 protected:
     AbstractEntityFactory() = default;
+
 public:
     virtual ~AbstractEntityFactory() = default;
 

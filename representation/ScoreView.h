@@ -7,6 +7,7 @@
 class ScoreView final : public Observer {
 private:
     sf::Text m_scoreText;
+
 public:
     ScoreView();
     void update() override;

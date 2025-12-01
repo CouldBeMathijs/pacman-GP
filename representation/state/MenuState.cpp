@@ -8,7 +8,6 @@ MenuState::MenuState() {
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();
 
-
     m_pacmanText.setFont(Assets::getDefaultFont());
     m_pacmanText.setString("Pacman");
     m_pacmanText.setCharacterSize(80);
