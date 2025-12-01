@@ -11,18 +11,18 @@ add_subdirectory(logic)
 
 set(PACMAN_SOURCES
         main.cpp
-        representation/Game.cpp
-        representation/StateManager.cpp
+        representation/AssetManager.cpp
         representation/Camera.cpp
         representation/ConcreteEntityFactory.cpp
         representation/EntityView.cpp
-        representation/state/MenuState.cpp
+        representation/Game.cpp
+        representation/ScoreView.cpp
+        representation/StateManager.cpp
+        representation/state/GameOverState.cpp
         representation/state/LevelState.cpp
+        representation/state/MenuState.cpp
         representation/state/PausedState.cpp
         representation/state/VictoryState.cpp
-        representation/state/GameOverState.cpp
-        representation/Spritemap.cpp
-        representation/ScoreView.cpp
 )
 
 add_executable(pacman ${PACMAN_SOURCES})

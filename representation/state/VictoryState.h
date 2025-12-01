@@ -6,7 +6,6 @@
 
 class VictoryState final : public AbstractState {
 private:
-    sf::Font m_font;
     sf::Text m_victoryText;
     sf::Text m_pressAnyKeyText;
     unsigned int m_level;

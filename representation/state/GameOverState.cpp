@@ -1,7 +1,7 @@
 #include "GameOverState.h"
 
+#include "../AssetManager.h"
 #include "../Camera.h"
-#include <stdexcept>
 
 // Assuming 'LevelState.h' is not needed here as the game over state just pops itself
 // back to the menu/previous state.
@@ -14,14 +14,9 @@ GameOverState::GameOverState() {
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();
 
-    // --- Load Font ---
-    if (!m_font.loadFromFile("./assets/BoldPixels/BoldPixels.ttf")) {
-        // Replace with your actual error handling if different
-        throw std::runtime_error("Missing font BoldPixels");
-    }
 
     // --- Setup 'Game Over' Text ---
-    m_gameOverText.setFont(m_font);
+    m_gameOverText.setFont(Assets::getDefaultFont());
     m_gameOverText.setString("Game Over");
     m_gameOverText.setCharacterSize(80);
     m_gameOverText.setFillColor(sf::Color::Red);
@@ -35,7 +30,7 @@ GameOverState::GameOverState() {
     m_gameOverText.setPosition(windowSize.x / 2.0f, windowSize.y / 3.0f);
 
     // --- Setup 'Press Any Key' Text ---
-    m_pressAnyKeyText.setFont(m_font);
+    m_pressAnyKeyText.setFont(Assets::getDefaultFont());
     m_pressAnyKeyText.setString("Press any key to return to Menu");
     m_pressAnyKeyText.setCharacterSize(30);
     m_pressAnyKeyText.setFillColor(sf::Color::White);

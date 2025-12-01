@@ -2,17 +2,17 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LOGIC_SOURCES
+        Position.cpp
         Random.cpp
+        ScoreKeeper.cpp
         Stopwatch.cpp
         Subject.cpp
+        Visitor.cpp
+        World.cpp
         entity_types/Collectable.cpp
         entity_types/Ghost.cpp
         entity_types/Pacman.cpp
         entity_types/Wall.cpp
-        World.cpp
-        ScoreKeeper.cpp
-        Position.cpp
-        Visitor.cpp
 )
 add_compile_options(-Wall)
 

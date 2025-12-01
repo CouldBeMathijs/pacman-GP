@@ -5,7 +5,6 @@
 
 class PausedState final : public AbstractState {
 private:
-    sf::Font m_font;
     sf::Text m_pacmanText;
     sf::Text m_playText;
 public:

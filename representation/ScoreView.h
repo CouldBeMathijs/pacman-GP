@@ -6,7 +6,6 @@
 
 class ScoreView final : public Observer {
 private:
-    sf::Font m_font;
     sf::Text m_scoreText;
 public:
     ScoreView();

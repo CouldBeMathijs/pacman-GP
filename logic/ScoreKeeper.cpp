@@ -10,7 +10,6 @@ void ScoreKeeper::addCollectable() { m_collectablesLeft++; }
 
 void ScoreKeeper::addToScore(const int s) {
     m_currentScore += s;
-    std::cout << "Score - " << m_currentScore << " :: Collectables Left - " << m_collectablesLeft << std::endl;
 }
 
 void ScoreKeeper::removeCollectable() {

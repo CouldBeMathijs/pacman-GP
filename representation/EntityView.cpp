@@ -10,7 +10,7 @@
 
 #include <memory>
 
-EntityView::EntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n)
+EntityView::EntityView(Assets::TextureLocation m, std::shared_ptr<EntityModel> n)
     : m_coupledEntity(std::move(n)), m_currentSprite(m) {}
 
 void EntityView::update() {
@@ -22,7 +22,7 @@ void EntityView::update() {
             {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO}, {0, 0},
             {SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT});
 
-    sf::Sprite sprite(Spritemap::getTexture(), m_currentSprite);
+    sf::Sprite sprite(Assets::getTexture(), m_currentSprite);
 
     const float targetWidth = static_cast<float>(std::abs(p.topLeft.x - p.bottomRight.x));
     const float targetHeight = static_cast<float>(std::abs(p.topLeft.y - p.bottomRight.y));
@@ -40,7 +40,7 @@ void EntityView::update() {
     window.draw(sprite);
 }
 
-DirectionalEntityView::DirectionalEntityView(Spritemap::SpriteInfo m, std::shared_ptr<EntityModel> n,
+DirectionalEntityView::DirectionalEntityView(Assets::TextureLocation m, std::shared_ptr<EntityModel> n,
                                              const int amountOfTextures)
     : EntityView(m, std::move(n)) {
     this->m_amountOfTextures = amountOfTextures;
@@ -84,25 +84,25 @@ unsigned int EntityView::getCurrentTextureOffset() const { return m_currentTextu
 std::shared_ptr<EntityModel> EntityView::getCoupledEntity() { return m_coupledEntity; }
 
 CoinView::CoinView(std::shared_ptr<EntityModel> e)
-    : EntityView(Spritemap::getSpriteInfo(Spritemap::CoinBase), std::move(e)) {}
+    : EntityView(Assets::getSpriteInfo(Assets::CoinBase), std::move(e)) {}
 
 FruitView::FruitView(std::shared_ptr<EntityModel> e)
-    : EntityView(Spritemap::getSpriteInfo(Spritemap::FruitBase), std::move(e)) {}
+    : EntityView(Assets::getSpriteInfo(Assets::FruitBase), std::move(e)) {}
 
 BlueGhostView::BlueGhostView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostBlueBase), std::move(e), 2) {}
+    : DirectionalEntityView(Assets::getSpriteInfo(Assets::GhostBlueBase), std::move(e), 2) {}
 
 PinkGhostView::PinkGhostView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostPinkBase), std::move(e), 2) {}
+    : DirectionalEntityView(Assets::getSpriteInfo(Assets::GhostPinkBase), std::move(e), 2) {}
 
 OrangeGhostView::OrangeGhostView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostOrangeBase), std::move(e), 2) {}
+    : DirectionalEntityView(Assets::getSpriteInfo(Assets::GhostOrangeBase), std::move(e), 2) {}
 
 RedGhostView::RedGhostView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::GhostRedBase), std::move(e), 2) {}
+    : DirectionalEntityView(Assets::getSpriteInfo(Assets::GhostRedBase), std::move(e), 2) {}
 
 PacmanView::PacmanView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Spritemap::getSpriteInfo(Spritemap::PacmanBase), std::move(e), 3) {}
+    : DirectionalEntityView(Assets::getSpriteInfo(Assets::PacmanBase), std::move(e), 3) {}
 
 WallView::WallView(std::shared_ptr<EntityModel> e)
-    : EntityView(Spritemap::getSpriteInfo(Spritemap::WallBase), std::move(e)) {}
+    : EntityView(Assets::getSpriteInfo(Assets::WallBase), std::move(e)) {}

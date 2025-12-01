@@ -1,25 +1,23 @@
 #include "PausedState.h"
+
+#include "../AssetManager.h"
 #include "../Camera.h"
 PausedState::PausedState() {
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();
 
-    if (!m_font.loadFromFile("./assets/BoldPixels/BoldPixels.ttf")) {
-        throw std::runtime_error("Missing font BoldPixels");
-    }
-
-    m_pacmanText.setFont(m_font);
+    m_pacmanText.setFont(Assets::getDefaultFont());
     m_pacmanText.setString("Pacman");
     m_pacmanText.setCharacterSize(80);
     m_pacmanText.setFillColor(sf::Color::Yellow);
 
-    sf::FloatRect pacmanBounds = m_pacmanText.getLocalBounds();
+    const sf::FloatRect pacmanBounds = m_pacmanText.getLocalBounds();
     m_pacmanText.setOrigin(pacmanBounds.left + pacmanBounds.width / 2.0f,
                            pacmanBounds.top + pacmanBounds.height / 2.0f);
 
     m_pacmanText.setPosition(windowSize.x / 2.0f, windowSize.y / 4.0f);
 
-    m_playText.setFont(m_font);
+    m_playText.setFont(Assets::getDefaultFont());
     m_playText.setString("Game paused\npress Space to continue or Esc to exit");
     m_playText.setCharacterSize(30);
     m_playText.setFillColor(sf::Color::White);

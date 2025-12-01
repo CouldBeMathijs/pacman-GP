@@ -5,7 +5,6 @@
 
 class GameOverState final : public AbstractState {
 private:
-    sf::Font m_font;
     sf::Text m_gameOverText;
     sf::Text m_playText;
     sf::Text m_pressAnyKeyText;

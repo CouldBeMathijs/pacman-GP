@@ -1,8 +1,8 @@
 #include "VictoryState.h"
 
+#include "../AssetManager.h"
 #include "../Camera.h"
 #include "LevelState.h"
-#include <stdexcept>
 
 /**
  * @brief Constructor for VictoryState.
@@ -13,12 +13,8 @@ VictoryState::VictoryState(const unsigned int level) : m_level(level) {
     const sf::Vector2u windowSize = window.getSize();
 
     // --- Load Font ---
-    if (!m_font.loadFromFile("./assets/BoldPixels/BoldPixels.ttf")) {
-        throw std::runtime_error("Missing font BoldPixels");
-    }
-
     // --- Setup 'VICTORY' Text ---
-    m_victoryText.setFont(m_font);
+    m_victoryText.setFont(Assets::getDefaultFont());
     m_victoryText.setString("Level completed!");
     m_victoryText.setCharacterSize(80);
     // Use a celebratory color like Gold or Green
@@ -33,13 +29,13 @@ VictoryState::VictoryState(const unsigned int level) : m_level(level) {
     m_victoryText.setPosition(windowSize.x / 2.0f, windowSize.y / 3.0f);
 
     // --- Setup 'Press Any Key' Text ---
-    m_pressAnyKeyText.setFont(m_font);
+    m_pressAnyKeyText.setFont(Assets::getDefaultFont());
     m_pressAnyKeyText.setString("Press any key to start Level " + std::to_string(level));
     m_pressAnyKeyText.setCharacterSize(30);
     m_pressAnyKeyText.setFillColor(sf::Color::White);
 
     // Center the 'Press Any Key' text
-    sf::FloatRect pressBounds = m_pressAnyKeyText.getLocalBounds();
+    const sf::FloatRect pressBounds = m_pressAnyKeyText.getLocalBounds();
     m_pressAnyKeyText.setOrigin(pressBounds.left + pressBounds.width / 2.0f,
                                 pressBounds.top + pressBounds.height / 2.0f);
 

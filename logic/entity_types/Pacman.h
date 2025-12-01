@@ -1,6 +1,7 @@
 #ifndef PACMAN_PACMAN_H
 #define PACMAN_PACMAN_H
 #include "LogicConstants.h"
+#include "ScoreKeeper.h"
 #include "Subject.h"
 
 
@@ -8,7 +9,7 @@ class Pacman final : public EntityModel {
 private:
     Position m_spawnPoint = getHitBox().topLeft;
     bool m_ghostTouch = false;
-    double m_speed = LogicConstants::BASE_SPEED;
+    double m_speed = LogicConstants::BASE_SPEED; // + 0.00025 * ScoreKeeper::getInstance().getLevel();
 public:
     explicit Pacman(const Rectangle& pos);
     [[nodiscard]] bool hasTouchedGhost() const;
