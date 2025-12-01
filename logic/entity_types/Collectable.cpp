@@ -1,5 +1,6 @@
 #include "Collectable.h"
 
+#include "ScoreKeeper.h"
 #include "Visitor.h"
 void Collectable::bePickedUp() {
     if (!m_isPickedUp) {

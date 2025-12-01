@@ -241,7 +241,7 @@ World WorldCreator::createWorldFromFile(const std::string& filename,
                 out.addEntity(std::move(f));
             } break;
             case 'P':
-                out.setPacman(std::dynamic_pointer_cast<Pacman>(factory->createPacman(hb)));
+                out.setPacman(std::static_pointer_cast<Pacman>(factory->createPacman(hb)));
                 break;
             case '1':
                 out.addEntity(factory->createBlueGhost(hb));

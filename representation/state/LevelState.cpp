@@ -15,7 +15,7 @@ void LevelState::update(const Direction d) {
         return;
     case VICTORY:
         m_requestedPops = 1;
-        m_requestedState = std::make_unique<VictoryState>(ScoreKeeper::getInstance().getLevel());
+        m_requestedState = std::make_unique<VictoryState>(ScoreKeeper::getInstance().getLevel() + 1);
         return;
     case GAME_OVER:
         m_requestedPops = 1;
