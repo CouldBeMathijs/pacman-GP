@@ -1,12 +1,28 @@
-name: Clang Format Checker
-on: [push]
+name: Auto-format C++ Code
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  clang-format-checking:
+  format:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v2
-      - uses: RafikFarhad/clang-format-github-action@v3
+      - uses: actions/checkout@v4
         with:
-          sources: "**/*.h,**/*.c,**/*.cpp"
-          style: file
-          
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+      
+      - name: Format C++ code
+        uses: pachadotdev/clang-format@main
+        with:
+          version: '18'
+          auto-commit: true
+          commit-message: 'style: auto-format C++ code with clang-format-18'
