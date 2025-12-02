@@ -3,10 +3,11 @@
 #include <utility>
 
 #include "Camera.h"
+#include "EntityType/Pacman.h"
+#include "EntityType/Wall.h"
 #include "Position.h"
 #include "SfmlConstants.h"
 #include "Stopwatch.h"
-#include "entity_types/Wall.h"
 
 #include <memory>
 
@@ -103,6 +104,13 @@ RedGhostView::RedGhostView(std::shared_ptr<EntityModel> e)
 
 PacmanView::PacmanView(std::shared_ptr<EntityModel> e)
     : DirectionalEntityView(Assets::getSpriteInfo(Assets::PacmanBase), std::move(e), 3) {}
+void PacmanView::update() {
+    auto pacman = std::static_pointer_cast<Pacman>(getCoupledEntity());
+    if (pacman->isDying()) {
+        return;
+    }
+    DirectionalEntityView::update();
+}
 
 WallView::WallView(std::shared_ptr<EntityModel> e)
     : EntityView(Assets::getSpriteInfo(Assets::WallBase), std::move(e)) {}

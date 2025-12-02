@@ -9,7 +9,7 @@
 #include <memory>
 
 /**
- * @brief Virtual class providing the common ground needed for displaying entities with SFML
+ * @brief Virtual class providing the common ground needed for displaying entities
  */
 class EntityView : public Observer {
 private:
@@ -31,6 +31,9 @@ public:
     std::shared_ptr<EntityModel> getCoupledEntity();
 };
 
+/**
+ * @brief Virtual class providing the common ground needed for displaying direction entities
+ */
 class DirectionalEntityView : public EntityView {
 private:
     int m_topBase = m_currentSprite.top;
@@ -75,6 +78,7 @@ public:
 class PacmanView final : public DirectionalEntityView {
 public:
     explicit PacmanView(std::shared_ptr<EntityModel>);
+    void update() override;
 };
 
 class WallView final : public EntityView {

@@ -12,10 +12,12 @@ private:
     Position m_spawnPoint = getHitBox().topLeft;
     bool m_ghostTouch = false;
     double m_speed = LogicConstants::BASE_SPEED; // + 0.00025 * ScoreKeeper::getInstance().getLevel();
+    bool m_isDying = false;
 public:
-    explicit Pacman(const Rectangle& pos);
     [[nodiscard]] bool hasTouchedGhost() const;
+    [[nodiscard]] bool isDying() const;
     [[nodiscard]] double getSpeed() const;
+    explicit Pacman(const Rectangle& pos);
     void accept(IEntityVisitor& visitor) override;
     void ghostTouches();
     void goToSpawn();

@@ -1,8 +1,8 @@
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
 #include "AbstractEntityFactory.h"
+#include "EntityType/Pacman.h"
 #include "Subject.h"
-#include "entity_types/Pacman.h"
 
 #include <string>
 #include <vector>

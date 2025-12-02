@@ -1,9 +1,9 @@
 #ifndef PACMAN_VISITOR_H
 #define PACMAN_VISITOR_H
 
-#include "entity_types/Collectable.h"
-#include "entity_types/Ghost.h"
-#include "entity_types/Pacman.h"
+#include "EntityType/Collectable.h"
+#include "EntityType/Ghost.h"
+#include "EntityType/Pacman.h"
 
 // --- Forward Declarations ---
 class EntityModel;

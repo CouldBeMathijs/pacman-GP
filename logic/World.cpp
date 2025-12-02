@@ -1,9 +1,9 @@
 #include "World.h"
 
 #include "AbstractEntityFactory.h"
+#include "EntityType/Pacman.h"
 #include "LogicConstants.h"
 #include "Visitor.h"
-#include "entity_types/Pacman.h"
 
 #include <algorithm>
 #include <fstream>
