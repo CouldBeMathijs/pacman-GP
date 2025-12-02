@@ -2,7 +2,6 @@
 #define PACMAN_SUBJECT_H
 #include "Direction.h"
 #include "Observer.h"
-#include "Position.h"
 
 #include <memory>
 #include <vector>

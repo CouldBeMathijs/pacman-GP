@@ -21,7 +21,7 @@ void EntityView::update() {
                                                              {1, LogicConstants::REVERSE_TARGET_ASPECT_RATIO}, {0, 0},
                                                              {SfmlConstants::VIEW_WIDTH, SfmlConstants::VIEW_HEIGHT});
 
-    sf::Sprite sprite(Assets::getTexture(), m_currentSprite);
+    sf::Sprite sprite(Assets::getSpritemapTexture(), m_currentSprite);
 
     const float targetWidth = static_cast<float>(std::abs(p.topLeft.x - p.bottomRight.x));
     const float targetHeight = static_cast<float>(std::abs(p.topLeft.y - p.bottomRight.y));

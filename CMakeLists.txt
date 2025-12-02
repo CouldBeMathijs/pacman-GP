@@ -13,7 +13,7 @@ set(PACMAN_SOURCES
         main.cpp
         representation/AssetManager.cpp
         representation/Camera.cpp
-        representation/ConcreteEntityFactory.cpp
+        representation/ViewCompatibleEntityFactory.cpp
         representation/EntityView.cpp
         representation/Game.cpp
         representation/ScoreView.cpp

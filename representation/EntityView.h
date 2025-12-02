@@ -8,6 +8,9 @@
 
 #include <memory>
 
+/**
+ * @brief Virtual class providing the common ground needed for displaying entities with SFML
+ */
 class EntityView : public Observer {
 private:
     bool m_animationCycleMovingUp = true;

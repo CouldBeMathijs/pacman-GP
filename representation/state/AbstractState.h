@@ -5,6 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
+/**
+ * @brief Pure virtual class for all Game States
+ */
 class AbstractState {
 public:
     virtual ~AbstractState() = default;

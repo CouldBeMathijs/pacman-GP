@@ -4,7 +4,10 @@
 
 #include <memory>
 
-class ConcreteEntityFactory final : public AbstractEntityFactory {
+/**
+ * @brief Concrete Entity Factory which adds entity views as observers on object creation
+ */
+class ViewCompatibleEntityFactory final : public AbstractEntityFactory {
 public:
     std::shared_ptr<EntityModel> createBlueGhost(const Rectangle& p) override;
     std::shared_ptr<EntityModel> createCoin(const Rectangle& p) override;

@@ -42,7 +42,7 @@ void World::update(Direction d) {
         throw std::runtime_error("Pacman not defined");
     }
     if (score.collectablesLeft() == 0) {
-        m_worldState = VICTORY;
+        m_worldState = WorldState::VICTORY;
         return;
     }
     for (const auto& entity_ptr : m_entities) {
@@ -51,7 +51,7 @@ void World::update(Direction d) {
     if (m_pacman->hasTouchedGhost()) {
         score.removeLife();
         if (score.getLives() == 0) {
-            m_worldState = GAME_OVER;
+            m_worldState = WorldState::GAME_OVER;
             return;
         }
         m_pacman->goToSpawn();

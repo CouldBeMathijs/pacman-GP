@@ -7,11 +7,17 @@
 #include <string>
 #include <vector>
 
-enum WorldState { RUNNING, VICTORY, GAME_OVER };
+/**
+ * @brief The different states a World can be in
+ */
+enum class WorldState { RUNNING, VICTORY, GAME_OVER };
 
+/**
+ * @brief In charge of holding entities, collision checks and coordinating movement.
+ */
 class World {
 private:
-    WorldState m_worldState = RUNNING;
+    WorldState m_worldState = WorldState::RUNNING;
     std::shared_ptr<Pacman> m_pacman;
     std::vector<std::shared_ptr<EntityModel>> m_entities;
 

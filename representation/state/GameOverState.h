@@ -3,6 +3,10 @@
 #include "AbstractState.h"
 #include "Direction.h"
 
+/**
+ * @brief Game state to Game Over text
+ * * On keypress: return to menu
+ */
 class GameOverState final : public AbstractState {
 private:
     sf::Text m_gameOverText;

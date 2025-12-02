@@ -4,6 +4,10 @@
 #include "AbstractState.h"
 #include <SFML/Graphics.hpp>
 
+/**
+ * @brief Shows level completed screen
+ * * On keypress: go to new Level State
+ */
 class VictoryState final : public AbstractState {
 private:
     sf::Text m_victoryText;

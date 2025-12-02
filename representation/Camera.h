@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
+/**
+ * @brief Singleton class in charge of the sfml Window and Game Viewport
+ */
 class Camera {
 private:
     sf::RenderWindow m_window;

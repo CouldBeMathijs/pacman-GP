@@ -3,9 +3,6 @@
 #include "../AssetManager.h"
 #include "../Camera.h"
 
-// Assuming 'LevelState.h' is not needed here as the game over state just pops itself
-// back to the menu/previous state.
-
 /**
  * @brief Constructor for GameOverState.
  * Initializes and positions the 'Game Over' and 'Press any key' text elements.

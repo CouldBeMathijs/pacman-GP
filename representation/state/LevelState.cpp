@@ -4,20 +4,20 @@
 #include "PausedState.h"
 #include "VictoryState.h"
 
-LevelState::LevelState() : m_factory(std::make_shared<ConcreteEntityFactory>()) {
+LevelState::LevelState() : m_factory(std::make_shared<ViewCompatibleEntityFactory>()) {
     m_world = WorldCreator::createWorldFromFile("./assets/worldmap", m_factory);
 }
 
 void LevelState::update(const Direction d) {
     switch (m_world.getState()) {
-    case RUNNING:
+    case WorldState::RUNNING:
         m_world.update(d);
         return;
-    case VICTORY:
+    case WorldState::VICTORY:
         m_requestedPops = 1;
         m_requestedState = std::make_unique<VictoryState>(ScoreKeeper::getInstance().getLevel() + 1);
         return;
-    case GAME_OVER:
+    case WorldState::GAME_OVER:
         m_requestedPops = 1;
         m_requestedState = std::make_unique<GameOverState>();
     }

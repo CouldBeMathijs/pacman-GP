@@ -6,6 +6,9 @@
 #include <memory>
 #include <stack>
 
+/**
+ * @brief A stack of Abstract States which provides whatever the current top state requires of it
+ */
 class StateManager : std::stack<std::unique_ptr<AbstractState>> {
 public:
     StateManager();

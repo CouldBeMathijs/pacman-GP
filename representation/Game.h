@@ -2,8 +2,10 @@
 #define PACMAN_GAME_H
 #include "StateManager.h"
 
+/**
+ * @brief Top level object in charge of holding the StateManager and main Game loop
+ */
 class Game {
-private:
     StateManager m_sm;
 
 public:

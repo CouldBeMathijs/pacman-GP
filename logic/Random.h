@@ -4,6 +4,9 @@
 #include <iostream>
 #include <random>
 
+/**
+ * @brief Singleton class which provides all randomness
+ */
 class Random {
 private:
     std::mt19937 m_generator;

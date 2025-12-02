@@ -1,6 +1,7 @@
 
 #ifndef PACMAN_ENTITYMODEL_H
 #define PACMAN_ENTITYMODEL_H
+#include "Position.h"
 #include "Subject.h"
 
 class EntityModel : public Subject {

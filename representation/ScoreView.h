@@ -4,8 +4,10 @@
 
 #include <SFML/Graphics.hpp>
 
+/**
+ * @brief Observer for displaying the current score on the screen
+ */
 class ScoreView final : public Observer {
-private:
     sf::Text m_scoreText;
 
 public:

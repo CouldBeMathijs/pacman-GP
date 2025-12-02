@@ -3,6 +3,11 @@
 #include "AbstractState.h"
 #include "Direction.h"
 
+/**
+ * @brief Game State for pausing mid-game
+ * * On keypress: Go back to game window
+ * * On escape: Go back to main menu
+ */
 class PausedState final : public AbstractState {
 private:
     sf::Text m_pacmanText;

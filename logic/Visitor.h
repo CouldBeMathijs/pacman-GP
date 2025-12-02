@@ -35,10 +35,6 @@ public:
     virtual void visit(Fruit& fruit) = 0;
 };
 
-// ====================================================================
-// SECTION 2: CONCRETE COLLISION HANDLERS (The Logic Layers)
-// ====================================================================
-
 /**
  * @brief Handles logic when PACMAN is the initiator.
  */
@@ -100,10 +96,9 @@ public:
     void visit(Fruit& target) override {}
 };
 
-// ====================================================================
-// SECTION 3: NEW PICKUP VISITOR
-// ====================================================================
-
+/**
+ * @brief Handles picking up collectables
+ */
 class CollectableVisitor final : public IEntityVisitor {
 public:
     void visit(Pacman& pacman) override {}
@@ -114,10 +109,6 @@ public:
 
     void visit(Fruit& fruit) override { fruit.bePickedUp(); }
 };
-
-// ====================================================================
-// SECTION 4: HELPER DISPATCHER (The "Glue" to remove dynamic_cast)
-// ====================================================================
 
 /**
  * @brief A temporary Visitor used to resolve the Initiator's type.
@@ -159,10 +150,9 @@ public:
     void visit(Fruit& fruit) override {}
 };
 
-// ====================================================================
-// SECTION 5: THE MAIN COLLISION DISPATCHER
-// ====================================================================
-
+/**
+ * @brief Handles the first dispatch
+ */
 class CollisionHandler final : public IEntityVisitor {
 private:
     EntityModel& m_initiator;
