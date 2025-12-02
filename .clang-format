@@ -132,7 +132,7 @@ PenaltyIndentedWhitespace: 0
 PointerAlignment: Left
 PPIndentWidth:   -1
 ReferenceAlignment: Pointer
-ReflowComments:  Always
+ReflowComments: true
 RemoveBracesLLVM: false
 SeparateDefinitionBlocks: Leave
 ShortNamespaceLines: 1
@@ -172,7 +172,7 @@ SpacesInParentheses: false
 SpacesInSquareBrackets: false
 SpaceBeforeSquareBrackets: false
 BitFieldColonSpacing: Both
-Standard:        c++11
+Standard:        c++20
 StatementAttributeLikeMacros:
   - Q_EMIT
 StatementMacros:
