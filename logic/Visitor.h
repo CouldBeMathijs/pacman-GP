@@ -47,25 +47,13 @@ public:
 
     void visit(Pacman& target) override {} // Pacman vs Pacman ignored
 
-    void visit(Ghost& target) override {
-        // Pacman vs Ghost: Game Over or Eat Ghost
-        m_result.interactionOccurred = true;
-    }
+    void visit(Ghost& target) override;
 
-    void visit(Wall& target) override {
-        // Pacman vs Wall: Blocked
-        m_result.moveBlocked = true;
-    }
+    void visit(Wall& target) override;
 
-    void visit(Coin& target) override {
-        // Pacman vs Coin: Pickup interaction noted
-        m_result.interactionOccurred = true;
-    }
+    void visit(Coin& target) override;
 
-    void visit(Fruit& target) override {
-        // Pacman vs Fruit: Pickup interaction noted
-        m_result.interactionOccurred = true;
-    }
+    void visit(Fruit& target) override;
 };
 
 /**
@@ -78,18 +66,11 @@ private:
 public:
     explicit GhostCollisionVisitor(CollisionResult& result) : m_result(result) {}
 
-    void visit(Ghost& target) override { m_result.moveBlocked = true; } // Ghost vs Ghost logic
+    void visit(Ghost& target) override;
 
-    void visit(Pacman& target) override {
-        // Ghost vs Pacman: Game Over or Run Away
-        m_result.interactionOccurred = true;
-        target.ghostTouches();
-    }
+    void visit(Pacman& target) override;
 
-    void visit(Wall& target) override {
-        // Ghost vs Wall: Blocked
-        m_result.moveBlocked = true;
-    }
+    void visit(Wall& target) override;
 
     // Ghosts ignore items
     void visit(Coin& target) override {}
@@ -105,9 +86,9 @@ public:
     void visit(Ghost& ghost) override {}
     void visit(Wall& wall) override {}
 
-    void visit(Coin& coin) override { coin.bePickedUp(); }
+    void visit(Coin& coin) override;
 
-    void visit(Fruit& fruit) override { fruit.bePickedUp(); }
+    void visit(Fruit& fruit) override;
 };
 
 /**
@@ -128,12 +109,7 @@ public:
     CollisionResolver(TargetType& target, CollisionResult& res) : m_target(target), m_result(res) {}
 
     // 1. If the Initiator identifies itself as Pacman:
-    void visit(Pacman& initiator) override {
-        // Create the logic handler for Pacman...
-        PacmanCollisionVisitor logic(m_result);
-        // ...and apply it to the specific target we are holding.
-        logic.visit(m_target);
-    }
+    void visit(Pacman& initiator) override;
 
     // 2. If the Initiator identifies itself as Ghost:
     void visit(Ghost& initiator) override {
@@ -149,6 +125,13 @@ public:
     void visit(Coin& coin) override {}
     void visit(Fruit& fruit) override {}
 };
+template <typename TargetType>
+void CollisionResolver<TargetType>::visit(Pacman& initiator) {
+    // Create the logic handler for Pacman...
+    PacmanCollisionVisitor logic(m_result);
+    // ...and apply it to the specific target we are holding.
+    logic.visit(m_target);
+}
 
 /**
  * @brief Handles the first dispatch
@@ -166,31 +149,15 @@ public:
     // Instead of casting, we create a specific Resolver for the Target,
     // and ask the Initiator to accept it.
 
-    void visit(Pacman& target) override {
-        CollisionResolver<Pacman> resolver(target, m_result);
-        m_initiator.accept(resolver);
-    }
+    void visit(Pacman& target) override;
 
-    void visit(Ghost& target) override {
-        CollisionResolver<Ghost> resolver(target, m_result);
-        m_initiator.accept(resolver);
-    }
+    void visit(Ghost& target) override;
 
-    void visit(Wall& target) override {
-        // Logic: Initiator.accept(ResolverThatHoldsWall)
-        CollisionResolver<Wall> resolver(target, m_result);
-        m_initiator.accept(resolver);
-    }
+    void visit(Wall& target) override;
 
-    void visit(Coin& target) override {
-        CollisionResolver<Coin> resolver(target, m_result);
-        m_initiator.accept(resolver);
-    }
+    void visit(Coin& target) override;
 
-    void visit(Fruit& target) override {
-        CollisionResolver<Fruit> resolver(target, m_result);
-        m_initiator.accept(resolver);
-    }
+    void visit(Fruit& target) override;
 };
 
 #endif // PACMAN_VISITOR_H

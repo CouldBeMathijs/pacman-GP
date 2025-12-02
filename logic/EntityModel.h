@@ -1,6 +1,6 @@
 
-#ifndef PACMAN_ENTITYMODEL_H
-#define PACMAN_ENTITYMODEL_H
+#ifndef PACMAN_ENTITY_MODEL_H
+#define PACMAN_ENTITY_MODEL_H
 #include "Position.h"
 #include "Subject.h"
 
@@ -17,4 +17,4 @@ public:
     static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction d, double speed);
 };
 
-#endif // PACMAN_ENTITYMODEL_H
+#endif

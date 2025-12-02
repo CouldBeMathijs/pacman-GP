@@ -6,29 +6,33 @@
 class Ghost : public EntityModel {
 protected:
     double m_speed = LogicConstants::BASE_SPEED * 0.8;
-    explicit Ghost(const Rectangle& pos) : EntityModel(pos, Direction::EAST) {}
+    explicit Ghost(const Rectangle& pos);
     void accept(IEntityVisitor& visitor) override;
     [[nodiscard]] double getSpeed() const;
 };
 
 class BlueGhost final : public Ghost {
 public:
-    explicit BlueGhost(const Rectangle& pos) : Ghost(pos) {};
+    explicit BlueGhost(const Rectangle& pos);
+    ;
 };
 
 class PinkGhost final : public Ghost {
 public:
-    explicit PinkGhost(const Rectangle& pos) : Ghost(pos) {};
+    explicit PinkGhost(const Rectangle& pos);
+    ;
 };
 
 class OrangeGhost final : public Ghost {
 public:
-    explicit OrangeGhost(const Rectangle& pos) : Ghost(pos) {};
+    explicit OrangeGhost(const Rectangle& pos);
+    ;
 };
 
 class RedGhost final : public Ghost {
 public:
-    explicit RedGhost(const Rectangle& pos) : Ghost(pos) {};
+    explicit RedGhost(const Rectangle& pos);
+    ;
 };
 
 #endif // PACMAN_GHOST_H
