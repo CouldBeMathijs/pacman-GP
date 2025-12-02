@@ -7,7 +7,7 @@
 constexpr float MAX_DELTA_TIME = 1.0 / 60.0;
 
 /**
- * @brief Singeton which keeps track of time throughout the game runtime
+ * @brief Singleton which keeps track of time throughout the game runtime
  */
 class Stopwatch {
 private:

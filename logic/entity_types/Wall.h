@@ -1,6 +1,6 @@
 #ifndef PACMAN_WALL_H
 #define PACMAN_WALL_H
-#include "Subject.h"
+#include "EntityModel.h"
 
 /**
  * @brief Blocks Pacman movement

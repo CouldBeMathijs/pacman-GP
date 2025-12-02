@@ -3,7 +3,7 @@
 #include "Observer.h"
 
 #include "AssetManager.h"
-#include "Subject.h"
+#include "EntityModel.h"
 #include <SFML/Graphics.hpp>
 
 #include <memory>

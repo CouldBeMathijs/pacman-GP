@@ -2,7 +2,7 @@
 #define PACMAN_PACMAN_H
 #include "LogicConstants.h"
 #include "ScoreKeeper.h"
-#include "Subject.h"
+#include "EntityModel.h"
 
 /**
  * @brief The player character

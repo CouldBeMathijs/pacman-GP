@@ -21,19 +21,6 @@ public:
     void updateObservers() const;
 };
 
-class EntityModel : public Subject {
-protected:
-    EntityModel(Rectangle hitBox, Direction);
-    Direction m_direction;
-    Rectangle m_hitBox;
-    // const TypeOfEntity m_type;
 
-public:
-    [[nodiscard]] Direction getDirection() const;
-    [[nodiscard]] Rectangle getHitBox() const;
-    //[[nodiscard]] TypeOfEntity getType() const;
-    [[nodiscard]] bool isInBounds(const Rectangle& boundBox) const;
-    static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction d, double speed);
-};
 
 #endif // PACMAN_SUBJECT_H

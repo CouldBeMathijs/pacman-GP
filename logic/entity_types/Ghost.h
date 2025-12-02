@@ -1,7 +1,7 @@
 #ifndef PACMAN_GHOST_H
 #define PACMAN_GHOST_H
 #include "LogicConstants.h"
-#include "Subject.h"
+#include "EntityModel.h"
 
 class Ghost : public EntityModel {
 protected:

@@ -13,6 +13,7 @@ set(LOGIC_SOURCES
         entity_types/Ghost.cpp
         entity_types/Pacman.cpp
         entity_types/Wall.cpp
+        EntityModel.cpp
 )
 add_compile_options(-Wall)
 

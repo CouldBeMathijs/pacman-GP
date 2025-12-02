@@ -1,6 +1,6 @@
 #ifndef PACMAN_COLLECTABLE_H
 #define PACMAN_COLLECTABLE_H
-#include "Subject.h"
+#include "EntityModel.h"
 
 /**
  * @brief Virtual class for all collectables
