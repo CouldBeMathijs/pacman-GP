@@ -1,7 +1,7 @@
 #include "ScoreKeeper.h"
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 unsigned int ScoreKeeper::getScore() const { return m_currentScore; }
 void ScoreKeeper::removeLife() { m_lives--; }
