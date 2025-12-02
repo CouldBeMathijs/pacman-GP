@@ -26,7 +26,7 @@ protected:
     EntityModel(Rectangle hitBox, Direction);
     Direction m_direction;
     Rectangle m_hitBox;
-    //const TypeOfEntity m_type;
+    // const TypeOfEntity m_type;
 
 public:
     [[nodiscard]] Direction getDirection() const;

@@ -1,6 +1,5 @@
 #include "AssetManager.h"
 
-
 // Anonymous namespace to make sure the values are only accessed after initialization
 namespace {
 sf::Texture k_texture;

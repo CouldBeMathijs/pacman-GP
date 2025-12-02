@@ -10,6 +10,7 @@ protected:
     bool m_isPickedUp = false;
     int m_value = 0;
     explicit Collectable(const Rectangle& pos, const Direction d) : EntityModel(pos, d) {}
+
 public:
     void bePickedUp();
     void update(Direction) override;

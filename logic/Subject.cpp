@@ -11,7 +11,7 @@ Rectangle EntityModel::getHitBox() const { return m_hitBox; }
 
 Direction EntityModel::getDirection() const { return m_direction; }
 
-//TypeOfEntity EntityModel::getType() const { return m_type; }
+// TypeOfEntity EntityModel::getType() const { return m_type; }
 
 void Subject::updateObservers() const {
     for (const auto& o : m_observers) {
