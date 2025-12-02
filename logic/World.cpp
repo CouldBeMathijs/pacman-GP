@@ -48,6 +48,7 @@ void World::update(Direction d) {
     for (const auto& entity_ptr : m_entities) {
         entity_ptr->update(d);
     }
+    ScoreKeeper::getInstance().update();
     if (m_pacman->hasTouchedGhost()) {
         score.removeLife();
         if (score.getLives() == 0) {
@@ -100,7 +101,7 @@ void World::update(Direction d) {
 
         {
             // Define the bounding box at the CURRENT position for interaction checks.
-            const auto interaction_targets = getEntitiesInBounds(current_hb);
+            const auto interaction_targets = getEntitiesInBounds(current_hb.scaledBy(0.2));
 
             for (const auto& target_ptr : interaction_targets) {
                 if (target_ptr.get() == m_pacman.get())

@@ -3,6 +3,7 @@
 #include "Observer.h"
 
 #include <chrono>
+
 /**
  * @brief Singleton which keeps all persistent score variables
  */
@@ -17,10 +18,13 @@ private:
     unsigned int m_collectablesLeft = 0;
     unsigned int m_level = 0;
     unsigned int m_lives = 3;
-    TimePoint m_lastPickupTime; // Stores the time of the last pickup
+    TimePoint m_lastPickupTime;
+    TimePoint m_lastDeductionTime;
 
     // Constant for the multiplier decay time
     static constexpr double MAX_MULTIPLIER_TIME_S = 3.0;
+    static constexpr double TIME_BETWEEN_SCORE_DECREASE = 0.5;
+
 
     ScoreKeeper();
 
@@ -40,7 +44,7 @@ public:
     void removeCollectable();
     void removeLife();
     void reset();
-    void update() override {}
+    void update() override;
 };
 
 #endif

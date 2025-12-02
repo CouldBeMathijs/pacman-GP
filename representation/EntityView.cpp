@@ -24,8 +24,8 @@ void EntityView::update() {
 
     sf::Sprite sprite(Assets::getSpritemapTexture(), m_currentSprite);
 
-    const float targetWidth = static_cast<float>(std::abs(p.topLeft.x - p.bottomRight.x));
-    const float targetHeight = static_cast<float>(std::abs(p.topLeft.y - p.bottomRight.y));
+    const auto targetWidth = static_cast<float>(std::abs(p.topLeft.x - p.bottomRight.x));
+    const auto targetHeight = static_cast<float>(std::abs(p.topLeft.y - p.bottomRight.y));
 
     const auto currentWidth = static_cast<float>(m_currentSprite.width);
     const auto currentHeight = static_cast<float>(m_currentSprite.height);

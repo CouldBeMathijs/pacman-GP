@@ -1,5 +1,5 @@
-#ifndef PACMAN_ABSTRACTENTITYFACTORY_H
-#define PACMAN_ABSTRACTENTITYFACTORY_H
+#ifndef PACMAN_ABSTRACT_ENTITY_FACTORY_H
+#define PACMAN_ABSTRACT_ENTITY_FACTORY_H
 #include "EntityModel.h"
 
 #include <memory>
@@ -24,4 +24,4 @@ public:
     virtual std::shared_ptr<EntityModel> createFruit(const Rectangle& pos) = 0;
 };
 
-#endif // PACMAN_ABSTRACTENTITYFACTORY_H
+#endif

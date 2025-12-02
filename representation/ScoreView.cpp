@@ -1,4 +1,3 @@
-
 #include "ScoreView.h"
 
 #include "AssetManager.h"

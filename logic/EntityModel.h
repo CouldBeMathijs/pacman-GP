@@ -1,4 +1,3 @@
-
 #ifndef PACMAN_ENTITY_MODEL_H
 #define PACMAN_ENTITY_MODEL_H
 #include "Position.h"

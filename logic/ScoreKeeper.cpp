@@ -22,8 +22,26 @@ void ScoreKeeper::reset() {
     m_level = 0;
     m_lives = 3;
 }
+void ScoreKeeper::update() {
+    const TimePoint now = Clock::now();
 
-ScoreKeeper::ScoreKeeper() { m_lastPickupTime = Clock::now(); }
+    const std::chrono::duration<double> timeElapsed = now - m_lastDeductionTime;
+
+    if (const double timeSinceLastDeduction_s = timeElapsed.count();
+        timeSinceLastDeduction_s >= TIME_BETWEEN_SCORE_DECREASE) {
+        if (m_currentScore > 0) {
+            m_currentScore--;
+        }
+
+        const int deductionCount = static_cast<int>(timeSinceLastDeduction_s / TIME_BETWEEN_SCORE_DECREASE);
+
+        const std::chrono::duration<double> timeToAdvance(TIME_BETWEEN_SCORE_DECREASE * deductionCount);
+
+        m_lastDeductionTime += std::chrono::duration_cast<Clock::duration>(timeToAdvance);
+    }
+}
+
+ScoreKeeper::ScoreKeeper() : m_lastPickupTime(Clock::now()), m_lastDeductionTime(Clock::now()) {}
 
 ScoreKeeper& ScoreKeeper::getInstance() {
     static ScoreKeeper instance;

@@ -1,5 +1,5 @@
-#ifndef PACMAN_ENTITYVIEW_H
-#define PACMAN_ENTITYVIEW_H
+#ifndef PACMAN_ENTITY_VIEW_H
+#define PACMAN_ENTITY_VIEW_H
 #include "Observer.h"
 
 #include "AssetManager.h"
@@ -86,4 +86,4 @@ public:
     explicit WallView(std::shared_ptr<EntityModel>);
 };
 
-#endif // PACMAN_ENTITYVIEW_H
+#endif
