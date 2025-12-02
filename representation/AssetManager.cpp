@@ -43,8 +43,6 @@ void initialize() {
 
 } // namespace
 
-
-
 TextureLocation Assets::getSpriteInfo(const SpriteDefinition d) { return k_spriteDefinitions[to_underlying(d)]; }
 
 const sf::Texture& Assets::getSpritemapTexture() {
