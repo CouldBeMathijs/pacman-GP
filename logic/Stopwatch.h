@@ -14,20 +14,31 @@ private:
     using Clock = std::chrono::high_resolution_clock;
     using TimePoint = Clock::time_point;
 
-    double m_deltaTime;
-
     TimePoint m_lastTickTime;
+    double m_deltaTime;
 
     Stopwatch();
 
 public:
+    // -- Deleted constructors
     Stopwatch(const Stopwatch&) = delete;
     Stopwatch& operator=(const Stopwatch&) = delete;
 
+    /**
+     * @brief Singleton getter method
+     * @return The one and only Camera instance
+     */
     static Stopwatch& getInstance();
 
+    /**
+     * @brief ticks deltaTime and makes sure the game runs at 1/MAX_DELTA_TIME fps
+     */
     void tick();
 
+    /**
+     * @brief Getter for deltaTime
+     * @return the current deltaTime, set after the last tick()
+     */
     [[nodiscard]] double getDeltaTime() const;
 };
 

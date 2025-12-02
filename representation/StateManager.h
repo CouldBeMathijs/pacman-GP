@@ -1,5 +1,5 @@
-#ifndef PACMAN_STATEMANAGER_H
-#define PACMAN_STATEMANAGER_H
+#ifndef PACMAN_STATE_MANAGER_H
+#define PACMAN_STATE_MANAGER_H
 #include "Direction.h"
 #include "state/AbstractState.h"
 
@@ -17,4 +17,4 @@ public:
     [[nodiscard]] bool empty() const;
 };
 
-#endif // PACMAN_STATEMANAGER_H
+#endif

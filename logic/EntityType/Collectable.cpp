@@ -6,7 +6,7 @@ void Collectable::bePickedUp() {
     if (!m_isPickedUp) {
         auto& score = ScoreKeeper::getInstance();
         m_isPickedUp = true;
-        score.addToScore(m_value);
+        score.addPointsWithMultiplier(m_value);
         score.removeCollectable();
         updateObservers();
     }

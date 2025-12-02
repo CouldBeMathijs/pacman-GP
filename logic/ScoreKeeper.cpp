@@ -1,6 +1,7 @@
 #include "ScoreKeeper.h"
 
 #include <iostream>
+#include <cmath>
 
 unsigned int ScoreKeeper::getScore() const { return m_currentScore; }
 void ScoreKeeper::removeLife() { m_lives--; }
@@ -22,9 +23,25 @@ void ScoreKeeper::reset() {
     m_lives = 3;
 }
 
+ScoreKeeper::ScoreKeeper() { m_lastPickupTime = Clock::now(); }
+
 ScoreKeeper& ScoreKeeper::getInstance() {
     static ScoreKeeper instance;
     return instance;
+}
+void ScoreKeeper::addPointsWithMultiplier(const unsigned int baseScore) {
+    const TimePoint currentTime = Clock::now();
+
+    const std::chrono::duration<double> timeElapsed = currentTime - m_lastPickupTime;
+    const double timeSinceLastPickup_s = timeElapsed.count();
+
+    const double multiplierTerm = std::max(1.0, MAX_MULTIPLIER_TIME_S - timeSinceLastPickup_s);
+
+    const double pointsToAddD = static_cast<double>(baseScore) * multiplierTerm;
+
+    m_currentScore += static_cast<unsigned int>(std::round(pointsToAddD));
+
+    m_lastPickupTime = currentTime;
 }
 
 bool ScoreKeeper::collectablesLeft() const { return m_collectablesLeft != 0; }
