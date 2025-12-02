@@ -13,6 +13,7 @@ private:
     bool m_ghostTouch = false;
     double m_speed = LogicConstants::BASE_SPEED; // + 0.00025 * ScoreKeeper::getInstance().getLevel();
     bool m_isDying = false;
+
 public:
     [[nodiscard]] bool hasTouchedGhost() const;
     [[nodiscard]] bool isDying() const;

@@ -31,7 +31,7 @@ void ScoreView::update() {
 
     constexpr float margin = 20.f;
 
-    const float posX = - viewport.getSize().x + margin;
+    const float posX = -viewport.getSize().x + margin;
 
     const float posY = SfmlConstants::VIEW_HEIGHT - bounds.height - margin;
 
