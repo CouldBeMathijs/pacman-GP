@@ -5,7 +5,7 @@
 #include "VictoryState.h"
 
 LevelState::LevelState() : m_factory(std::make_shared<ConcreteEntityFactory>()) {
-    m_world = WorldCreator::createWorldFromFile("./assets/testworldmap", m_factory);
+    m_world = WorldCreator::createWorldFromFile("./assets/worldmap", m_factory);
 }
 
 void LevelState::update(const Direction d) {

@@ -6,9 +6,7 @@
 class Ghost : public EntityModel {
 protected:
     double m_speed = LogicConstants::BASE_SPEED * 0.8;
-
-protected:
-    explicit Ghost(const Rectangle& pos) : EntityModel(pos, Direction::EAST, GHOST) {}
+    explicit Ghost(const Rectangle& pos) : EntityModel(pos, Direction::EAST) {}
     void accept(IEntityVisitor& visitor) override;
     [[nodiscard]] double getSpeed() const;
 };

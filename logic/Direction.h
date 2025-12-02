@@ -1,6 +1,9 @@
 #ifndef PACMAN_DIRECTION_H
 #define PACMAN_DIRECTION_H
 
+/**
+ * @brief The order of the Directions is the same as the order in the Spritemap
+ */
 enum class Direction {
     EAST,
     SOUTH,
@@ -10,7 +13,7 @@ enum class Direction {
 };
 
 /**
- * @brief Checks if two given directions are exact opposites (e.g., EAST and WEST).
+ * @brief Checks if two given directions are exact opposites.
  *
  * @param d1 The first direction.
  * @param d2 The second direction.

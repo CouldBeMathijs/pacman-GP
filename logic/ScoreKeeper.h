@@ -2,6 +2,9 @@
 #define PACMAN_SCORE_H
 #include "Observer.h"
 
+/**
+ * @brief Singleton which keeps all persistent score variables
+ */
 class ScoreKeeper final : public Observer {
 private:
     unsigned int m_currentScore = 0;

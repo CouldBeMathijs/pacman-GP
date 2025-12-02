@@ -11,13 +11,7 @@ Rectangle EntityModel::getHitBox() const { return m_hitBox; }
 
 Direction EntityModel::getDirection() const { return m_direction; }
 
-TypeOfEntity EntityModel::getType() const { return m_type; }
-
-bool EntityModel::isInBounds(const Rectangle& boundBox) const {
-    const bool x_overlap = m_hitBox.bottomRight.x > boundBox.topLeft.x && m_hitBox.topLeft.x < boundBox.bottomRight.x;
-    const bool y_overlap = m_hitBox.bottomRight.y > boundBox.topLeft.y && m_hitBox.topLeft.y < boundBox.bottomRight.y;
-    return x_overlap && y_overlap;
-}
+//TypeOfEntity EntityModel::getType() const { return m_type; }
 
 void Subject::updateObservers() const {
     for (const auto& o : m_observers) {
@@ -25,8 +19,13 @@ void Subject::updateObservers() const {
     }
 }
 
-EntityModel::EntityModel(Rectangle hb, const Direction d, const TypeOfEntity t)
-    : m_hitBox(std::move(hb)), m_direction(d), m_type(t) {}
+EntityModel::EntityModel(Rectangle hitBox, const Direction d) : m_direction(d), m_hitBox(std::move(hitBox)) {}
+
+bool EntityModel::isInBounds(const Rectangle& boundBox) const {
+    const bool x_overlap = m_hitBox.bottomRight.x > boundBox.topLeft.x && m_hitBox.topLeft.x < boundBox.bottomRight.x;
+    const bool y_overlap = m_hitBox.bottomRight.y > boundBox.topLeft.y && m_hitBox.topLeft.y < boundBox.bottomRight.y;
+    return x_overlap && y_overlap;
+}
 
 Rectangle EntityModel::calculateFutureHitBox(const Rectangle& current_hb, const Direction d, const double speed) {
     Rectangle future_hb = current_hb;

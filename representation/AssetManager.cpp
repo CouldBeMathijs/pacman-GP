@@ -1,5 +1,7 @@
 #include "AssetManager.h"
 
+
+// Anonymous namespace to make sure the values are only accessed after initialization
 namespace {
 sf::Texture k_texture;
 sf::Font k_font;
@@ -26,7 +28,7 @@ void Assets::initialize() {
     initialized = true;
 }
 
-TextureLocation Assets::getSpriteInfo(SpriteDefinition d) { return k_spriteDefinitions[to_underlying(d)]; }
+TextureLocation Assets::getSpriteInfo(const SpriteDefinition d) { return k_spriteDefinitions[to_underlying(d)]; }
 
 const sf::Texture& Assets::getTexture() {
     initialize();

@@ -4,6 +4,9 @@
 
 #include <memory>
 
+/**
+ * @brief Pure virtual EntityModel factory
+ */
 class AbstractEntityFactory {
 protected:
     AbstractEntityFactory() = default;
