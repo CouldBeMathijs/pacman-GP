@@ -16,5 +16,4 @@ public:
     static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction d, double speed);
 };
 
-
 #endif // PACMAN_ENTITYMODEL_H

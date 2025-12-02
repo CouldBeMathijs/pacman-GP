@@ -21,6 +21,4 @@ public:
     void updateObservers() const;
 };
 
-
-
 #endif // PACMAN_SUBJECT_H

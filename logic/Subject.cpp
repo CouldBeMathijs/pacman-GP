@@ -7,8 +7,6 @@ void Subject::update(Direction) { updateObservers(); }
 
 void Subject::addObserver(std::shared_ptr<Observer> n) { m_observers.push_back(std::move(n)); }
 
-
-
 // TypeOfEntity EntityModel::getType() const { return m_type; }
 
 void Subject::updateObservers() const {
@@ -16,4 +14,3 @@ void Subject::updateObservers() const {
         o->update();
     }
 }
-

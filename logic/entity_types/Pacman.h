@@ -1,8 +1,8 @@
 #ifndef PACMAN_PACMAN_H
 #define PACMAN_PACMAN_H
+#include "EntityModel.h"
 #include "LogicConstants.h"
 #include "ScoreKeeper.h"
-#include "EntityModel.h"
 
 /**
  * @brief The player character
