@@ -31,7 +31,6 @@ void ScoreView::update() {
     const std::string livesString = "# Lives Left: " + std::to_string(currentLives);
     m_livesText.setString(livesString);
 
-
     const sf::FloatRect boundsScore = m_scoreText.getLocalBounds();
     m_scoreText.setOrigin(boundsScore.left, boundsScore.top);
     const float scorePosX = -viewport.getSize().x + margin;
