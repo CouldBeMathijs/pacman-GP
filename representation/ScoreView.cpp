@@ -7,35 +7,42 @@
 #include "SfmlConstants.h"
 
 ScoreView::ScoreView() {
-    m_scoreText.setFont(Assets::getDefaultFont());
-    m_scoreText.setString("Score: 0");
+    auto& font = Assets::getDefaultFont();
+
+    m_livesText.setCharacterSize(50);
+    m_livesText.setFillColor(sf::Color::Yellow);
+    m_livesText.setFont(font);
+
     m_scoreText.setCharacterSize(50);
     m_scoreText.setFillColor(sf::Color::Yellow);
-
-    const sf::FloatRect bounds = m_scoreText.getLocalBounds();
-    m_scoreText.setOrigin(bounds.left, bounds.top);
+    m_scoreText.setFont(font);
 }
 
 void ScoreView::update() {
+    auto& viewport = Camera::getInstance().getViewport();
     auto& window = Camera::getInstance().getWindow();
+    constexpr float margin = 20.f;
 
     const unsigned int currentScore = ScoreKeeper::getInstance().getScore();
     const std::string scoreString = "Score: " + std::to_string(currentScore);
     m_scoreText.setString(scoreString);
 
-    auto& viewport = Camera::getInstance().getViewport();
+    const unsigned int currentLives = ScoreKeeper::getInstance().getLives();
+    const std::string livesString = "# Lives Left: " + std::to_string(currentLives);
+    m_livesText.setString(livesString);
 
-    const sf::FloatRect bounds = m_scoreText.getLocalBounds();
 
-    m_scoreText.setOrigin(bounds.left, bounds.top);
-
-    constexpr float margin = 20.f;
-
-    const float posX = -viewport.getSize().x + margin;
-
-    const float posY = SfmlConstants::VIEW_HEIGHT - bounds.height - margin;
-
-    m_scoreText.setPosition(posX, posY);
-
+    const sf::FloatRect boundsScore = m_scoreText.getLocalBounds();
+    m_scoreText.setOrigin(boundsScore.left, boundsScore.top);
+    const float scorePosX = -viewport.getSize().x + margin;
+    const float scorePosY = SfmlConstants::VIEW_HEIGHT - boundsScore.height - margin;
+    m_scoreText.setPosition(scorePosX, scorePosY);
     window.draw(m_scoreText);
+
+    const sf::FloatRect boundsLives = m_livesText.getLocalBounds();
+    m_livesText.setOrigin(boundsLives.left, boundsLives.top);
+    const float livesPosX = SfmlConstants::VIEW_WIDTH - boundsLives.width - margin;
+    const float livesPosY = SfmlConstants::VIEW_HEIGHT - boundsLives.height - margin;
+    m_livesText.setPosition(livesPosX, livesPosY);
+    window.draw(m_livesText);
 }

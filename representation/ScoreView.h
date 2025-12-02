@@ -5,9 +5,10 @@
 #include <SFML/Graphics.hpp>
 
 /**
- * @brief Observer for displaying the current score on the screen
+ * @brief Observer for displaying the current score and amount of lives on the screen
  */
 class ScoreView final : public Observer {
+    sf::Text m_livesText;
     sf::Text m_scoreText;
 
 public:

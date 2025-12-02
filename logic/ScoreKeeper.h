@@ -1,5 +1,5 @@
-#ifndef PACMAN_SCORE_H
-#define PACMAN_SCORE_H
+#ifndef PACMAN_SCOREKEEPER_H
+#define PACMAN_SCOREKEEPER_H
 #include "Observer.h"
 
 /**
@@ -31,4 +31,4 @@ public:
     void update() override {}
 };
 
-#endif // PACMAN_SCORE_H
+#endif

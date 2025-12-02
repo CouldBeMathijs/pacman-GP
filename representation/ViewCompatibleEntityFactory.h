@@ -1,5 +1,6 @@
-#ifndef PACMAN_CONCRETEENTITYFACTORY_H
-#define PACMAN_CONCRETEENTITYFACTORY_H
+#ifndef PACMAN_VIEW_COMPATIBLE_ENTITY_FACTORY_H
+#define PACMAN_VIEW_COMPATIBLE_ENTITY_FACTORY_H
+
 #include "AbstractEntityFactory.h"
 
 #include <memory>
@@ -34,4 +35,5 @@ private:
         return model;
     }
 };
-#endif // PACMAN_CONCRETEENTITYFACTORY_H
+#endif
+
