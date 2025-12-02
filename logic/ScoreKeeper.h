@@ -25,7 +25,6 @@ private:
     static constexpr double MAX_MULTIPLIER_TIME_S = 3.0;
     static constexpr double TIME_BETWEEN_SCORE_DECREASE = 0.5;
 
-
     ScoreKeeper();
 
 public:
