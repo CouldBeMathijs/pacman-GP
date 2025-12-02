@@ -37,10 +37,11 @@ std::shared_ptr<Pacman> World::getPacman() { return m_pacman; }
  * @param d The direction input received from the user for Pacman's intended movement.
  */
 void World::update(Direction d) {
+    auto& score = ScoreKeeper::getInstance();
     if (!m_pacman) {
         throw std::runtime_error("Pacman not defined");
     }
-    if (!ScoreKeeper::getInstance().collectablesLeft()) {
+    if (score.collectablesLeft() == 0) {
         m_worldState = VICTORY;
         return;
     }
@@ -48,8 +49,8 @@ void World::update(Direction d) {
         entity_ptr->update(d);
     }
     if (m_pacman->hasTouchedGhost()) {
-        m_lives--;
-        if (m_lives == 0) {
+        score.removeLife();
+        if (score.getLives() == 0) {
             m_worldState = GAME_OVER;
             return;
         }

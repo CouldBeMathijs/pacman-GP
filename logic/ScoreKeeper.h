@@ -7,6 +7,7 @@ private:
     unsigned int m_currentScore = 0;
     unsigned int m_collectablesLeft = 0;
     unsigned int m_level = 0;
+    unsigned int m_lives = 3;
     ScoreKeeper() = default;
 
 public:
@@ -16,7 +17,9 @@ public:
 
     [[nodiscard]] bool collectablesLeft() const;
     [[nodiscard]] unsigned int getLevel() const;
+    [[nodiscard]] unsigned int getLives() const;
     [[nodiscard]] unsigned int getScore() const;
+    void removeLife();
     void addCollectable();
     void addToScore(int s);
     void nextLevel();
