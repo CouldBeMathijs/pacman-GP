@@ -44,7 +44,7 @@ void Game::run() {
             }
         }
         window.clear(sf::Color::Black);
-        camera.applyView();
+        camera.resetView();
         m_sm.update(direction);
         if (m_sm.empty()) {
             window.close();

@@ -49,4 +49,4 @@ sf::RenderWindow& Camera::getWindow() { return m_window; }
 
 const sf::FloatRect& Camera::getViewport() const { return m_currentViewport; }
 
-void Camera::applyView() { m_window.setView(m_view); }
+void Camera::resetView() { m_window.setView(m_view); }
