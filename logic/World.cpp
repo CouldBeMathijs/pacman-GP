@@ -48,13 +48,13 @@ void World::update(Direction d) {
         entity_ptr->update(d);
     }
     if (m_pacman->hasTouchedGhost()) {
-        m_pacman->goToSpawn();
-        m_pacman->resetGhostTouch();
         m_lives--;
         if (m_lives == 0) {
             m_worldState = GAME_OVER;
             return;
         }
+        m_pacman->goToSpawn();
+        m_pacman->resetGhostTouch();
     }
     {
         constexpr double EPSILON = 0.01;
@@ -77,8 +77,6 @@ void World::update(Direction d) {
             // Check for blocking entities (like walls) at the lookahead position.
             for (const auto blocking_targets = getEntitiesInBounds(future_hb_check_scaled);
                  const auto& target_ptr : blocking_targets) {
-                if (target_ptr.get() == m_pacman.get())
-                    continue;
 
                 // Use CollisionHandler to check for a *blocking* collision.
                 CollisionHandler handler(*m_pacman);
@@ -107,16 +105,21 @@ void World::update(Direction d) {
                 if (target_ptr.get() == m_pacman.get())
                     continue;
 
-                // A. Collision Check (Sets 'interactionOccurred' for Ghost/Coin/Fruit)
-                CollisionHandler collision_handler(*m_pacman);
-                target_ptr->accept(collision_handler);
+                CollisionHandler pacmanInitiates(*m_pacman);
+                target_ptr->accept(pacmanInitiates);
 
-                // B. Collectable Check (Performs 'bePickedUp')
-                // If the collision handler reported an interaction, we run the specialized
-                // CollectableVisitor to handle the pickup logic for Coins and Fruits.
-                if (collision_handler.getResult().interactionOccurred) {
-                    CollectableVisitor pickup_handler;
-                    target_ptr->accept(pickup_handler);
+                if (pacmanInitiates.getResult().interactionOccurred) {
+                    CollectableVisitor pickup;
+                    target_ptr->accept(pickup);
+                }
+
+                CollisionHandler targetInitiates(*target_ptr);
+                m_pacman->accept(targetInitiates);
+
+                const CollisionResult& rev = targetInitiates.getResult();
+
+                if (rev.interactionOccurred) {
+                    m_pacman->ghostTouches();
                 }
             }
         }
@@ -156,6 +159,7 @@ void World::update(Direction d) {
         m_pacman->update(d);
     }
 }
+
 WorldState World::getState() const { return m_worldState; }
 
 World WorldCreator::createWorldFromFile(const std::string& filename,
