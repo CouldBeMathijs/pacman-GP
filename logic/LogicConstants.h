@@ -8,6 +8,6 @@ constexpr double TILE_HEIGHT = 1.0 / AMOUNT_OF_TILES_HEIGHT;
 constexpr float TARGET_ASPECT_RATIO =
     static_cast<float>(AMOUNT_OF_TILES_WIDTH) / static_cast<float>(AMOUNT_OF_TILES_HEIGHT);
 constexpr float REVERSE_TARGET_ASPECT_RATIO = 1 / TARGET_ASPECT_RATIO;
-constexpr double BASE_SPEED = 0.005;
+constexpr double BASE_SPEED = 0.3;
 } // namespace LogicConstants
 #endif

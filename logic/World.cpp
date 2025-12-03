@@ -3,11 +3,13 @@
 #include "AbstractEntityFactory.h"
 #include "EntityType/Pacman.h"
 #include "LogicConstants.h"
+#include "Stopwatch.h"
 #include "Visitor.h"
 
 #include <algorithm>
 #include <fstream>
 #include <ranges>
+#include <cmath>
 #include <vector>
 
 void World::addEntity(std::shared_ptr<EntityModel> e) { m_entities.emplace_back(std::move(e)); }
@@ -62,7 +64,7 @@ void World::update(Direction d) {
     {
         constexpr double EPSILON = 0.01;
         const Rectangle current_hb = m_pacman->getHitBox();
-        const double current_speed = m_pacman->getSpeed();
+        const double current_speed = std::round(60 * Stopwatch::getInstance().getDeltaTime()) * m_pacman->getSpeed() * 1.f/60;
 
         // -------------------------------------------------------
         // Helper Lambda: Checks if a specific hitbox is blocked by walls
@@ -84,7 +86,7 @@ void World::update(Direction d) {
         };
 
         if (const Direction current_direction = m_pacman->getDirection(); d != current_direction) {
-            const double lookahead_speed = current_speed * 10.0; // Lookahead distance
+            const double lookahead_speed = 0.05; // Lookahead distance
 
             // 1. Check the intended direction normally
             Rectangle future_hb_check_unscaled = EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);

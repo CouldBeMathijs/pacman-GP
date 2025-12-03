@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.28.3)
 project(pacman)
 
 find_package(SFML 2.5 REQUIRED COMPONENTS graphics window system)
