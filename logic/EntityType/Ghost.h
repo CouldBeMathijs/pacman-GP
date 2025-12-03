@@ -17,7 +17,6 @@ protected:
      */
     void accept(IEntityVisitor& visitor) override;
 
-
     /**
      * @return The Ghost's speed
      */
