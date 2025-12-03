@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iostream>
 #include <ranges>
 #include <vector>
 
@@ -98,7 +97,7 @@ void World::update(Direction d) {
             if (lookaheadBlocked) {
                 // How many pixels/units we are willing to "slide" Pacman to catch the corner.
                 // This value depends on your grid size. If tiles are 32px, 8-10 is usually good.
-                constexpr double CORNER_TOLERANCE = LogicConstants::ENTITY_HEIGHT / 4;
+                constexpr double CORNER_TOLERANCE = LogicConstants::TILE_HEIGHT / 4;
 
                 // Determine if we are moving vertically or horizontally
                 const bool isVerticalChange = (d == Direction::NORTH || d == Direction::SOUTH);
