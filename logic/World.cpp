@@ -49,6 +49,7 @@ void World::update(Direction d) {
         entity_ptr->update(d);
     }
     ScoreKeeper::getInstance().update();
+
     if (m_pacman->hasTouchedGhost()) {
         score.removeLife();
         if (score.getLives() == 0) {
@@ -58,54 +59,92 @@ void World::update(Direction d) {
         m_pacman->goToSpawn();
         m_pacman->resetGhostTouch();
     }
+
     {
         constexpr double EPSILON = 0.01;
         const Rectangle current_hb = m_pacman->getHitBox();
         const double current_speed = m_pacman->getSpeed();
 
-        if (const Direction current_direction = m_pacman->getDirection(); d != current_direction) {
-            const double lookahead_speed = current_speed * 10.0;
-
-            // Calculate the position after the lookahead distance in the *new* direction 'd'.
-            // The starting point for the check is a scaled-down version of the current hitbox.
-            const Rectangle future_hb_check_unscaled =
-                EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
-
-            // Apply a scale for more forgiving lookahead collision detection
-            const Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
-
-            bool lookaheadBlocked = false;
-
-            // Check for blocking entities (like walls) at the lookahead position.
-            for (const auto blocking_targets = getEntitiesInBounds(future_hb_check_scaled);
+        // -------------------------------------------------------
+        // Helper Lambda: Checks if a specific hitbox is blocked by walls
+        // -------------------------------------------------------
+        auto checkBlockage = [&](const Rectangle& rectToCheck) -> bool {
+            for (const auto blocking_targets = getEntitiesInBounds(rectToCheck);
                  const auto& target_ptr : blocking_targets) {
 
-                // Use CollisionHandler to check for a *blocking* collision.
+                if (target_ptr.get() == m_pacman.get()) continue;
+
                 CollisionHandler handler(*m_pacman);
                 target_ptr->accept(handler);
-
                 if (handler.getResult().moveBlocked) {
-                    lookaheadBlocked = true;
-                    break;
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        if (const Direction current_direction = m_pacman->getDirection(); d != current_direction) {
+            const double lookahead_speed = current_speed * 10.0; // Lookahead distance
+
+            // 1. Check the intended direction normally
+            Rectangle future_hb_check_unscaled =
+                EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
+            Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
+
+            bool lookaheadBlocked = checkBlockage(future_hb_check_scaled);
+
+            // 2. CORNER CUTTING LOGIC
+            // If the direct path is blocked, check perpendicular offsets
+            if (lookaheadBlocked) {
+                // How many pixels/units we are willing to "slide" Pacman to catch the corner.
+                // This value depends on your grid size. If tiles are 32px, 8-10 is usually good.
+                constexpr double CORNER_TOLERANCE = LogicConstants::ENTITY_HEIGHT / 4;
+
+                // Determine if we are moving vertically or horizontally
+                const bool isVerticalChange = (d == Direction::NORTH || d == Direction::SOUTH);
+
+                // Check offsets: Negative (Left/Up) and Positive (Right/Down)
+
+                for (double offsets[] = {-CORNER_TOLERANCE, CORNER_TOLERANCE}; const double offset : offsets) {
+                    // Create a temporary "snapped" current position
+                    Rectangle shifted_current_hb = current_hb;
+
+                    if (isVerticalChange) {
+                        shifted_current_hb.moveBy(offset,0); // Shift X for vertical movement
+                    } else {
+                        shifted_current_hb.moveBy(0, offset); // Shift Y for horizontal movement
+                    }
+
+                    // Calculate lookahead from the SHIFTED position
+                    Rectangle shifted_future = EntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
+                    Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON);
+
+                    // If this shifted path is clear, we found a corner!
+                    if (!checkBlockage(shifted_check)) {
+                        // Apply the snap: Move Pacman to the aligned position immediately
+                        m_pacman->setHitBox(shifted_current_hb);
+
+                        // Unblock the move so the code below processes the direction change
+                        lookaheadBlocked = false;
+                        break;
+                    }
                 }
             }
 
-            // If the lookahead is blocked, REJECT the new direction 'd'.
+            // If still blocked after trying to corner cut, revert direction
             if (lookaheadBlocked) {
                 d = current_direction;
             }
         }
 
-        // Set the (potentially modified) direction for the rest of the update
+        // Set the (potentially modified) direction
         m_pacman->setDirection(d);
 
+        // --- Interaction Checks ---
         {
-            // Define the bounding box at the CURRENT position for interaction checks.
             const auto interaction_targets = getEntitiesInBounds(current_hb.scaledBy(0.2));
-
             for (const auto& target_ptr : interaction_targets) {
-                if (target_ptr.get() == m_pacman.get())
-                    continue;
+                if (target_ptr.get() == m_pacman.get()) continue;
 
                 CollisionHandler pacmanInitiates(*m_pacman);
                 target_ptr->accept(pacmanInitiates);
@@ -117,7 +156,6 @@ void World::update(Direction d) {
 
                 CollisionHandler targetInitiates(*target_ptr);
                 m_pacman->accept(targetInitiates);
-
                 const CollisionResult& rev = targetInitiates.getResult();
 
                 if (rev.interactionOccurred) {
@@ -126,33 +164,11 @@ void World::update(Direction d) {
             }
         }
 
-        // Calculate the future position based on the (potentially modified) direction 'd'.
+        // --- Final Movement Calculation (unchanged) ---
         const Rectangle future_hb = EntityModel::calculateFutureHitBox(current_hb, d, current_speed);
-
-        bool moveBlocked = false;
-
-        // Use the requested scaled-down hitbox for collision detection at the future position.
         const auto search_future_hb = future_hb.scaledBy(1 - EPSILON);
 
-        // Collision Resolution Loop (Movement Block Only)
-        for (const auto blocking_targets = getEntitiesInBounds(search_future_hb);
-             const auto& target_ptr : blocking_targets) {
-            if (target_ptr.get() == m_pacman.get())
-                continue;
-
-            // Use the CollisionHandler specifically to check for *blocking* entities (like walls).
-            CollisionHandler handler(*m_pacman);
-            target_ptr->accept(handler);
-            const CollisionResult& result = handler.getResult();
-
-            if (result.moveBlocked) {
-                moveBlocked = true;
-                break; // Stop checking if movement is blocked.
-            }
-        }
-
-        if (!moveBlocked) {
-            // Position is updated.
+        if (!checkBlockage(search_future_hb)) {
             m_pacman->setHitBox(future_hb);
         } else {
             m_pacman->setDirection(Direction::NONE);
