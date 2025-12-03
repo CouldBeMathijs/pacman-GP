@@ -9,7 +9,7 @@
 class EntityModel;
 class Fruit;
 class Wall;
-class Ghost;
+class AbstractGhost;
 class Pacman;
 
 /**
@@ -29,7 +29,7 @@ public:
 
     // A visit method for every concrete element type
     virtual void visit(Pacman& pacman) = 0;
-    virtual void visit(Ghost& ghost) = 0;
+    virtual void visit(AbstractGhost& ghost) = 0;
     virtual void visit(Wall& wall) = 0;
     virtual void visit(Coin& coin) = 0;
     virtual void visit(Fruit& fruit) = 0;
@@ -47,7 +47,7 @@ public:
 
     void visit(Pacman& target) override {} // Pacman vs Pacman ignored
 
-    void visit(Ghost& target) override;
+    void visit(AbstractGhost& target) override;
 
     void visit(Wall& target) override;
 
@@ -66,7 +66,7 @@ private:
 public:
     explicit GhostCollisionVisitor(CollisionResult& result) : m_result(result) {}
 
-    void visit(Ghost& target) override;
+    void visit(AbstractGhost& target) override;
 
     void visit(Pacman& target) override;
 
@@ -83,7 +83,7 @@ public:
 class CollectableVisitor final : public IEntityVisitor {
 public:
     void visit(Pacman& pacman) override {}
-    void visit(Ghost& ghost) override {}
+    void visit(AbstractGhost& ghost) override {}
     void visit(Wall& wall) override {}
 
     void visit(Coin& coin) override;
@@ -112,7 +112,7 @@ public:
     void visit(Pacman& initiator) override;
 
     // 2. If the Initiator identifies itself as Ghost:
-    void visit(Ghost& initiator) override {
+    void visit(AbstractGhost& initiator) override {
         // Create the logic handler for Ghost...
         GhostCollisionVisitor logic(m_result);
         // ...and apply it to the specific target we are holding.
@@ -151,7 +151,7 @@ public:
 
     void visit(Pacman& target) override;
 
-    void visit(Ghost& target) override;
+    void visit(AbstractGhost& target) override;
 
     void visit(Wall& target) override;
 

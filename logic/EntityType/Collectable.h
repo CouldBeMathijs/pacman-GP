@@ -9,11 +9,23 @@ class Collectable : public EntityModel {
 protected:
     bool m_isPickedUp = false;
     int m_value = 0;
-    explicit Collectable(const Rectangle& pos, const Direction d) : EntityModel(pos, d) {}
+    explicit Collectable(const Rectangle& pos, const Direction d);
 
 public:
+    /**
+     * @brief Tell the entity model it is picked up, stop updating Observers after one last call out and update the
+     * Score
+     */
     void bePickedUp();
+
+    /**
+     * @brief Update the observers if not yet picked up
+     */
     void update(Direction) override;
+
+    /**
+     * @brief Set the value to be passed through the Score after being picked up
+     */
     void setValue(int);
 };
 
@@ -22,7 +34,16 @@ public:
  */
 class Coin final : public Collectable {
 public:
+    /**
+     *
+     * @param pos Position of the Entity at World start
+     */
     explicit Coin(const Rectangle& pos);
+
+    /**
+     * @brief Calls the correct double dispatch
+     * @param visitor visitor
+     */
     void accept(IEntityVisitor& visitor) override;
 };
 
@@ -31,7 +52,16 @@ public:
  */
 class Fruit final : public Collectable {
 public:
+    /**
+     *
+     * @param pos Position of Entity at World start
+     */
     explicit Fruit(const Rectangle& pos);
+
+    /**
+     * @brief Calls the correct double dispatch
+     * @param visitor visitor
+     */
     void accept(IEntityVisitor& visitor) override;
 };
 

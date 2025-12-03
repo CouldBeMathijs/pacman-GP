@@ -2,6 +2,7 @@
 
 #include "ScoreKeeper.h"
 #include "Visitor.h"
+Collectable::Collectable(const Rectangle& pos, const Direction d) : EntityModel(pos, d) {}
 void Collectable::bePickedUp() {
     if (!m_isPickedUp) {
         auto& score = ScoreKeeper::getInstance();
