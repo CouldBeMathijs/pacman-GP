@@ -72,7 +72,8 @@ void World::update(Direction d) {
             for (const auto blocking_targets = getEntitiesInBounds(rectToCheck);
                  const auto& target_ptr : blocking_targets) {
 
-                if (target_ptr.get() == m_pacman.get()) continue;
+                if (target_ptr.get() == m_pacman.get())
+                    continue;
 
                 CollisionHandler handler(*m_pacman);
                 target_ptr->accept(handler);
@@ -87,8 +88,7 @@ void World::update(Direction d) {
             const double lookahead_speed = current_speed * 10.0; // Lookahead distance
 
             // 1. Check the intended direction normally
-            Rectangle future_hb_check_unscaled =
-                EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
+            Rectangle future_hb_check_unscaled = EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
             Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
 
             bool lookaheadBlocked = checkBlockage(future_hb_check_scaled);
@@ -110,13 +110,14 @@ void World::update(Direction d) {
                     Rectangle shifted_current_hb = current_hb;
 
                     if (isVerticalChange) {
-                        shifted_current_hb.moveBy(offset,0); // Shift X for vertical movement
+                        shifted_current_hb.moveBy(offset, 0); // Shift X for vertical movement
                     } else {
                         shifted_current_hb.moveBy(0, offset); // Shift Y for horizontal movement
                     }
 
                     // Calculate lookahead from the SHIFTED position
-                    Rectangle shifted_future = EntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
+                    Rectangle shifted_future =
+                        EntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
                     Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON);
 
                     // If this shifted path is clear, we found a corner!
@@ -144,7 +145,8 @@ void World::update(Direction d) {
         {
             const auto interaction_targets = getEntitiesInBounds(current_hb.scaledBy(0.2));
             for (const auto& target_ptr : interaction_targets) {
-                if (target_ptr.get() == m_pacman.get()) continue;
+                if (target_ptr.get() == m_pacman.get())
+                    continue;
 
                 CollisionHandler pacmanInitiates(*m_pacman);
                 target_ptr->accept(pacmanInitiates);
