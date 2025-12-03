@@ -7,9 +7,9 @@
 #include "Visitor.h"
 
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <ranges>
-#include <cmath>
 #include <vector>
 
 void World::addEntity(std::shared_ptr<EntityModel> e) { m_entities.emplace_back(std::move(e)); }
@@ -64,7 +64,8 @@ void World::update(Direction d) {
     {
         constexpr double EPSILON = 0.01;
         const Rectangle current_hb = m_pacman->getHitBox();
-        const double current_speed = std::round(60 * Stopwatch::getInstance().getDeltaTime()) * m_pacman->getSpeed() * 1.f/60;
+        const double current_speed =
+            std::round(60 * Stopwatch::getInstance().getDeltaTime()) * m_pacman->getSpeed() * 1.f / 60;
 
         // -------------------------------------------------------
         // Helper Lambda: Checks if a specific hitbox is blocked by walls
