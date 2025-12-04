@@ -8,7 +8,7 @@
 
 LevelState::LevelState() : m_factory(std::make_shared<ViewCompatibleEntityFactory>()) {
     const WorldAsciiGridParser parser;
-    m_world = WorldCreator::createWorld("./assets/worldmap", parser , m_factory);
+    m_world = WorldCreator::createWorld("./assets/worldmap", parser, m_factory);
 }
 
 void LevelState::update(const Direction d) {

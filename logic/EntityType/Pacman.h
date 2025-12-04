@@ -68,4 +68,4 @@ public:
     void setHitBox(const Rectangle& hb);
 };
 
-    #endif // PACMAN_PACMAN_H
+#endif // PACMAN_PACMAN_H
