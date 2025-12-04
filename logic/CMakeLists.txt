@@ -14,6 +14,8 @@ set(LOGIC_SOURCES
         Subject.cpp
         Visitor.cpp
         World.cpp
+        WorldAsciiGridParser.cpp
+        WorldCreator.cpp
 )
 add_compile_options(-Wall)
 

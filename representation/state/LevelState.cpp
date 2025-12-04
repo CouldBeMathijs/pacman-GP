@@ -3,9 +3,12 @@
 #include "GameOverState.h"
 #include "PausedState.h"
 #include "VictoryState.h"
+#include "WorldAsciiGridParser.h"
+#include "WorldCreator.h"
 
 LevelState::LevelState() : m_factory(std::make_shared<ViewCompatibleEntityFactory>()) {
-    m_world = WorldCreator::createWorldFromFile("./assets/worldmap", m_factory);
+    const WorldAsciiGridParser parser;
+    m_world = WorldCreator::createWorld("./assets/worldmap", parser , m_factory);
 }
 
 void LevelState::update(const Direction d) {

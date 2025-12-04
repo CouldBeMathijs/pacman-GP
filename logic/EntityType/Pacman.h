@@ -11,8 +11,8 @@ class Pacman final : public EntityModel {
 private:
     Position m_spawnPoint = getHitBox().topLeft;
     bool m_ghostTouch = false;
-    double m_speed = LogicConstants::BASE_SPEED; // + 0.00025 * ScoreKeeper::getInstance().getLevel();
     bool m_isDying = false;
+    double m_speed = LogicConstants::BASE_SPEED;
 
 public:
     explicit Pacman(const Rectangle& pos);
@@ -68,4 +68,4 @@ public:
     void setHitBox(const Rectangle& hb);
 };
 
-#endif // PACMAN_PACMAN_H
+    #endif // PACMAN_PACMAN_H
