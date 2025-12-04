@@ -1,7 +1,7 @@
 #include "World.h"
 
-#include "AbstractEntityFactory.h"
 #include "EntityType/Pacman.h"
+#include "IEntityFactory.h"
 #include "LogicConstants.h"
 #include "Stopwatch.h"
 #include "Visitor.h"
@@ -12,15 +12,15 @@
 #include <ranges>
 #include <vector>
 
-void World::addEntity(std::shared_ptr<EntityModel> e) { m_entities.emplace_back(std::move(e)); }
-std::vector<std::shared_ptr<EntityModel>> World::getEntities() { return m_entities; }
+void World::addEntity(std::shared_ptr<IEntityModel> e) { m_entities.emplace_back(std::move(e)); }
+std::vector<std::shared_ptr<IEntityModel>> World::getEntities() { return m_entities; }
 
-std::vector<std::shared_ptr<EntityModel>> World::getEntitiesInBounds(const Rectangle& boundBox) {
-    std::vector<std::shared_ptr<EntityModel>> results;
+std::vector<std::shared_ptr<IEntityModel>> World::getEntitiesInBounds(const Rectangle& boundBox) {
+    std::vector<std::shared_ptr<IEntityModel>> results;
 
     std::ranges::copy_if(m_entities,
                          std::back_inserter(results), // Efficiently adds elements to the results vector
-                         [&boundBox](const std::shared_ptr<EntityModel>& entity) {
+                         [&boundBox](const std::shared_ptr<IEntityModel>& entity) {
                              // Check if the entity (which is a shared_ptr) is not null and is in bounds.
                              return entity && entity->isInBounds(boundBox);
                          });
@@ -90,7 +90,7 @@ void World::update(Direction d) {
             const double lookahead_speed = 0.05; // Lookahead distance
 
             // 1. Check the intended direction normally
-            Rectangle future_hb_check_unscaled = EntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
+            Rectangle future_hb_check_unscaled = IEntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
             Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
 
             bool lookaheadBlocked = checkBlockage(future_hb_check_scaled);
@@ -119,7 +119,7 @@ void World::update(Direction d) {
 
                     // Calculate lookahead from the SHIFTED position
                     Rectangle shifted_future =
-                        EntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
+                        IEntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
                     Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON);
 
                     // If this shifted path is clear, we found a corner!
@@ -169,7 +169,7 @@ void World::update(Direction d) {
         }
 
         // --- Final Movement Calculation (unchanged) ---
-        const Rectangle future_hb = EntityModel::calculateFutureHitBox(current_hb, d, current_speed);
+        const Rectangle future_hb = IEntityModel::calculateFutureHitBox(current_hb, d, current_speed);
         const auto search_future_hb = future_hb.scaledBy(1 - EPSILON);
 
         if (!checkBlockage(search_future_hb)) {

@@ -1,7 +1,7 @@
 #ifndef PACMAN_LEVELSTATE_H
 #define PACMAN_LEVELSTATE_H
 #include "../ViewCompatibleEntityFactory.h"
-#include "AbstractState.h"
+#include "IState.h"
 #include "World.h"
 
 /**
@@ -10,7 +10,7 @@
  * * On Victory: goes to Victory and requests its own deletion
  * * On Escape: call the pause state
  */
-class LevelState final : public AbstractState {
+class LevelState final : public IState {
 private:
     World m_world;
     std::shared_ptr<ViewCompatibleEntityFactory> m_factory;

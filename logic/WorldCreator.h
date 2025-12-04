@@ -2,13 +2,13 @@
 #define PACMAN_WORLD_CREATOR_H
 #include "World.h"
 
-class AbstractEntityFactory;
+class IEntityFactory;
 class IWorldConfigParser;
 class WorldCreator {
 public:
     // Takes the parser strategy as an argument
     static World createWorld(const std::string& filename, const IWorldConfigParser& parser,
-                      const std::shared_ptr<AbstractEntityFactory>& factory);
+                      const std::shared_ptr<IEntityFactory>& factory);
 };
 
 #endif

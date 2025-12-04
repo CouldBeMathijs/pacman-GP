@@ -1,14 +1,14 @@
 #ifndef PACMAN_VICTORYSTATE_H
 #define PACMAN_VICTORYSTATE_H
 
-#include "AbstractState.h"
+#include "IState.h"
 #include <SFML/Graphics.hpp>
 
 /**
  * @brief Shows level completed screen
  * * On keypress: go to new Level State
  */
-class VictoryState final : public AbstractState {
+class VictoryState final : public IState {
 private:
     sf::Text m_victoryText;
     sf::Text m_pressAnyKeyText;

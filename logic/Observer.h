@@ -1,7 +1,7 @@
 #ifndef PACMAN_OBSERVER_H
 #define PACMAN_OBSERVER_H
 
-class Subject;
+class ISubject;
 /**
  * @brief Pure virtual base class for the observer pattern
  */

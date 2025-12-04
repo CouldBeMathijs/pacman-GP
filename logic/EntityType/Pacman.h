@@ -1,13 +1,13 @@
 #ifndef PACMAN_PACMAN_H
 #define PACMAN_PACMAN_H
-#include "EntityModel.h"
+#include "IEntityModel.h"
 #include "LogicConstants.h"
 #include "ScoreKeeper.h"
 
 /**
  * @brief The player character
  */
-class Pacman final : public EntityModel {
+class Pacman final : public IEntityModel {
 private:
     Position m_spawnPoint = getHitBox().topLeft;
     bool m_ghostTouch = false;

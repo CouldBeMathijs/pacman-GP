@@ -6,7 +6,7 @@
 #include "EntityType/Pacman.h"
 
 // --- Forward Declarations ---
-class EntityModel;
+class IEntityModel;
 class Fruit;
 class Wall;
 class AbstractGhost;
@@ -138,11 +138,11 @@ void CollisionResolver<TargetType>::visit(Pacman& initiator) {
  */
 class CollisionHandler final : public IEntityVisitor {
 private:
-    EntityModel& m_initiator;
+    IEntityModel& m_initiator;
     CollisionResult m_result;
 
 public:
-    explicit CollisionHandler(EntityModel& initiator) : m_initiator(initiator) {}
+    explicit CollisionHandler(IEntityModel& initiator) : m_initiator(initiator) {}
     [[nodiscard]] const CollisionResult& getResult() const { return m_result; }
 
     // --- The bridging methods ---

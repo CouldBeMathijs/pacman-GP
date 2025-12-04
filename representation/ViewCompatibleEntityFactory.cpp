@@ -7,37 +7,37 @@
 #include "EntityView.h"
 #include "ScoreView.h"
 
-std::shared_ptr<EntityModel> ViewCompatibleEntityFactory::createPacman(const Rectangle& p) {
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createPacman(const Rectangle& p) {
     auto pacman = createEntityWithView<Pacman, PacmanView>(p);
-    const auto scoreview = std::make_shared<ScoreView>();
-    pacman->addObserver(scoreview);
+    const auto scoreView = std::make_shared<ScoreView>();
+    pacman->addObserver(scoreView);
     return pacman;
 }
 
-std::shared_ptr<EntityModel> ViewCompatibleEntityFactory::createWall(const Rectangle& p) {
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createWall(const Rectangle& p) {
     return createEntityWithView<Wall, WallView>(p);
 }
 
-std::shared_ptr<EntityModel> ViewCompatibleEntityFactory::createCoin(const Rectangle& p) {
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createCoin(const Rectangle& p) {
     return createEntityWithView<Coin, CoinView>(p);
 }
 
-std::shared_ptr<EntityModel> ViewCompatibleEntityFactory::createFruit(const Rectangle& p) {
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createFruit(const Rectangle& p) {
     return createEntityWithView<Fruit, FruitView>(p);
 }
 
-std::shared_ptr<EntityModel> ViewCompatibleEntityFactory::createOrangeGhost(const Rectangle& p) {
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createOrangeGhost(const Rectangle& p) {
     return createEntityWithView<OrangeGhost, OrangeGhostView>(p);
 }
 
-std::shared_ptr<EntityModel> ViewCompatibleEntityFactory::createRedGhost(const Rectangle& p) {
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createRedGhost(const Rectangle& p) {
     return createEntityWithView<RedGhost, RedGhostView>(p);
 }
 
-std::shared_ptr<EntityModel> ViewCompatibleEntityFactory::createBlueGhost(const Rectangle& p) {
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createBlueGhost(const Rectangle& p) {
     return createEntityWithView<BlueGhost, BlueGhostView>(p);
 }
 
-std::shared_ptr<EntityModel> ViewCompatibleEntityFactory::createPinkGhost(const Rectangle& p) {
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createPinkGhost(const Rectangle& p) {
     return createEntityWithView<PinkGhost, PinkGhostView>(p);
 }

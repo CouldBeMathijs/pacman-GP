@@ -1,9 +1,9 @@
 #include "WorldCreator.h"
 
-#include "AbstractEntityFactory.h"
+#include "IEntityFactory.h"
 #include "IWorldConfigParser.h"
 World WorldCreator::createWorld(const std::string& filename, const IWorldConfigParser& parser,
-                                const std::shared_ptr<AbstractEntityFactory>& factory) {
+                                const std::shared_ptr<IEntityFactory>& factory) {
 
     const std::vector<std::vector<char>> gridData = parser.parse(filename);
 

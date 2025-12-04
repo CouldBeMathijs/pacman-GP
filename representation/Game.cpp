@@ -1,8 +1,8 @@
 #include "Game.h"
 
 #include "Camera.h"
+#include "ISubject.h"
 #include "Stopwatch.h"
-#include "Subject.h"
 
 #include <SFML/Graphics.hpp>
 

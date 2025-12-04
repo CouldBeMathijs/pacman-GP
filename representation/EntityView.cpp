@@ -11,10 +11,10 @@
 
 #include <memory>
 
-EntityView::EntityView(Assets::TextureLocation m, std::shared_ptr<EntityModel> n)
+IEntityView::IEntityView(Assets::TextureLocation m, std::shared_ptr<IEntityModel> n)
     : m_coupledEntity(std::move(n)), m_currentSprite(m) {}
 
-void EntityView::update() {
+void IEntityView::update() {
     auto& camera = Camera::getInstance();
     auto& window = camera.getWindow();
     animate();
@@ -40,20 +40,20 @@ void EntityView::update() {
     window.draw(sprite);
 }
 
-DirectionalEntityView::DirectionalEntityView(Assets::TextureLocation m, std::shared_ptr<EntityModel> n,
+IDirectionalEntityView::IDirectionalEntityView(Assets::TextureLocation m, std::shared_ptr<IEntityModel> n,
                                              const int amountOfTextures)
-    : EntityView(m, std::move(n)) {
+    : IEntityView(m, std::move(n)) {
     this->m_amountOfTextures = amountOfTextures;
 }
 
-void DirectionalEntityView::update() {
+void IDirectionalEntityView::update() {
     m_currentSprite.top =
         m_topBase + 50 * (getCurrentTextureOffset() +
                           m_amountOfTextures * static_cast<unsigned int>(getCoupledEntity()->getDirection()));
-    EntityView::update();
+    IEntityView::update();
 }
 
-void EntityView::animate() {
+void IEntityView::animate() {
     if (m_amountOfTextures <= 1) {
         return;
     }
@@ -80,37 +80,37 @@ void EntityView::animate() {
     }
 }
 
-unsigned int EntityView::getCurrentTextureOffset() const { return m_currentTextureOffset; }
+unsigned int IEntityView::getCurrentTextureOffset() const { return m_currentTextureOffset; }
 
-std::shared_ptr<EntityModel> EntityView::getCoupledEntity() { return m_coupledEntity; }
+std::shared_ptr<IEntityModel> IEntityView::getCoupledEntity() { return m_coupledEntity; }
 
-CoinView::CoinView(std::shared_ptr<EntityModel> e)
-    : EntityView(Assets::getSpriteInfo(Assets::CoinBase), std::move(e)) {}
+CoinView::CoinView(std::shared_ptr<IEntityModel> e)
+    : IEntityView(Assets::getSpriteInfo(Assets::CoinBase), std::move(e)) {}
 
-FruitView::FruitView(std::shared_ptr<EntityModel> e)
-    : EntityView(Assets::getSpriteInfo(Assets::FruitBase), std::move(e)) {}
+FruitView::FruitView(std::shared_ptr<IEntityModel> e)
+    : IEntityView(Assets::getSpriteInfo(Assets::FruitBase), std::move(e)) {}
 
-BlueGhostView::BlueGhostView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Assets::getSpriteInfo(Assets::GhostBlueBase), std::move(e), 2) {}
+BlueGhostView::BlueGhostView(std::shared_ptr<IEntityModel> e)
+    : IDirectionalEntityView(Assets::getSpriteInfo(Assets::GhostBlueBase), std::move(e), 2) {}
 
-PinkGhostView::PinkGhostView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Assets::getSpriteInfo(Assets::GhostPinkBase), std::move(e), 2) {}
+PinkGhostView::PinkGhostView(std::shared_ptr<IEntityModel> e)
+    : IDirectionalEntityView(Assets::getSpriteInfo(Assets::GhostPinkBase), std::move(e), 2) {}
 
-OrangeGhostView::OrangeGhostView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Assets::getSpriteInfo(Assets::GhostOrangeBase), std::move(e), 2) {}
+OrangeGhostView::OrangeGhostView(std::shared_ptr<IEntityModel> e)
+    : IDirectionalEntityView(Assets::getSpriteInfo(Assets::GhostOrangeBase), std::move(e), 2) {}
 
-RedGhostView::RedGhostView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Assets::getSpriteInfo(Assets::GhostRedBase), std::move(e), 2) {}
+RedGhostView::RedGhostView(std::shared_ptr<IEntityModel> e)
+    : IDirectionalEntityView(Assets::getSpriteInfo(Assets::GhostRedBase), std::move(e), 2) {}
 
-PacmanView::PacmanView(std::shared_ptr<EntityModel> e)
-    : DirectionalEntityView(Assets::getSpriteInfo(Assets::PacmanBase), std::move(e), 3) {}
+PacmanView::PacmanView(std::shared_ptr<IEntityModel> e)
+    : IDirectionalEntityView(Assets::getSpriteInfo(Assets::PacmanBase), std::move(e), 3) {}
 void PacmanView::update() {
     auto pacman = std::static_pointer_cast<Pacman>(getCoupledEntity());
     if (pacman->isDying()) {
         return;
     }
-    DirectionalEntityView::update();
+    IDirectionalEntityView::update();
 }
 
-WallView::WallView(std::shared_ptr<EntityModel> e)
-    : EntityView(Assets::getSpriteInfo(Assets::WallBase), std::move(e)) {}
+WallView::WallView(std::shared_ptr<IEntityModel> e)
+    : IEntityView(Assets::getSpriteInfo(Assets::WallBase), std::move(e)) {}

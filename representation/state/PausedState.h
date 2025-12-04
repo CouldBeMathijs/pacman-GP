@@ -1,14 +1,14 @@
 #ifndef PACMAN_PAUSEDSTATE_H
 #define PACMAN_PAUSEDSTATE_H
-#include "AbstractState.h"
 #include "Direction.h"
+#include "IState.h"
 
 /**
  * @brief Game State for pausing mid-game
  * * On keypress: Go back to game window
  * * On escape: Go back to main menu
  */
-class PausedState final : public AbstractState {
+class PausedState final : public IState {
 private:
     sf::Text m_pacmanText;
     sf::Text m_playText;

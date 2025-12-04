@@ -1,7 +1,7 @@
 #include "Ghost.h"
 
 #include "Visitor.h"
-AbstractGhost::AbstractGhost(const Rectangle& pos) : EntityModel(pos, Direction::EAST) {}
+AbstractGhost::AbstractGhost(const Rectangle& pos) : IEntityModel(pos, Direction::EAST) {}
 void AbstractGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 double AbstractGhost::getSpeed() const { return m_speed; }
 BlueGhost::BlueGhost(const Rectangle& pos) : AbstractGhost(pos) {}

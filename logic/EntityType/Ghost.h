@@ -1,12 +1,12 @@
 #ifndef PACMAN_GHOST_H
 #define PACMAN_GHOST_H
-#include "EntityModel.h"
+#include "IEntityModel.h"
 #include "LogicConstants.h"
 
 /**
  * @brief Virtual class to base specific Ghost types on
  */
-class AbstractGhost : public EntityModel {
+class AbstractGhost : public IEntityModel {
 protected:
     double m_speed = LogicConstants::BASE_SPEED * 0.8;
     explicit AbstractGhost(const Rectangle& pos);

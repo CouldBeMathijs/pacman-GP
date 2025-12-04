@@ -8,7 +8,7 @@ StateManager::StateManager() { emplace(std::make_unique<MenuState>()); }
 void StateManager::update(Direction d) {
     this->top()->update(d);
     const unsigned int requestedPops = this->top()->getRequestedPops();
-    std::unique_ptr<AbstractState> stateToPush;
+    std::unique_ptr<IState> stateToPush;
     if (this->top()->isRequestedState()) {
         stateToPush = (this->top()->getRequestedState());
     }
@@ -22,4 +22,4 @@ void StateManager::update(Direction d) {
 
 void StateManager::handleInput(const sf::Event& event) { this->top()->handleInput(event); }
 
-bool StateManager::empty() const { return std::stack<std::unique_ptr<AbstractState>>::empty(); }
+bool StateManager::empty() const { return std::stack<std::unique_ptr<IState>>::empty(); }

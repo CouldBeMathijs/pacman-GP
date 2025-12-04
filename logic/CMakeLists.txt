@@ -2,16 +2,16 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LOGIC_SOURCES
-        EntityModel.cpp
         EntityType/Collectable.cpp
         EntityType/Ghost.cpp
         EntityType/Pacman.cpp
         EntityType/Wall.cpp
+        IEntityModel.cpp
+        ISubject.cpp
         Position.cpp
         Random.cpp
         ScoreKeeper.cpp
         Stopwatch.cpp
-        Subject.cpp
         Visitor.cpp
         World.cpp
         WorldAsciiGridParser.cpp

@@ -1,11 +1,11 @@
 #ifndef PACMAN_COLLECTABLE_H
 #define PACMAN_COLLECTABLE_H
-#include "EntityModel.h"
+#include "IEntityModel.h"
 
 /**
  * @brief Virtual class for all collectables
  */
-class Collectable : public EntityModel {
+class Collectable : public IEntityModel {
 protected:
     bool m_isPickedUp = false;
     int m_value = 0;

@@ -8,14 +8,14 @@
 
 class IEntityVisitor;
 
-class Subject {
+class ISubject {
 private:
     std::vector<std::shared_ptr<Observer>> m_observers;
 
 public:
     virtual void accept(IEntityVisitor& visitor) = 0;
     virtual void update(Direction);
-    virtual ~Subject();
+    virtual ~ISubject();
     void addObserver(std::shared_ptr<Observer>);
     void updateObservers() const;
 };

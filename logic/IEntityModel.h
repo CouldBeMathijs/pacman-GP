@@ -1,11 +1,11 @@
 #ifndef PACMAN_ENTITY_MODEL_H
 #define PACMAN_ENTITY_MODEL_H
+#include "ISubject.h"
 #include "Position.h"
-#include "Subject.h"
 
-class EntityModel : public Subject {
+class IEntityModel : public ISubject {
 protected:
-    EntityModel(Rectangle hitBox, Direction);
+    IEntityModel(Rectangle hitBox, Direction);
     Direction m_direction;
     Rectangle m_hitBox;
 

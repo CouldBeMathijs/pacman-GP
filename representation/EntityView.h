@@ -3,7 +3,7 @@
 #include "Observer.h"
 
 #include "AssetManager.h"
-#include "EntityModel.h"
+#include "IEntityModel.h"
 #include <SFML/Graphics.hpp>
 
 #include <memory>
@@ -11,16 +11,16 @@
 /**
  * @brief Virtual class providing the common ground needed for displaying entities
  */
-class EntityView : public Observer {
+class IEntityView : public Observer {
 private:
     bool m_animationCycleMovingUp = true;
     const double m_timePerFrame = 0.12;
     double m_timeAccumulator = 0.0;
-    std::shared_ptr<EntityModel> m_coupledEntity;
+    std::shared_ptr<IEntityModel> m_coupledEntity;
 
 protected:
     Assets::TextureLocation m_currentSprite;
-    explicit EntityView(Assets::TextureLocation, std::shared_ptr<EntityModel>);
+    explicit IEntityView(Assets::TextureLocation, std::shared_ptr<IEntityModel>);
     unsigned int m_amountOfTextures = 1;
     unsigned int m_currentTextureOffset = 0;
 
@@ -28,62 +28,62 @@ public:
     void update() override;
     void animate();
     [[nodiscard]] unsigned int getCurrentTextureOffset() const;
-    std::shared_ptr<EntityModel> getCoupledEntity();
+    std::shared_ptr<IEntityModel> getCoupledEntity();
 };
 
 /**
  * @brief Virtual class providing the common ground needed for displaying direction entities
  */
-class DirectionalEntityView : public EntityView {
+class IDirectionalEntityView : public IEntityView {
 private:
     int m_topBase = m_currentSprite.top;
 
 protected:
-    DirectionalEntityView(Assets::TextureLocation m, std::shared_ptr<EntityModel> n, int amountOfTextures);
+    IDirectionalEntityView(Assets::TextureLocation m, std::shared_ptr<IEntityModel> n, int amountOfTextures);
 
 public:
     void update() override;
 };
 
-class BlueGhostView final : public DirectionalEntityView {
+class BlueGhostView final : public IDirectionalEntityView {
 public:
-    explicit BlueGhostView(std::shared_ptr<EntityModel>);
+    explicit BlueGhostView(std::shared_ptr<IEntityModel>);
 };
 
-class OrangeGhostView final : public DirectionalEntityView {
+class OrangeGhostView final : public IDirectionalEntityView {
 public:
-    explicit OrangeGhostView(std::shared_ptr<EntityModel>);
+    explicit OrangeGhostView(std::shared_ptr<IEntityModel>);
 };
 
-class PinkGhostView final : public DirectionalEntityView {
+class PinkGhostView final : public IDirectionalEntityView {
 public:
-    explicit PinkGhostView(std::shared_ptr<EntityModel>);
+    explicit PinkGhostView(std::shared_ptr<IEntityModel>);
 };
 
-class RedGhostView final : public DirectionalEntityView {
+class RedGhostView final : public IDirectionalEntityView {
 public:
-    explicit RedGhostView(std::shared_ptr<EntityModel>);
+    explicit RedGhostView(std::shared_ptr<IEntityModel>);
 };
 
-class CoinView final : public EntityView {
+class CoinView final : public IEntityView {
 public:
-    explicit CoinView(std::shared_ptr<EntityModel>);
+    explicit CoinView(std::shared_ptr<IEntityModel>);
 };
 
-class FruitView final : public EntityView {
+class FruitView final : public IEntityView {
 public:
-    explicit FruitView(std::shared_ptr<EntityModel>);
+    explicit FruitView(std::shared_ptr<IEntityModel>);
 };
 
-class PacmanView final : public DirectionalEntityView {
+class PacmanView final : public IDirectionalEntityView {
 public:
-    explicit PacmanView(std::shared_ptr<EntityModel>);
+    explicit PacmanView(std::shared_ptr<IEntityModel>);
     void update() override;
 };
 
-class WallView final : public EntityView {
+class WallView final : public IEntityView {
 public:
-    explicit WallView(std::shared_ptr<EntityModel>);
+    explicit WallView(std::shared_ptr<IEntityModel>);
 };
 
 #endif

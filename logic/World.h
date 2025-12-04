@@ -1,7 +1,7 @@
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
 #include "EntityType/Pacman.h"
-#include "Subject.h"
+#include "ISubject.h"
 
 #include <vector>
 
@@ -16,15 +16,15 @@ enum class WorldState { RUNNING, VICTORY, GAME_OVER };
 class World {
     WorldState m_worldState = WorldState::RUNNING;
     std::shared_ptr<Pacman> m_pacman;
-    std::vector<std::shared_ptr<EntityModel>> m_entities;
+    std::vector<std::shared_ptr<IEntityModel>> m_entities;
 
 public:
     World() = default;
     [[nodiscard]] WorldState getState() const;
     std::shared_ptr<Pacman> getPacman();
-    std::vector<std::shared_ptr<EntityModel>> getEntities();
-    std::vector<std::shared_ptr<EntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
-    void addEntity(std::shared_ptr<EntityModel>);
+    std::vector<std::shared_ptr<IEntityModel>> getEntities();
+    std::vector<std::shared_ptr<IEntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
+    void addEntity(std::shared_ptr<IEntityModel>);
     void setPacman(const std::shared_ptr<Pacman>& p);
     void update(Direction);
 };

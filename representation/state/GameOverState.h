@@ -1,13 +1,13 @@
 #ifndef PACMAN_GAMEOVERSTATE_H
 #define PACMAN_GAMEOVERSTATE_H
-#include "AbstractState.h"
 #include "Direction.h"
+#include "IState.h"
 
 /**
  * @brief Game state to Game Over text
  * * On keypress: return to menu
  */
-class GameOverState final : public AbstractState {
+class GameOverState final : public IState {
 private:
     sf::Text m_gameOverText;
     sf::Text m_playText;
