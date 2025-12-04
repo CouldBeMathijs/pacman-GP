@@ -41,7 +41,7 @@ void IEntityView::update() {
 }
 
 IDirectionalEntityView::IDirectionalEntityView(Assets::TextureLocation m, std::shared_ptr<IEntityModel> n,
-                                             const int amountOfTextures)
+                                               const int amountOfTextures)
     : IEntityView(m, std::move(n)) {
     this->m_amountOfTextures = amountOfTextures;
 }
