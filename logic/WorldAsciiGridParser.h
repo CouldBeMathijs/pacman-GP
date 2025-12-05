@@ -4,6 +4,9 @@
 
 #include <fstream>
 
+/**
+ * @brief A parser to a worldGrid based on a simple ascii representation of the world
+ */
 class WorldAsciiGridParser final : public IWorldConfigParser {
 public:
     [[nodiscard]] std::vector<std::vector<char>> parse(const std::string& filename) const override;

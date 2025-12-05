@@ -5,9 +5,11 @@
 class IEntityFactory;
 class IWorldConfigParser;
 
+/**
+ * @brief Purely static class, allows for generating the world_object using different IWorldConfigParsers
+ */
 class WorldCreator {
 public:
-    // Takes the parser strategy as an argument
     static World createWorld(const std::string& filename, const IWorldConfigParser& parser,
                              const std::shared_ptr<IEntityFactory>& factory);
 };

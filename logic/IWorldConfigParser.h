@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 
+/**
+ * @brief Pure virtual class on which various to_worldGrid parsers can be based
+ */
 class IWorldConfigParser {
 public:
     virtual ~IWorldConfigParser() = default;
