@@ -17,7 +17,10 @@ void ScoreKeeper::removeCollectable() {
     m_collectablesLeft != 0 ? m_collectablesLeft-- : throw std::runtime_error("Cannot remove collectable, none left");
 }
 
-void ScoreKeeper::nextLevel() { m_level++; }
+void ScoreKeeper::nextLevel() {
+    addToScore(250);
+    m_level++;
+}
 
 unsigned int ScoreKeeper::getLevel() const { return m_level; }
 
@@ -34,14 +37,14 @@ void ScoreKeeper::update() {
     const std::chrono::duration<double> timeElapsed = now - m_lastDeductionTime;
 
     if (const double timeSinceLastDeduction_s = timeElapsed.count();
-        timeSinceLastDeduction_s >= TIME_BETWEEN_SCORE_DECREASE) {
+        timeSinceLastDeduction_s >= TIME_BETWEEN_SCORE_DECREASE_S) {
         if (m_currentScore > 0) {
             m_currentScore--;
         }
 
-        const int deductionCount = static_cast<int>(timeSinceLastDeduction_s / TIME_BETWEEN_SCORE_DECREASE);
+        const int deductionCount = static_cast<int>(timeSinceLastDeduction_s / TIME_BETWEEN_SCORE_DECREASE_S);
 
-        const std::chrono::duration<double> timeToAdvance(TIME_BETWEEN_SCORE_DECREASE * deductionCount);
+        const std::chrono::duration<double> timeToAdvance(TIME_BETWEEN_SCORE_DECREASE_S * deductionCount);
 
         m_lastDeductionTime += std::chrono::duration_cast<Clock::duration>(timeToAdvance);
     }

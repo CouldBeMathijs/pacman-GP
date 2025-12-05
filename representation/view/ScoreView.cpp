@@ -1,9 +1,9 @@
 #include "ScoreView.h"
 
-#include "AssetManager.h"
-#include "Camera.h"
+#include "../AssetManager.h"
+#include "../Camera.h"
+#include "../SfmlConstants.h"
 #include "ScoreKeeper.h"
-#include "SfmlConstants.h"
 
 ScoreView::ScoreView() {
     auto& font = Assets::getDefaultFont();

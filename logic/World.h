@@ -1,7 +1,7 @@
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
-#include "EntityType/Pacman.h"
 #include "ISubject.h"
+#include "entityType/Pacman.h"
 
 #include <vector>
 

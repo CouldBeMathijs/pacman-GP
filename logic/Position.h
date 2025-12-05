@@ -14,7 +14,7 @@ struct Position {
     // --- Assignment Operator ---
     Position& operator=(const Position& other);
 
-    // --- Compound Assignment Operators (The new additions) ---
+    // --- Compound Assignment Operators ---
     Position& operator+=(const Position& other);
     Position& operator-=(const Position& other);
 
@@ -26,10 +26,10 @@ struct Position {
     Position& operator*=(double scalar);
     Position& operator/=(double scalar);
 
-    // --- Utility Method ---
-    // [[nodiscard]] suggests the return value should not be ignored
+    // --- Utility Methods ---
     [[nodiscard]] Position rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
                                    const Position& wanted_max) const;
+    [[nodiscard]] double manhattan_distance_to(const Position& other) const;
 };
 
 // --- Non-Member Arithmetic Operators ---

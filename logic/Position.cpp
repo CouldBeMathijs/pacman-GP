@@ -120,6 +120,10 @@ Position Position::rescale(const Position& current_min, const Position& current_
     return out;
 }
 
+double Position::manhattan_distance_to(const Position& other) const {
+    return std::abs(this->x - other.x) + std::abs(this->y - other.y);
+}
+
 // --- Non-Member Operator Definitions ---
 
 /**

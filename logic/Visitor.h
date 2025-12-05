@@ -1,15 +1,15 @@
 #ifndef PACMAN_VISITOR_H
 #define PACMAN_VISITOR_H
 
-#include "EntityType/Collectable.h"
-#include "EntityType/Ghost.h"
-#include "EntityType/Pacman.h"
+#include "entityType/Collectable.h"
+#include "entityType/Ghost.h"
+#include "entityType/Pacman.h"
 
 // --- Forward Declarations ---
 class IEntityModel;
 class Fruit;
 class Wall;
-class AbstractGhost;
+class IGhost;
 class Pacman;
 
 /**
@@ -29,7 +29,7 @@ public:
 
     // A visit method for every concrete element type
     virtual void visit(Pacman& pacman) = 0;
-    virtual void visit(AbstractGhost& ghost) = 0;
+    virtual void visit(IGhost& ghost) = 0;
     virtual void visit(Wall& wall) = 0;
     virtual void visit(Coin& coin) = 0;
     virtual void visit(Fruit& fruit) = 0;
@@ -47,7 +47,7 @@ public:
 
     void visit(Pacman& target) override {} // Pacman vs Pacman ignored
 
-    void visit(AbstractGhost& target) override;
+    void visit(IGhost& target) override;
 
     void visit(Wall& target) override;
 
@@ -66,7 +66,7 @@ private:
 public:
     explicit GhostCollisionVisitor(CollisionResult& result) : m_result(result) {}
 
-    void visit(AbstractGhost& target) override;
+    void visit(IGhost& target) override;
 
     void visit(Pacman& target) override;
 
@@ -85,7 +85,7 @@ class CollectableVisitor final : public IEntityVisitor {
 public:
     void visit(Pacman& pacman) override {}
 
-    void visit(AbstractGhost& ghost) override {}
+    void visit(IGhost& ghost) override {}
 
     void visit(Wall& wall) override {}
 
@@ -115,7 +115,7 @@ public:
     void visit(Pacman& initiator) override;
 
     // 2. If the Initiator identifies itself as Ghost:
-    void visit(AbstractGhost& initiator) override {
+    void visit(IGhost& initiator) override {
         // Create the logic handler for Ghost...
         GhostCollisionVisitor logic(m_result);
         // ...and apply it to the specific target we are holding.
@@ -158,7 +158,7 @@ public:
 
     void visit(Pacman& target) override;
 
-    void visit(AbstractGhost& target) override;
+    void visit(IGhost& target) override;
 
     void visit(Wall& target) override;
 

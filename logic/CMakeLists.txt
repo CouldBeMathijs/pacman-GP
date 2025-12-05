@@ -2,10 +2,10 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LOGIC_SOURCES
-        EntityType/Collectable.cpp
-        EntityType/Ghost.cpp
-        EntityType/Pacman.cpp
-        EntityType/Wall.cpp
+        entityType/Collectable.cpp
+        entityType/Ghost.cpp
+        entityType/Pacman.cpp
+        entityType/Wall.cpp
         IEntityModel.cpp
         ISubject.cpp
         Position.cpp

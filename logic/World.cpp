@@ -1,10 +1,10 @@
 #include "World.h"
 
-#include "EntityType/Pacman.h"
 #include "IEntityFactory.h"
 #include "LogicConstants.h"
 #include "Stopwatch.h"
 #include "Visitor.h"
+#include "entityType/Pacman.h"
 
 #include <algorithm>
 #include <cmath>

@@ -1,11 +1,15 @@
 #include "ViewCompatibleEntityFactory.h"
 
-#include "EntityType/Collectable.h"
-#include "EntityType/Ghost.h"
-#include "EntityType/Pacman.h"
-#include "EntityType/Wall.h"
-#include "EntityView.h"
-#include "ScoreView.h"
+#include "entityType/Collectable.h"
+#include "entityType/Ghost.h"
+#include "entityType/Pacman.h"
+#include "entityType/Wall.h"
+#include "view/CoinView.h"
+#include "view/FruitView.h"
+#include "view/GhostView.h"
+#include "view/PacmanView.h"
+#include "view/ScoreView.h"
+#include "view/WallView.h"
 
 std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createPacman(const Rectangle& p) {
     auto pacman = createEntityWithView<Pacman, PacmanView>(p);

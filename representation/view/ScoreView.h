@@ -1,5 +1,5 @@
-#ifndef PACMAN_SCOREVIEW_H
-#define PACMAN_SCOREVIEW_H
+#ifndef PACMAN_SCORE_VIEW_H
+#define PACMAN_SCORE_VIEW_H
 #include "Observer.h"
 
 #include <SFML/Graphics.hpp>
@@ -16,4 +16,4 @@ public:
     void update() override;
 };
 
-#endif // PACMAN_SCOREVIEW_H
+#endif

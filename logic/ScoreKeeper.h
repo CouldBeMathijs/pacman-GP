@@ -21,13 +21,14 @@ private:
     TimePoint m_lastPickupTime;
     TimePoint m_lastDeductionTime;
 
-    // Constant for the multiplier decay time
+    // --- Constants ---
     static constexpr double MAX_MULTIPLIER_TIME_S = 3.0;
-    static constexpr double TIME_BETWEEN_SCORE_DECREASE = 0.5;
+    static constexpr double TIME_BETWEEN_SCORE_DECREASE_S = 0.5;
 
     ScoreKeeper();
 
 public:
+    // --- Singleton requirements ---
     ScoreKeeper(const ScoreKeeper&) = delete;
     ScoreKeeper& operator=(const ScoreKeeper&) = delete;
     static ScoreKeeper& getInstance();

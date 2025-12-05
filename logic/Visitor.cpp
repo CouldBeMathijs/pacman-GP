@@ -1,6 +1,6 @@
 #include "Visitor.h"
 
-void PacmanCollisionVisitor::visit(AbstractGhost& target) {
+void PacmanCollisionVisitor::visit(IGhost& target) {
     // Pacman vs Ghost: Game Over or Eat Ghost
     m_result.interactionOccurred = true;
 }
@@ -20,7 +20,7 @@ void PacmanCollisionVisitor::visit(Fruit& target) {
     m_result.interactionOccurred = true;
 }
 
-void GhostCollisionVisitor::visit(AbstractGhost& target) {
+void GhostCollisionVisitor::visit(IGhost& target) {
     // Ghost vs Ghost logic
     m_result.moveBlocked = true;
 }
@@ -45,8 +45,8 @@ void CollisionHandler::visit(Pacman& target) {
     m_initiator.accept(resolver);
 }
 
-void CollisionHandler::visit(AbstractGhost& target) {
-    CollisionResolver<AbstractGhost> resolver(target, m_result);
+void CollisionHandler::visit(IGhost& target) {
+    CollisionResolver<IGhost> resolver(target, m_result);
     m_initiator.accept(resolver);
 }
 
