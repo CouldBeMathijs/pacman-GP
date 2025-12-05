@@ -70,4 +70,3 @@ void IEntityView::animate() {
 unsigned int IEntityView::getCurrentTextureOffset() const { return m_currentTextureOffset; }
 
 std::shared_ptr<IEntityModel> IEntityView::getCoupledEntity() { return m_coupledEntity; }
-

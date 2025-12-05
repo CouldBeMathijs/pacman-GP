@@ -7,6 +7,4 @@ public:
     explicit FruitView(std::shared_ptr<IEntityModel>);
 };
 
-
-
 #endif

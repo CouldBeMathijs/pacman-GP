@@ -2,7 +2,8 @@
 
 #include "Visitor.h"
 
-IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode) : IEntityModel(pos, Direction::EAST), m_currentMode(start_mode) {}
+IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode)
+    : IEntityModel(pos, Direction::EAST), m_currentMode(start_mode) {}
 
 void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 

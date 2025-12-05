@@ -3,12 +3,7 @@
 #include "IEntityModel.h"
 #include "LogicConstants.h"
 
-enum class GhostMode {
-    CHASING,
-    PANICKING,
-    WAITING
-};
-
+enum class GhostMode { CHASING, PANICKING, WAITING };
 
 /**
  * @brief Virtual class to base specific Ghost types on

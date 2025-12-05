@@ -11,4 +11,3 @@ OrangeGhostView::OrangeGhostView(std::shared_ptr<IEntityModel> e)
 
 RedGhostView::RedGhostView(std::shared_ptr<IEntityModel> e)
     : IDirectionalEntityView(Assets::getSpriteInfo(Assets::GhostRedBase), std::move(e), 2) {}
-

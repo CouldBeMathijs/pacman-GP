@@ -7,5 +7,4 @@ public:
     explicit WallView(std::shared_ptr<IEntityModel>);
 };
 
-
 #endif
