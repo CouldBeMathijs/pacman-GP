@@ -5,8 +5,10 @@
 class IGhostView : public IDirectionalEntityView {
 private:
     Assets::TextureLocation m_baseSprite;
+
 protected:
     IGhostView(Assets::TextureLocation, std::shared_ptr<IEntityModel>);
+
 public:
     void update() override;
 };
