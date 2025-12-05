@@ -17,7 +17,7 @@ public:
     explicit OrangeGhostView(std::shared_ptr<IEntityModel>);
 };
 
-class PinkGhostView final : public IGhostView{
+class PinkGhostView final : public IGhostView {
 public:
     explicit PinkGhostView(std::shared_ptr<IEntityModel>);
 };

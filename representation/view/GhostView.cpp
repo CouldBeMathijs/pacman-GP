@@ -1,6 +1,7 @@
 #include "GhostView.h"
 
-IGhostView::IGhostView(Assets::TextureLocation t, std::shared_ptr<IEntityModel> e) : IDirectionalEntityView(t, std::move(e), 2) {}
+IGhostView::IGhostView(Assets::TextureLocation t, std::shared_ptr<IEntityModel> e)
+    : IDirectionalEntityView(t, std::move(e), 2) {}
 
 BlueGhostView::BlueGhostView(std::shared_ptr<IEntityModel> e)
     : IGhostView(Assets::getSpriteInfo(Assets::GhostBlueBase), std::move(e)) {}
