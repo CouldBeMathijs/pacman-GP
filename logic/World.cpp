@@ -61,7 +61,9 @@ void World::update(Direction d) {
         m_pacman->resetGhostTouch();
     }
 
-    {
+    updatePacman(d);
+}
+void World::updatePacman(Direction d){
         constexpr double EPSILON = 0.01;
         const Rectangle current_hb = m_pacman->getHitBox();
         const double current_speed =
@@ -87,11 +89,11 @@ void World::update(Direction d) {
         };
 
         if (const Direction current_direction = m_pacman->getDirection(); d != current_direction) {
-            const double lookahead_speed = 0.05; // Lookahead distance
+            constexpr double lookahead_speed = 0.05; // Lookahead distance
 
             // 1. Check the intended direction normally
-            Rectangle future_hb_check_unscaled = IEntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
-            Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
+            const Rectangle future_hb_check_unscaled = IEntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
+            const Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
 
             bool lookaheadBlocked = checkBlockage(future_hb_check_scaled);
 
@@ -168,7 +170,7 @@ void World::update(Direction d) {
             }
         }
 
-        // --- Final Movement Calculation (unchanged) ---
+        // --- Final Movement Calculation ---
         const Rectangle future_hb = IEntityModel::calculateFutureHitBox(current_hb, d, current_speed);
         const auto search_future_hb = future_hb.scaledBy(1 - EPSILON);
 
@@ -180,6 +182,4 @@ void World::update(Direction d) {
 
         m_pacman->update(d);
     }
-}
-
 WorldState World::getState() const { return m_worldState; }

@@ -25,8 +25,9 @@ public:
     std::vector<std::shared_ptr<IEntityModel>> getEntities();
     std::vector<std::shared_ptr<IEntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
     void addEntity(std::shared_ptr<IEntityModel>);
-    void setPacman(const std::shared_ptr<Pacman>& p);
-    void update(Direction);
+    void setPacman(const std::shared_ptr<Pacman>&);
+    void update(Direction d);
+    void updatePacman(Direction d);
 };
 
 #endif // PACMAN_WORLD_H
