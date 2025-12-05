@@ -1,4 +1,5 @@
 #include "Random.h"
+
 Random::Random() {
     std::random_device rd;
     m_generator = std::mt19937(rd());

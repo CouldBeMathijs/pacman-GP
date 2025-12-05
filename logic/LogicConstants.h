@@ -1,5 +1,6 @@
 #ifndef PACMAN_LOGIC_CONSTANTS_H
 #define PACMAN_LOGIC_CONSTANTS_H
+
 namespace LogicConstants {
 constexpr unsigned int AMOUNT_OF_TILES_WIDTH = 20;
 constexpr double TILE_WIDTH = 1.0 / AMOUNT_OF_TILES_WIDTH;

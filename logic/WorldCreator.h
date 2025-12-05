@@ -4,6 +4,7 @@
 
 class IEntityFactory;
 class IWorldConfigParser;
+
 class WorldCreator {
 public:
     // Takes the parser strategy as an argument

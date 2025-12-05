@@ -2,6 +2,7 @@
 
 #include "../AssetManager.h"
 #include "../Camera.h"
+
 PausedState::PausedState() {
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();

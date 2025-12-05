@@ -2,6 +2,7 @@
 #define PACMAN_OBSERVER_H
 
 class ISubject;
+
 /**
  * @brief Pure virtual base class for the observer pattern
  */

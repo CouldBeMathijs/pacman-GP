@@ -13,8 +13,11 @@ public:
     virtual ~IState() = default;
     virtual void update(Direction) = 0;
     virtual void handleInput(const sf::Event&) = 0;
+
     [[nodiscard]] unsigned int getRequestedPops() const { return m_requestedPops; }
+
     [[nodiscard]] bool isRequestedState() const { return m_requestedState.get(); }
+
     [[nodiscard]] std::unique_ptr<IState> getRequestedState() { return std::move(m_requestedState); }
 
 protected:

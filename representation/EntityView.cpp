@@ -104,6 +104,7 @@ RedGhostView::RedGhostView(std::shared_ptr<IEntityModel> e)
 
 PacmanView::PacmanView(std::shared_ptr<IEntityModel> e)
     : IDirectionalEntityView(Assets::getSpriteInfo(Assets::PacmanBase), std::move(e), 3) {}
+
 void PacmanView::update() {
     auto pacman = std::static_pointer_cast<Pacman>(getCoupledEntity());
     if (pacman->isDying()) {

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <limits>
 #include <stdexcept>
+
 /**
  * @brief Assignment operator.
  * @param other The Position to copy from.
@@ -182,9 +183,11 @@ std::ostream& operator<<(std::ostream& os, const Position& p) {
 
 Rectangle::Rectangle(const Position& top_left, const Position& bottom_right)
     : topLeft(top_left), bottomRight(bottom_right) {}
+
 Rectangle::Rectangle()
     : topLeft{std::numeric_limits<float>::signaling_NaN(), std::numeric_limits<float>::signaling_NaN()},
       bottomRight(topLeft) {}
+
 void Rectangle::moveTo(const Position& newTopLeft) {
     // Calculate the current width and height of the rectangle
     double width = bottomRight.x - topLeft.x;

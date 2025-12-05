@@ -74,6 +74,7 @@ public:
 
     // Ghosts ignore items
     void visit(Coin& target) override {}
+
     void visit(Fruit& target) override {}
 };
 
@@ -83,7 +84,9 @@ public:
 class CollectableVisitor final : public IEntityVisitor {
 public:
     void visit(Pacman& pacman) override {}
+
     void visit(AbstractGhost& ghost) override {}
+
     void visit(Wall& wall) override {}
 
     void visit(Coin& coin) override;
@@ -122,9 +125,12 @@ public:
     // The Initiator in this game is usually dynamic (Pacman/Ghost),
     // so it is unlikely a Wall will be the Initiator, but we must implement the interface.
     void visit(Wall& wall) override {}
+
     void visit(Coin& coin) override {}
+
     void visit(Fruit& fruit) override {}
 };
+
 template <typename TargetType>
 void CollisionResolver<TargetType>::visit(Pacman& initiator) {
     // Create the logic handler for Pacman...
@@ -143,6 +149,7 @@ private:
 
 public:
     explicit CollisionHandler(IEntityModel& initiator) : m_initiator(initiator) {}
+
     [[nodiscard]] const CollisionResult& getResult() const { return m_result; }
 
     // --- The bridging methods ---

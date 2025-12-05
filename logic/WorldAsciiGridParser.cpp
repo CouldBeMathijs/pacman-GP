@@ -1,6 +1,7 @@
 #include "WorldAsciiGridParser.h"
 
 #include <stdexcept>
+
 std::vector<std::vector<char>> WorldAsciiGridParser::parse(const std::string& filename) const {
     std::ifstream inputFile(filename);
     if (!inputFile.is_open()) {

@@ -13,6 +13,7 @@
 #include <vector>
 
 void World::addEntity(std::shared_ptr<IEntityModel> e) { m_entities.emplace_back(std::move(e)); }
+
 std::vector<std::shared_ptr<IEntityModel>> World::getEntities() { return m_entities; }
 
 std::vector<std::shared_ptr<IEntityModel>> World::getEntitiesInBounds(const Rectangle& boundBox) {
@@ -27,7 +28,9 @@ std::vector<std::shared_ptr<IEntityModel>> World::getEntitiesInBounds(const Rect
 
     return results;
 }
+
 void World::setPacman(const std::shared_ptr<Pacman>& p) { m_pacman = p; }
+
 std::shared_ptr<Pacman> World::getPacman() { return m_pacman; }
 
 /**
