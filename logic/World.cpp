@@ -37,7 +37,7 @@ std::shared_ptr<Pacman> World::getPacman() { return m_pacman; }
  *
  * @param d The direction input received from the user for Pacman's intended movement.
  */
-void World::update(Direction d) {
+void World::update(const Direction d) {
     auto& score = ScoreKeeper::getInstance();
     if (!m_pacman) {
         throw std::runtime_error("Pacman not defined");
@@ -63,6 +63,7 @@ void World::update(Direction d) {
 
     updatePacman(d);
 }
+
 void World::updatePacman(Direction d) {
     constexpr double EPSILON = 0.01;
     const Rectangle current_hb = m_pacman->getHitBox();
@@ -145,9 +146,23 @@ void World::updatePacman(Direction d) {
     m_pacman->setDirection(d);
 
     // --- Interaction Checks ---
-    {
-        const auto interaction_targets = getEntitiesInBounds(current_hb.scaledBy(0.2));
-        for (const auto& target_ptr : interaction_targets) {
+    handleCollectables(current_hb);
+
+
+    // --- Final Movement Calculation ---
+    const Rectangle future_hb = IEntityModel::calculateFutureHitBox(current_hb, d, current_speed);
+
+    if (const auto search_future_hb = future_hb.scaledBy(1 - EPSILON); !checkBlockage(search_future_hb)) {
+        m_pacman->setHitBox(future_hb);
+    } else {
+        m_pacman->setDirection(Direction::NONE);
+    }
+
+    m_pacman->update(d);
+}
+
+void World::handleCollectables(const Rectangle& current_hb) {
+        for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(0.2))) {
             if (target_ptr.get() == m_pacman.get())
                 continue;
 
@@ -161,24 +176,11 @@ void World::updatePacman(Direction d) {
 
             CollisionHandler targetInitiates(*target_ptr);
             m_pacman->accept(targetInitiates);
-            const CollisionResult& rev = targetInitiates.getResult();
 
-            if (rev.interactionOccurred) {
+            if (const auto& [moveBlocked, interactionOccurred] = targetInitiates.getResult(); interactionOccurred) {
                 m_pacman->ghostTouches();
             }
         }
     }
 
-    // --- Final Movement Calculation ---
-    const Rectangle future_hb = IEntityModel::calculateFutureHitBox(current_hb, d, current_speed);
-    const auto search_future_hb = future_hb.scaledBy(1 - EPSILON);
-
-    if (!checkBlockage(search_future_hb)) {
-        m_pacman->setHitBox(future_hb);
-    } else {
-        m_pacman->setDirection(Direction::NONE);
-    }
-
-    m_pacman->update(d);
-}
 WorldState World::getState() const { return m_worldState; }

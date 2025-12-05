@@ -25,6 +25,7 @@ public:
     std::vector<std::shared_ptr<IEntityModel>> getEntities();
     std::vector<std::shared_ptr<IEntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
     void addEntity(std::shared_ptr<IEntityModel>);
+    void handleCollectables(const Rectangle& current_hb);
     void setPacman(const std::shared_ptr<Pacman>&);
     void update(Direction d);
     void updatePacman(Direction d);
