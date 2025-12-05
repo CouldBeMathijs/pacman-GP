@@ -16,7 +16,7 @@ private:
     // --- Member Variables ---
     unsigned int m_currentScore = 0;
     unsigned int m_collectablesLeft = 0;
-    unsigned int m_level = 0;
+    unsigned int m_level = 1;
     unsigned int m_lives = 3;
     TimePoint m_lastPickupTime;
     TimePoint m_lastDeductionTime;

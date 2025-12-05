@@ -9,6 +9,7 @@
  * Initializes and positions the 'VICTORY' and 'Press any key' text elements.
  */
 VictoryState::VictoryState(const unsigned int level) : m_level(level) {
+    ScoreKeeper::getInstance().nextLevel();
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();
 
@@ -61,6 +62,10 @@ void VictoryState::update(Direction d) {
 void VictoryState::handleInput(const sf::Event& event) {
     // Check if any key was pressed
     if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Escape) {
+            m_requestedPops = 1;
+            return;
+        }
         // Request to pop this state off the stack, returning to the previous state (MenuState)
         m_requestedPops = 1;
         m_requestedState = std::make_unique<LevelState>();

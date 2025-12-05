@@ -13,7 +13,7 @@ GhostMode IGhost::getMode() const { return m_currentMode; }
 
 BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING) {}
 
-PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::PANICKING) {}
+PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING) {}
 
 OrangeGhost::OrangeGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING) {}
 

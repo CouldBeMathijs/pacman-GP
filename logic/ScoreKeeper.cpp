@@ -27,7 +27,7 @@ unsigned int ScoreKeeper::getLevel() const { return m_level; }
 void ScoreKeeper::reset() {
     m_collectablesLeft = 0;
     m_currentScore = 0;
-    m_level = 0;
+    m_level = 1;
     m_lives = 3;
 }
 

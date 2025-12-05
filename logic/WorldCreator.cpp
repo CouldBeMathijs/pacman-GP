@@ -74,6 +74,5 @@ World WorldCreator::createWorld(const std::string& filename, const IWorldConfigP
             }
         }
     }
-    ScoreKeeper::getInstance().nextLevel();
     return out;
 }
