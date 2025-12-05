@@ -3,8 +3,12 @@
 #include "IDirectionalEntityView.h"
 
 class IGhostView : public IDirectionalEntityView {
+private:
+    Assets::TextureLocation m_baseSprite;
+protected:
+    IGhostView(Assets::TextureLocation, std::shared_ptr<IEntityModel>);
 public:
-    IGhostView(Assets::TextureLocation t, std::shared_ptr<IEntityModel> e);
+    void update() override;
 };
 
 class BlueGhostView final : public IGhostView {

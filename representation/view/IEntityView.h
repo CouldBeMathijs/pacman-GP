@@ -13,13 +13,13 @@
  */
 class IEntityView : public Observer {
 private:
-    bool m_animationCycleMovingUp = true;
     const double m_timePerFrame = 0.12;
     double m_timeAccumulator = 0.0;
     std::shared_ptr<IEntityModel> m_coupledEntity;
 
 protected:
     Assets::TextureLocation m_currentSprite;
+    bool m_animationCycleMovingUp = true;
     explicit IEntityView(Assets::TextureLocation, std::shared_ptr<IEntityModel>);
     unsigned int m_amountOfTextures = 1;
     unsigned int m_currentTextureOffset = 0;
