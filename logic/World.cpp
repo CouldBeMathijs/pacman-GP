@@ -148,7 +148,6 @@ void World::updatePacman(Direction d) {
     // --- Interaction Checks ---
     handleCollectables(current_hb);
 
-
     // --- Final Movement Calculation ---
     const Rectangle future_hb = IEntityModel::calculateFutureHitBox(current_hb, d, current_speed);
 
@@ -162,25 +161,25 @@ void World::updatePacman(Direction d) {
 }
 
 void World::handleCollectables(const Rectangle& current_hb) {
-        for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(0.2))) {
-            if (target_ptr.get() == m_pacman.get())
-                continue;
+    for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(0.2))) {
+        if (target_ptr.get() == m_pacman.get())
+            continue;
 
-            CollisionHandler pacmanInitiates(*m_pacman);
-            target_ptr->accept(pacmanInitiates);
+        CollisionHandler pacmanInitiates(*m_pacman);
+        target_ptr->accept(pacmanInitiates);
 
-            if (pacmanInitiates.getResult().interactionOccurred) {
-                CollectableVisitor pickup;
-                target_ptr->accept(pickup);
-            }
+        if (pacmanInitiates.getResult().interactionOccurred) {
+            CollectableVisitor pickup;
+            target_ptr->accept(pickup);
+        }
 
-            CollisionHandler targetInitiates(*target_ptr);
-            m_pacman->accept(targetInitiates);
+        CollisionHandler targetInitiates(*target_ptr);
+        m_pacman->accept(targetInitiates);
 
-            if (const auto& [moveBlocked, interactionOccurred] = targetInitiates.getResult(); interactionOccurred) {
-                m_pacman->ghostTouches();
-            }
+        if (const auto& [moveBlocked, interactionOccurred] = targetInitiates.getResult(); interactionOccurred) {
+            m_pacman->ghostTouches();
         }
     }
+}
 
 WorldState World::getState() const { return m_worldState; }
