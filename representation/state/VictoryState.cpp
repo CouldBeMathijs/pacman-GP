@@ -27,7 +27,7 @@ VictoryState::VictoryState(const unsigned int level) : m_level(level) {
                             victoryBounds.top + victoryBounds.height / 2.0f);
 
     // Position 'VICTORY' in the upper middle of the screen
-    m_victoryText.setPosition(windowSize.x / 2.0f, windowSize.y / 3.0f);
+    m_victoryText.setPosition(static_cast<float>(windowSize.x) / 2.0f, static_cast<float>(windowSize.y) / 3.0f);
 
     // --- Setup 'Press Any Key' Text ---
     m_pressAnyKeyText.setFont(Assets::getDefaultFont());
@@ -41,7 +41,7 @@ VictoryState::VictoryState(const unsigned int level) : m_level(level) {
                                 pressBounds.top + pressBounds.height / 2.0f);
 
     // Position 'Press Any Key' in the lower middle of the screen
-    m_pressAnyKeyText.setPosition(windowSize.x / 2.0f, windowSize.y * 2 / 3.0f);
+    m_pressAnyKeyText.setPosition(static_cast<float>(windowSize.x) / 2.0f, static_cast<float>(windowSize.y) * 2 / 3.0f);
 }
 
 /**

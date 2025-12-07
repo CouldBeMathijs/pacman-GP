@@ -2,8 +2,6 @@
 #define PACMAN_SPRITEMAP_H
 
 #include <SFML/Graphics.hpp>
-#include <array>
-#include <iostream>
 
 namespace Assets {
 using TextureLocation = sf::IntRect;
@@ -27,7 +25,6 @@ enum SpriteDefinition {
 };
 
 /**
- *
  * @return The requested location on the Spritemap
  */
 TextureLocation getSpriteInfo(SpriteDefinition);

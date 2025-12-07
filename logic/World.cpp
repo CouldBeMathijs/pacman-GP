@@ -125,10 +125,9 @@ void World::updatePacman(Direction d) {
 
                 // Calculate lookahead from the SHIFTED position
                 Rectangle shifted_future = IEntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
-                Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON);
 
                 // If this shifted path is clear, we found a corner!
-                if (!checkBlockage(shifted_check)) {
+                if (Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON); !checkBlockage(shifted_check)) {
                     // Apply the snap: Move Pacman to the aligned position immediately
                     m_pacman->setHitBox(shifted_current_hb);
 
