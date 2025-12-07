@@ -8,7 +8,7 @@
  */
 enum class GhostMode { CHASING, PANICKING, WAITING };
 
-enum class ChasingAlgorithm { DIRECTIONAL, IN_FRONT_MANHATTAN, ON_TOP_MANHATTAN};
+enum class ChasingAlgorithm { DIRECTIONAL, IN_FRONT_MANHATTAN, ON_TOP_MANHATTAN };
 
 /**
  * @brief Virtual class to base on which to base specific Ghost types
@@ -21,7 +21,9 @@ protected:
     double m_amount_of_seconds_left_in_current_mode;
     double m_speed = LogicConstants::BASE_SPEED * 0.8;
 
-    IGhost(const Rectangle& pos, GhostMode start_mode, double amountOfSecondsLeftInCurrentMode, ChasingAlgorithm algorithm);
+    IGhost(const Rectangle& pos, GhostMode start_mode, double amountOfSecondsLeftInCurrentMode,
+           ChasingAlgorithm algorithm);
+
 public:
     /**
      * @brief Calls the correct double dispatch

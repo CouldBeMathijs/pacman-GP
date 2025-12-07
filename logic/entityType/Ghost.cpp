@@ -2,8 +2,10 @@
 
 #include "Visitor.h"
 
-IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode, const ChasingAlgorithm algorithm)
-    : IEntityModel(pos, Direction::EAST), m_algorithm(algorithm), m_currentMode(start_mode), m_spawnPoint(pos.topLeft), m_amount_of_seconds_left_in_current_mode(amountOfSecondsLeftInCurrentMode){}
+IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode,
+               const ChasingAlgorithm algorithm)
+    : IEntityModel(pos, Direction::EAST), m_algorithm(algorithm), m_currentMode(start_mode), m_spawnPoint(pos.topLeft),
+      m_amount_of_seconds_left_in_current_mode(amountOfSecondsLeftInCurrentMode) {}
 
 void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
@@ -20,6 +22,7 @@ BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, 
 
 PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 
-OrangeGhost::OrangeGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
+OrangeGhost::OrangeGhost(const Rectangle& pos)
+    : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 
 RedGhost::RedGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 10, ChasingAlgorithm::ON_TOP_MANHATTAN) {}
