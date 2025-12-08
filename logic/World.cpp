@@ -101,21 +101,26 @@ void World::updateGhosts(const Direction d) {
     for (const auto& ghost : m_ghosts) {
         switch (ghost->getMode()) {
         case GhostMode::CHASING: {
-            if (Rectangle movedHitBox =
-                    IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(),
-                                                        ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime());
-                checkBlockage(movedHitBox, ghost)) {
-                ghost->setHitBox(movedHitBox);
-                break;
-            }
+            // 1. Determine the *best* wanted direction first (every frame)
             switch (ghost->getAlgorithm()) {
             case ChasingAlgorithm::ON_TOP_MANHATTAN:
             case ChasingAlgorithm::IN_FRONT_MANHATTAN:
             case ChasingAlgorithm::DIRECTIONAL:
-                ghost->setWantedDirection(Random::getInstance().getRandomElement(possibleDirections(ghost)));
+                auto possible = possibleDirections(ghost);
+                // This should be the core pathfinding logic, not just random on blockage
+                // For now, keeping the random selection on blockage/decision points:
+                if (possible.size() > 1) { // Hypothetical check
+                    ghost->setWantedDirection(Random::getInstance().getRandomElement(possible));
+                }
                 break;
             }
-        } break;
+
+            // 2. Attempt movement in the current wanted direction
+            if (Rectangle movedHitBox = IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime());
+                !checkBlockage(movedHitBox.scaledBy(0.9), ghost)) { // Note the change to '!'
+                ghost->setHitBox(movedHitBox);
+                }
+            break;} break;
         case GhostMode::PANICKING:
         case GhostMode::WAITING:
             break;
