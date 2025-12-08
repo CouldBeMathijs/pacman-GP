@@ -24,25 +24,24 @@ public:
 
     template <typename T>
     const T& getRandomElement(const std::vector<T>& vec) {
-            // 1. Check if the vector is empty to prevent accessing an invalid index.
-            if (vec.empty()) {
-                // You can throw an exception or return a default value,
-                // but throwing is generally safer for a utility function.
-                throw std::logic_error("Cannot get a random element from an empty vector.");
-            }
-
-            // 2. Determine the range for the index.
-            // The indices are from 0 up to (size - 1).
-            constexpr int minIndex = 0;
-            const int maxIndex = static_cast<int>(vec.size() - 1);
-
-            // 3. Use the existing integer generator to pick a random index.
-            int randomIndex = generateInt(minIndex, maxIndex);
-
-            // 4. Return the element at the random index.
-            return vec[randomIndex];
+        // 1. Check if the vector is empty to prevent accessing an invalid index.
+        if (vec.empty()) {
+            // You can throw an exception or return a default value,
+            // but throwing is generally safer for a utility function.
+            throw std::logic_error("Cannot get a random element from an empty vector.");
         }
-    };
 
+        // 2. Determine the range for the index.
+        // The indices are from 0 up to (size - 1).
+        constexpr int minIndex = 0;
+        const int maxIndex = static_cast<int>(vec.size() - 1);
+
+        // 3. Use the existing integer generator to pick a random index.
+        int randomIndex = generateInt(minIndex, maxIndex);
+
+        // 4. Return the element at the random index.
+        return vec[randomIndex];
+    }
+};
 
 #endif // PACMAN_RANDOM_H
