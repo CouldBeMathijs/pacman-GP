@@ -35,7 +35,8 @@ std::vector<std::shared_ptr<IEntityModel>> World::getEntitiesInBounds(const Rect
                              return ghost && ghost->isInBounds(boundBox);
                          });
     // Pacman if within bounding box
-    if (m_pacman->isInBounds(boundBox)) results.push_back(m_pacman);
+    if (m_pacman->isInBounds(boundBox))
+        results.push_back(m_pacman);
 
     return results;
 }

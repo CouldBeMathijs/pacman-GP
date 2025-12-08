@@ -23,12 +23,15 @@ class World {
 protected:
     void handleCollectables(const Rectangle& current_hb);
     void updatePacman(Direction d);
+
 public:
     World() = default;
     [[nodiscard]] WorldState getState() const;
     [[nodiscard]] const std::shared_ptr<Pacman>& getPacman() const;
     [[nodiscard]] const std::vector<std::shared_ptr<IEntityModel>>& getNonMovingEntities() const;
+
     [[nodiscard]] const std::vector<std::shared_ptr<IGhost>>& getGhosts() const { return m_ghosts; };
+
     std::vector<std::shared_ptr<IEntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
     void addGhost(std::shared_ptr<IGhost> ghost);
     void addNonMovingEntity(std::shared_ptr<IEntityModel>);
