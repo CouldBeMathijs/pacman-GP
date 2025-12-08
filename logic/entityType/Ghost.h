@@ -27,9 +27,9 @@ protected:
 
 public:
     [[nodiscard]] ChasingAlgorithm getAlgorithm() const;
-    void setHitBox(const Rectangle& hb);
 
     [[nodiscard]] Direction getWantedDirection() const { return m_wantedDirection; }
+
     [[nodiscard]] GhostMode getMode() const;
     [[nodiscard]] double getSpeed() const;
 
