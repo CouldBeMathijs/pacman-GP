@@ -116,11 +116,14 @@ void World::updateGhosts(const Direction d) {
             }
 
             // 2. Attempt movement in the current wanted direction
-            if (Rectangle movedHitBox = IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime());
+            if (Rectangle movedHitBox =
+                    IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(),
+                                                        ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime());
                 !checkBlockage(movedHitBox.scaledBy(0.9), ghost)) { // Note the change to '!'
                 ghost->setHitBox(movedHitBox);
-                }
-            break;} break;
+            }
+            break;
+        } break;
         case GhostMode::PANICKING:
         case GhostMode::WAITING:
             break;
