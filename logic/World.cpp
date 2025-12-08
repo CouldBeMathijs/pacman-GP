@@ -2,6 +2,7 @@
 
 #include "IEntityFactory.h"
 #include "LogicConstants.h"
+#include "Random.h"
 #include "Stopwatch.h"
 #include "Visitor.h"
 #include "entityType/Pacman.h"
@@ -9,6 +10,7 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
+#include <map>
 #include <ranges>
 #include <vector>
 
@@ -80,24 +82,67 @@ void World::update(const Direction d) {
     }
 }
 
+std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
+    const auto distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 10;
+    const auto hitBox = ghost->getHitBox();
+    std::map<Direction, Rectangle> hitBoxesToTry = {
+        {Direction::EAST, hitBox.movedBy(distance, 0)},
+        {Direction::NORTH, hitBox.movedBy(0, distance)},
+        {Direction::SOUTH, hitBox.movedBy(0, -distance)},
+        {Direction::WEST, hitBox.movedBy(-distance, 0)}
+    };
+    std::vector<Direction> out;
+    for (auto [direction, hitBoxToTry] : hitBoxesToTry) {
+        if (checkBlockage(hitBoxToTry, ghost)) out.push_back(direction);
+    }
+    return out;
+}
+
 void World::updateGhosts(const Direction d) {
     for (const auto& ghost : m_ghosts) {
         switch (ghost->getMode()) {
-        case GhostMode::CHASING:
-            switch (ghost->getAlgorithm()) {
-            case ChasingAlgorithm::DIRECTIONAL:
-            case ChasingAlgorithm::IN_FRONT_MANHATTAN:
-            case ChasingAlgorithm::ON_TOP_MANHATTAN:
+        case GhostMode::CHASING: {
+            if (Rectangle movedHitBox = IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime());
+                checkBlockage(movedHitBox, ghost)) {
+                ghost->setHitBox(movedHitBox);
                 break;
             }
+            switch (ghost->getAlgorithm()) {
+            case ChasingAlgorithm::ON_TOP_MANHATTAN:
+            case ChasingAlgorithm::IN_FRONT_MANHATTAN:
+            case ChasingAlgorithm::DIRECTIONAL:
+                ghost->setWantedDirection(Random::getInstance().getRandomElement(possibleDirections(ghost)));
+                break;
+            }
+        }
             break;
         case GhostMode::PANICKING:
-            break;
         case GhostMode::WAITING:
             break;
         }
         ghost->update(d);
     }
+}
+
+bool World::checkBlockage(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity) {
+    for (const auto blocking_targets = getEntitiesInBounds(rectToCheck); const auto& target_ptr : blocking_targets) {
+
+        if (target_ptr.get() == entity.get())
+            continue;
+
+        CollisionHandler entityInitiates(*entity);
+        target_ptr->accept(entityInitiates);
+        if (entityInitiates.getResult().moveBlocked) {
+            return true;
+        }
+
+        CollisionHandler targetInitiates(*target_ptr);
+        entity->accept(targetInitiates);
+        if (targetInitiates.getResult().moveBlocked) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void World::updatePacman(Direction d) {
@@ -106,25 +151,6 @@ void World::updatePacman(Direction d) {
     const double current_speed =
         std::round(60 * Stopwatch::getInstance().getDeltaTime()) * m_pacman->getSpeed() * 1.f / 60;
 
-    // -------------------------------------------------------
-    // Helper Lambda: Checks if a specific hitbox is blocked by walls
-    // -------------------------------------------------------
-    auto checkBlockage = [&](const Rectangle& rectToCheck) -> bool {
-        for (const auto blocking_targets = getEntitiesInBounds(rectToCheck);
-             const auto& target_ptr : blocking_targets) {
-
-            if (target_ptr.get() == m_pacman.get())
-                continue;
-
-            CollisionHandler handler(*m_pacman);
-            target_ptr->accept(handler);
-            if (handler.getResult().moveBlocked) {
-                return true;
-            }
-        }
-        return false;
-    };
-
     if (const Direction current_direction = m_pacman->getDirection(); d != current_direction) {
         constexpr double lookahead_speed = 0.05; // Lookahead distance
 
@@ -132,7 +158,7 @@ void World::updatePacman(Direction d) {
         const Rectangle future_hb_check_unscaled = IEntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
         const Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
 
-        bool lookaheadBlocked = checkBlockage(future_hb_check_scaled);
+        bool lookaheadBlocked = checkBlockage(future_hb_check_scaled, m_pacman);
 
         // 2. CORNER CUTTING LOGIC
         // If the direct path is blocked, check perpendicular offsets
@@ -160,7 +186,7 @@ void World::updatePacman(Direction d) {
                 Rectangle shifted_future = IEntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
 
                 // If this shifted path is clear, we found a corner!
-                if (Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON); !checkBlockage(shifted_check)) {
+                if (Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON); !checkBlockage(shifted_check, m_pacman)) {
                     // Apply the snap: Move Pacman to the aligned position immediately
                     m_pacman->setHitBox(shifted_current_hb);
 
@@ -186,7 +212,7 @@ void World::updatePacman(Direction d) {
     // --- Final Movement Calculation ---
     const Rectangle future_hb = IEntityModel::calculateFutureHitBox(current_hb, d, current_speed);
 
-    if (const auto search_future_hb = future_hb.scaledBy(1 - EPSILON); !checkBlockage(search_future_hb)) {
+    if (const auto search_future_hb = future_hb.scaledBy(1 - EPSILON); !checkBlockage(search_future_hb, m_pacman)) {
         m_pacman->setHitBox(future_hb);
     } else {
         m_pacman->setDirection(Direction::NONE);

@@ -16,6 +16,8 @@ double IGhost::getSpeed() const { return m_speed; }
 
 ChasingAlgorithm IGhost::getAlgorithm() const { return m_algorithm; }
 
+void IGhost::setHitBox(const Rectangle& hb) { m_hitBox = hb; }
+
 void IGhost::setWantedDirection(const Direction d) { m_wantedDirection = d; }
 
 void IGhost::goToSpawn() {
@@ -26,6 +28,7 @@ void IGhost::goToSpawn() {
 void IGhost::update(const Direction direction) {
     if (m_amount_of_seconds_left_in_current_mode > 0) {
         m_amount_of_seconds_left_in_current_mode -= Stopwatch::getInstance().getDeltaTime();
+    } else {
         m_currentMode = GhostMode::CHASING;
     }
     IEntityModel::update(direction);

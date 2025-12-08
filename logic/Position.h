@@ -56,6 +56,7 @@ struct Rectangle {
 
     void moveTo(const Position& newTopLeft);
     void moveBy(double deltaX, double deltaY);
+    Rectangle movedBy(double deltaX, double deltaY) const;
     [[nodiscard]] Rectangle scaledBy(double scale) const;
 
     [[nodiscard]] Rectangle rescale(const Position& current_min, const Position& current_max,

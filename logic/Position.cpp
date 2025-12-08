@@ -215,6 +215,12 @@ void Rectangle::moveBy(double deltaX, double deltaY) {
     bottomRight.y += deltaY;
 }
 
+Rectangle Rectangle::movedBy(double deltaX, double deltaY) const {
+    Rectangle out = *this;
+    out.moveBy(deltaX, deltaY);
+    return out;
+}
+
 Rectangle Rectangle::scaledBy(double scale) const {
 
     scale = std::abs(scale);
