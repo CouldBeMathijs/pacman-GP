@@ -107,7 +107,7 @@ void World::updateGhosts(const Direction d) {
                 !checkBlockage(movedHitBox.scaledBy(0.90), ghost)) {
                 ghost->setHitBox(movedHitBox);
                 break;
-                }
+            }
             switch (ghost->getAlgorithm()) {
             case ChasingAlgorithm::ON_TOP_MANHATTAN:
             case ChasingAlgorithm::IN_FRONT_MANHATTAN:
