@@ -41,32 +41,32 @@ World WorldCreator::createWorld(const std::string& filename, const IWorldConfigP
             // Access the grid using [row][column] which is [y][x]
             switch (gridData[y][x]) {
             case '#':
-                out.addEntity(factory->createWall(hb));
+                out.addNonMovingEntity(factory->createWall(hb));
                 break;
             case '*': {
                 auto c = factory->createCoin(hb_coin);
                 score.addCollectable();
-                out.addEntity(std::move(c));
+                out.addNonMovingEntity(std::move(c));
             } break;
             case 'F': {
                 auto f = factory->createFruit(hb);
                 score.addCollectable();
-                out.addEntity(std::move(f));
+                out.addNonMovingEntity(std::move(f));
             } break;
             case 'P':
                 out.setPacman(std::static_pointer_cast<Pacman>(factory->createPacman(hb)));
                 break;
             case '1':
-                out.addEntity(factory->createBlueGhost(hb));
+                out.addGhost(std::static_pointer_cast<IGhost>(factory->createBlueGhost(hb)));
                 break;
             case '2':
-                out.addEntity(factory->createPinkGhost(hb));
+                out.addGhost(std::static_pointer_cast<IGhost>(factory->createPinkGhost(hb)));
                 break;
             case '3':
-                out.addEntity(factory->createOrangeGhost(hb));
+                out.addGhost(std::static_pointer_cast<IGhost>(factory->createOrangeGhost(hb)));
                 break;
             case '4':
-                out.addEntity(factory->createRedGhost(hb));
+                out.addGhost(std::static_pointer_cast<IGhost>(factory->createRedGhost(hb)));
                 break;
             default:
                 // Do nothing for empty space ' '

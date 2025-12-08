@@ -1,6 +1,7 @@
 #ifndef PACMAN_WORLD_H
 #define PACMAN_WORLD_H
 #include "ISubject.h"
+#include "entityType/Ghost.h"
 #include "entityType/Pacman.h"
 
 #include <vector>
@@ -16,19 +17,24 @@ enum class WorldState { RUNNING, VICTORY, GAME_OVER };
 class World {
     WorldState m_worldState = WorldState::RUNNING;
     std::shared_ptr<Pacman> m_pacman;
-    std::vector<std::shared_ptr<IEntityModel>> m_entities;
+    std::vector<std::shared_ptr<IEntityModel>> m_nonMovingEntities;
+    std::vector<std::shared_ptr<IGhost>> m_ghosts;
 
+protected:
+    void handleCollectables(const Rectangle& current_hb);
+    void updatePacman(Direction d);
 public:
     World() = default;
     [[nodiscard]] WorldState getState() const;
-    std::shared_ptr<Pacman> getPacman();
-    std::vector<std::shared_ptr<IEntityModel>> getEntities();
+    [[nodiscard]] const std::shared_ptr<Pacman>& getPacman() const;
+    [[nodiscard]] const std::vector<std::shared_ptr<IEntityModel>>& getNonMovingEntities() const;
+    [[nodiscard]] const std::vector<std::shared_ptr<IGhost>>& getGhosts() const { return m_ghosts; };
     std::vector<std::shared_ptr<IEntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
-    void addEntity(std::shared_ptr<IEntityModel>);
-    void handleCollectables(const Rectangle& current_hb);
+    void addGhost(std::shared_ptr<IGhost> ghost);
+    void addNonMovingEntity(std::shared_ptr<IEntityModel>);
     void setPacman(const std::shared_ptr<Pacman>&);
     void update(Direction d);
-    void updatePacman(Direction d);
+    void updateGhosts(Direction d) const;
 };
 
 #endif // PACMAN_WORLD_H

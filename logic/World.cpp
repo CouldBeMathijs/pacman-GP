@@ -12,26 +12,37 @@
 #include <ranges>
 #include <vector>
 
-void World::addEntity(std::shared_ptr<IEntityModel> e) { m_entities.emplace_back(std::move(e)); }
+void World::addNonMovingEntity(std::shared_ptr<IEntityModel> e) { m_nonMovingEntities.emplace_back(std::move(e)); }
 
-std::vector<std::shared_ptr<IEntityModel>> World::getEntities() { return m_entities; }
+void World::addGhost(std::shared_ptr<IGhost> ghost) { m_ghosts.emplace_back(std::move(ghost)); }
+
+const std::vector<std::shared_ptr<IEntityModel>>& World::getNonMovingEntities() const { return m_nonMovingEntities; }
 
 std::vector<std::shared_ptr<IEntityModel>> World::getEntitiesInBounds(const Rectangle& boundBox) {
     std::vector<std::shared_ptr<IEntityModel>> results;
-
-    std::ranges::copy_if(m_entities,
+    // Non-moving entities within bounding box
+    std::ranges::copy_if(m_nonMovingEntities,
                          std::back_inserter(results), // Efficiently adds elements to the results vector
                          [&boundBox](const std::shared_ptr<IEntityModel>& entity) {
                              // Check if the entity (which is a shared_ptr) is not null and is in bounds.
                              return entity && entity->isInBounds(boundBox);
                          });
+    // Ghosts within bounding box
+    std::ranges::copy_if(m_ghosts,
+                         std::back_inserter(results), // Efficiently adds elements to the results vector
+                         [&boundBox](const std::shared_ptr<IEntityModel>& ghost) {
+                             // Check if the entity (which is a shared_ptr) is not null and is in bounds.
+                             return ghost && ghost->isInBounds(boundBox);
+                         });
+    // Pacman if within bounding box
+    if (m_pacman->isInBounds(boundBox)) results.push_back(m_pacman);
 
     return results;
 }
 
 void World::setPacman(const std::shared_ptr<Pacman>& p) { m_pacman = p; }
 
-std::shared_ptr<Pacman> World::getPacman() { return m_pacman; }
+const std::shared_ptr<Pacman>& World::getPacman() const { return m_pacman; }
 
 /**
  * @brief Updates the state of the game world, handling Pacman's movement,
@@ -49,10 +60,13 @@ void World::update(const Direction d) {
         m_worldState = WorldState::VICTORY;
         return;
     }
-    for (const auto& entity_ptr : m_entities) {
+    for (const auto& entity_ptr : m_nonMovingEntities) {
         entity_ptr->update(d);
     }
     ScoreKeeper::getInstance().update();
+
+    updatePacman(d);
+    updateGhosts(d);
 
     if (m_pacman->hasTouchedGhost()) {
         score.removeLife();
@@ -63,8 +77,12 @@ void World::update(const Direction d) {
         m_pacman->goToSpawn();
         m_pacman->resetGhostTouch();
     }
+}
 
-    updatePacman(d);
+void World::updateGhosts(const Direction d) const {
+    for (const auto& ghost : m_ghosts) {
+        ghost->update(d);
+    }
 }
 
 void World::updatePacman(Direction d) {
