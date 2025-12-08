@@ -27,7 +27,9 @@ protected:
 
 public:
     [[nodiscard]] ChasingAlgorithm getAlgorithm() const;
+
     [[nodiscard]] Direction getWantedDirection() const { return m_wantedDirection; }
+
     [[nodiscard]] GhostMode getMode() const;
     [[nodiscard]] double getSpeed() const;
 
