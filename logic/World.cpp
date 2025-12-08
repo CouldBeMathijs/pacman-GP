@@ -85,15 +85,14 @@ void World::update(const Direction d) {
 std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
     const auto distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 10;
     const auto hitBox = ghost->getHitBox();
-    std::map<Direction, Rectangle> hitBoxesToTry = {
-        {Direction::EAST, hitBox.movedBy(distance, 0)},
-        {Direction::NORTH, hitBox.movedBy(0, distance)},
-        {Direction::SOUTH, hitBox.movedBy(0, -distance)},
-        {Direction::WEST, hitBox.movedBy(-distance, 0)}
-    };
+    std::map<Direction, Rectangle> hitBoxesToTry = {{Direction::EAST, hitBox.movedBy(distance, 0)},
+                                                    {Direction::NORTH, hitBox.movedBy(0, distance)},
+                                                    {Direction::SOUTH, hitBox.movedBy(0, -distance)},
+                                                    {Direction::WEST, hitBox.movedBy(-distance, 0)}};
     std::vector<Direction> out;
     for (auto [direction, hitBoxToTry] : hitBoxesToTry) {
-        if (checkBlockage(hitBoxToTry, ghost)) out.push_back(direction);
+        if (checkBlockage(hitBoxToTry, ghost))
+            out.push_back(direction);
     }
     return out;
 }
@@ -102,7 +101,9 @@ void World::updateGhosts(const Direction d) {
     for (const auto& ghost : m_ghosts) {
         switch (ghost->getMode()) {
         case GhostMode::CHASING: {
-            if (Rectangle movedHitBox = IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime());
+            if (Rectangle movedHitBox =
+                    IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(),
+                                                        ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime());
                 checkBlockage(movedHitBox, ghost)) {
                 ghost->setHitBox(movedHitBox);
                 break;
@@ -114,8 +115,7 @@ void World::updateGhosts(const Direction d) {
                 ghost->setWantedDirection(Random::getInstance().getRandomElement(possibleDirections(ghost)));
                 break;
             }
-        }
-            break;
+        } break;
         case GhostMode::PANICKING:
         case GhostMode::WAITING:
             break;
@@ -186,7 +186,8 @@ void World::updatePacman(Direction d) {
                 Rectangle shifted_future = IEntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
 
                 // If this shifted path is clear, we found a corner!
-                if (Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON); !checkBlockage(shifted_check, m_pacman)) {
+                if (Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON);
+                    !checkBlockage(shifted_check, m_pacman)) {
                     // Apply the snap: Move Pacman to the aligned position immediately
                     m_pacman->setHitBox(shifted_current_hb);
 
