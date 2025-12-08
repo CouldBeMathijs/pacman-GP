@@ -80,8 +80,22 @@ void World::update(const Direction d) {
     }
 }
 
-void World::updateGhosts(const Direction d) const {
+void World::updateGhosts(const Direction d) {
     for (const auto& ghost : m_ghosts) {
+        switch (ghost->getMode()) {
+        case GhostMode::CHASING:
+            switch (ghost->getAlgorithm()) {
+            case ChasingAlgorithm::DIRECTIONAL:
+            case ChasingAlgorithm::IN_FRONT_MANHATTAN:
+            case ChasingAlgorithm::ON_TOP_MANHATTAN:
+                break;
+            }
+            break;
+        case GhostMode::PANICKING:
+            break;
+        case GhostMode::WAITING:
+            break;
+        }
         ghost->update(d);
     }
 }

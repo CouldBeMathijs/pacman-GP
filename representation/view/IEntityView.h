@@ -1,6 +1,6 @@
 #ifndef PACMAN_ENTITY_VIEW_H
 #define PACMAN_ENTITY_VIEW_H
-#include "Observer.h"
+#include "IObserver.h"
 
 #include "../AssetManager.h"
 #include "IEntityModel.h"
@@ -11,7 +11,7 @@
 /**
  * @brief Virtual class providing the common ground needed for displaying entities
  */
-class IEntityView : public Observer {
+class IEntityView : public IObserver {
 private:
     const double m_timePerFrame = 0.12;
     double m_timeAccumulator = 0.0;

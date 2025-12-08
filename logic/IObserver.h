@@ -6,12 +6,12 @@ class ISubject;
 /**
  * @brief Pure virtual base class for the observer pattern
  */
-class Observer {
+class IObserver {
 protected:
-    Observer() = default;
+    IObserver() = default;
 
 public:
-    virtual ~Observer() = default;
+    virtual ~IObserver() = default;
     virtual void update() = 0;
 };
 

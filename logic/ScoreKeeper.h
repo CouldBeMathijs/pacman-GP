@@ -1,14 +1,13 @@
 #ifndef PACMAN_SCOREKEEPER_H
 #define PACMAN_SCOREKEEPER_H
-#include "Observer.h"
+#include "IObserver.h"
 
 #include <chrono>
 
 /**
  * @brief Singleton which keeps all persistent score variables
  */
-class ScoreKeeper final : public Observer {
-private:
+class ScoreKeeper final : public IObserver {
     // --- Chrono Definitions ---
     using Clock = std::chrono::high_resolution_clock;
     using TimePoint = Clock::time_point;

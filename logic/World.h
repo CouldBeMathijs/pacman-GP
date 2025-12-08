@@ -37,7 +37,8 @@ public:
     void addNonMovingEntity(std::shared_ptr<IEntityModel>);
     void setPacman(const std::shared_ptr<Pacman>&);
     void update(Direction d);
-    void updateGhosts(Direction d) const;
+    bool tryToMoveGhost(const IGhost& ghost);
+    void updateGhosts(Direction d);
 };
 
 #endif // PACMAN_WORLD_H
