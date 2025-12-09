@@ -83,7 +83,7 @@ void World::update(const Direction d) {
 }
 
 std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
-    const auto distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 10;
+    const auto distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 20;
     const auto hitBox = ghost->getHitBox();
     std::map<Direction, Rectangle> hitBoxesToTry = {{Direction::EAST, hitBox.movedBy(distance, 0)},
                                                     {Direction::NORTH, hitBox.movedBy(0, distance)},
@@ -94,6 +94,7 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
         if (checkBlockage(hitBoxToTry, ghost))
             out.push_back(direction);
     }
+    std::erase(out, getOpposite(ghost->getDirection()));
     return out;
 }
 
@@ -101,21 +102,38 @@ void World::updateGhosts(const Direction d) {
     for (const auto& ghost : m_ghosts) {
         switch (ghost->getMode()) {
         case GhostMode::CHASING: {
-            if (Rectangle movedHitBox =
-                    IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(),
-                                                        ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime());
-                !checkBlockage(movedHitBox.scaledBy(0.90), ghost)) {
+
+            // Define the movement distance for this specific frame
+            const double moveDist = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
+
+            // Define the lookahead distance (10 "steps")
+            // This ensures we don't move unless the long-range path is clear
+            const double lookAheadDist = moveDist * 2;
+
+            // 1. MOVEMENT CHECK:
+            // We check the long distance (lookAheadDist). If that is clear, we perform the short move (moveDist).
+            // This satisfies "look further ahead than you can move" and "only move if you can move 10 steps".
+            Rectangle lookAheadBox = IEntityModel::calculateFutureHitBox(
+                ghost->getHitBox(), ghost->getWantedDirection(), lookAheadDist);
+
+            if (!checkBlockage(lookAheadBox.scaledBy(0.90), ghost)) {
+                // The long path is clear, so we can safely nudge the ghost forward
+                Rectangle movedHitBox = IEntityModel::calculateFutureHitBox(
+                    ghost->getHitBox(), ghost->getWantedDirection(), moveDist);
                 ghost->setHitBox(movedHitBox);
-                break;
+                ghost->setDirection(ghost->getWantedDirection());
+                //break;
             }
+
+            // 2. DIRECTION DECISION LOGIC
             switch (ghost->getAlgorithm()) {
             case ChasingAlgorithm::ON_TOP_MANHATTAN:
             case ChasingAlgorithm::IN_FRONT_MANHATTAN:
-            case ChasingAlgorithm::DIRECTIONAL:
-                auto possible = possibleDirections(ghost);
-                if (possible.size() > 1) {
+            case ChasingAlgorithm::DIRECTIONAL: {
+                if (auto possible = possibleDirections(ghost); possible.size() > 1) {
                     ghost->setWantedDirection(Random::getInstance().getRandomElement(possible));
                 }
+            }
             }
             break;
         }

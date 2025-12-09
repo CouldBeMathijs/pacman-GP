@@ -34,6 +34,8 @@ void IGhost::update(const Direction direction) {
     IEntityModel::update(direction);
 }
 
+void IGhost::setDirection(const Direction d) { m_direction = d; }
+
 BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::DIRECTIONAL) {}
 
 PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}

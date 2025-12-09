@@ -16,7 +16,7 @@ enum class ChasingAlgorithm { DIRECTIONAL, IN_FRONT_MANHATTAN, ON_TOP_MANHATTAN 
 class IGhost : public IEntityModel {
 protected:
     ChasingAlgorithm m_algorithm;
-    Direction m_wantedDirection = Direction::EAST;
+    Direction m_wantedDirection = Direction::NORTH;
     GhostMode m_currentMode;
     Position m_spawnPoint;
     double m_amount_of_seconds_left_in_current_mode;
@@ -41,6 +41,7 @@ public:
     void accept(IEntityVisitor& visitor) override;
 
     void goToSpawn();
+    void setDirection(Direction d);
     void setWantedDirection(Direction d);
     void update(Direction) override;
 };

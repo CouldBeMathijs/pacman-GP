@@ -12,6 +12,7 @@ enum class Direction {
     NONE,
 };
 
+
 /**
  * @brief Checks if two given directions are exact opposites.
  *
@@ -19,7 +20,7 @@ enum class Direction {
  * @param d2 The second direction.
  * @return true if d1 is the opposite of d2.
  */
-inline bool isOpposite(const Direction d1, const Direction d2) {
+constexpr bool isOpposite(const Direction d1, const Direction d2) {
     if (d1 == d2)
         return false;
 
@@ -40,6 +41,22 @@ inline bool isOpposite(const Direction d1, const Direction d2) {
         return false;
     }
     return false;
+}
+
+constexpr Direction getOpposite(const Direction d) {
+    switch (d) {
+    case Direction::EAST:
+        return Direction::WEST;
+    case Direction::SOUTH:
+        return Direction::NORTH;
+    case Direction::WEST:
+        return Direction::EAST;
+    case Direction::NORTH:
+        return Direction::SOUTH;
+    case Direction::NONE:
+        break;
+    }
+    return Direction::NONE;
 }
 
 #endif // PACMAN_DIRECTION_H
