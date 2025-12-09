@@ -113,16 +113,16 @@ void World::updateGhosts(const Direction d) {
             // 1. MOVEMENT CHECK:
             // We check the long distance (lookAheadDist). If that is clear, we perform the short move (moveDist).
             // This satisfies "look further ahead than you can move" and "only move if you can move 10 steps".
-            Rectangle lookAheadBox = IEntityModel::calculateFutureHitBox(
-                ghost->getHitBox(), ghost->getWantedDirection(), lookAheadDist);
+            Rectangle lookAheadBox =
+                IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), lookAheadDist);
 
             if (!checkBlockage(lookAheadBox.scaledBy(0.90), ghost)) {
                 // The long path is clear, so we can safely nudge the ghost forward
-                Rectangle movedHitBox = IEntityModel::calculateFutureHitBox(
-                    ghost->getHitBox(), ghost->getWantedDirection(), moveDist);
+                Rectangle movedHitBox =
+                    IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), moveDist);
                 ghost->setHitBox(movedHitBox);
                 ghost->setDirection(ghost->getWantedDirection());
-                //break;
+                // break;
             }
 
             // 2. DIRECTION DECISION LOGIC

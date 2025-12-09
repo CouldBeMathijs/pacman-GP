@@ -12,7 +12,6 @@ enum class Direction {
     NONE,
 };
 
-
 /**
  * @brief Checks if two given directions are exact opposites.
  *
