@@ -86,18 +86,13 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
     const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 5;
     const auto hitBox = ghost->getHitBox();
 
-
     // Try four primary directions
-    std::map<Direction, Rectangle> test = {
-        {Direction::EAST, hitBox.movedBy(distance, 0)},
-        {Direction::WEST, hitBox.movedBy(-distance, 0)},
-        {Direction::NORTH, hitBox.movedBy(0, distance)},
-        {Direction::SOUTH, hitBox.movedBy(0, -distance)}
-    };
-
+    std::map<Direction, Rectangle> test = {{Direction::EAST, hitBox.movedBy(distance, 0)},
+                                           {Direction::WEST, hitBox.movedBy(-distance, 0)},
+                                           {Direction::NORTH, hitBox.movedBy(0, distance)},
+                                           {Direction::SOUTH, hitBox.movedBy(0, -distance)}};
 
     std::vector<Direction> out;
-
 
     // A direction is valid only if it's NOT blocked
     for (auto [dir, box] : test) {
@@ -105,18 +100,15 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
             out.push_back(dir);
     }
 
-
     // If the ghost is directly facing a wall, keep side movement
     // (the above logic already allows this, but ensure reverse isn't forbidden)
     Direction opposite = getOpposite(ghost->getDirection());
-
 
     // Normal rule: ghosts can't reverse
     // Exception: if blocked forward AND side paths exist, allow choosing sides
     if (out.size() > 1) {
         std::erase(out, opposite);
     }
-
 
     return out;
 }
