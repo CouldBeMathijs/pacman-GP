@@ -39,7 +39,7 @@ public:
     void update(Direction d);
     std::vector<Direction> possibleDirections(const std::shared_ptr<IGhost>& ghost);
     void updateGhosts(Direction d);
-    bool checkBlockage(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity);
+    bool isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity);
 };
 
 #endif // PACMAN_WORLD_H

@@ -83,18 +83,41 @@ void World::update(const Direction d) {
 }
 
 std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
-    const auto distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 20;
+    const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 5;
     const auto hitBox = ghost->getHitBox();
-    std::map<Direction, Rectangle> hitBoxesToTry = {{Direction::EAST, hitBox.movedBy(distance, 0)},
-                                                    {Direction::NORTH, hitBox.movedBy(0, distance)},
-                                                    {Direction::SOUTH, hitBox.movedBy(0, -distance)},
-                                                    {Direction::WEST, hitBox.movedBy(-distance, 0)}};
+
+
+    // Try four primary directions
+    std::map<Direction, Rectangle> test = {
+        {Direction::EAST, hitBox.movedBy(distance, 0)},
+        {Direction::WEST, hitBox.movedBy(-distance, 0)},
+        {Direction::NORTH, hitBox.movedBy(0, distance)},
+        {Direction::SOUTH, hitBox.movedBy(0, -distance)}
+    };
+
+
     std::vector<Direction> out;
-    for (auto [direction, hitBoxToTry] : hitBoxesToTry) {
-        if (checkBlockage(hitBoxToTry, ghost))
-            out.push_back(direction);
+
+
+    // A direction is valid only if it's NOT blocked
+    for (auto [dir, box] : test) {
+        if (!isBlocked(box, ghost))
+            out.push_back(dir);
     }
-    std::erase(out, getOpposite(ghost->getDirection()));
+
+
+    // If the ghost is directly facing a wall, keep side movement
+    // (the above logic already allows this, but ensure reverse isn't forbidden)
+    Direction opposite = getOpposite(ghost->getDirection());
+
+
+    // Normal rule: ghosts can't reverse
+    // Exception: if blocked forward AND side paths exist, allow choosing sides
+    if (out.size() > 1) {
+        std::erase(out, opposite);
+    }
+
+
     return out;
 }
 
@@ -116,7 +139,7 @@ void World::updateGhosts(const Direction d) {
             Rectangle lookAheadBox =
                 IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), lookAheadDist);
 
-            if (!checkBlockage(lookAheadBox.scaledBy(0.90), ghost)) {
+            if (!isBlocked(lookAheadBox.scaledBy(0.90), ghost)) {
                 // The long path is clear, so we can safely nudge the ghost forward
                 Rectangle movedHitBox =
                     IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), moveDist);
@@ -145,7 +168,7 @@ void World::updateGhosts(const Direction d) {
     }
 }
 
-bool World::checkBlockage(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity) {
+bool World::isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity) {
     for (const auto blocking_targets = getEntitiesInBounds(rectToCheck); const auto& target_ptr : blocking_targets) {
 
         if (target_ptr.get() == entity.get())
@@ -179,7 +202,7 @@ void World::updatePacman(Direction d) {
         const Rectangle future_hb_check_unscaled = IEntityModel::calculateFutureHitBox(current_hb, d, lookahead_speed);
         const Rectangle future_hb_check_scaled = future_hb_check_unscaled.scaledBy(1 - EPSILON);
 
-        bool lookaheadBlocked = checkBlockage(future_hb_check_scaled, m_pacman);
+        bool lookaheadBlocked = isBlocked(future_hb_check_scaled, m_pacman);
 
         // 2. CORNER CUTTING LOGIC
         // If the direct path is blocked, check perpendicular offsets
@@ -208,7 +231,7 @@ void World::updatePacman(Direction d) {
 
                 // If this shifted path is clear, we found a corner!
                 if (Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON);
-                    !checkBlockage(shifted_check, m_pacman)) {
+                    !isBlocked(shifted_check, m_pacman)) {
                     // Apply the snap: Move Pacman to the aligned position immediately
                     m_pacman->setHitBox(shifted_current_hb);
 
@@ -234,7 +257,7 @@ void World::updatePacman(Direction d) {
     // --- Final Movement Calculation ---
     const Rectangle future_hb = IEntityModel::calculateFutureHitBox(current_hb, d, current_speed);
 
-    if (const auto search_future_hb = future_hb.scaledBy(1 - EPSILON); !checkBlockage(search_future_hb, m_pacman)) {
+    if (const auto search_future_hb = future_hb.scaledBy(1 - EPSILON); !isBlocked(search_future_hb, m_pacman)) {
         m_pacman->setHitBox(future_hb);
     } else {
         m_pacman->setDirection(Direction::NONE);

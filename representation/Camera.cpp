@@ -2,8 +2,8 @@
 #include "SfmlConstants.h"
 
 void resizeView(const sf::RenderWindow& window, sf::View& view, sf::FloatRect& currentViewport) {
-    sf::Vector2u windowSize = window.getSize();
-    float windowAspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
+    const sf::Vector2u windowSize = window.getSize();
+    const float windowAspectRatio = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 
     sf::FloatRect viewport;
 
