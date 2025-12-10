@@ -11,7 +11,7 @@ void Collectable::bePickedUp() {
         m_isPickedUp = true;
         score.addPointsWithMultiplier(m_value);
         score.removeCollectable();
-        updateObservers();
+        notify();
     }
 }
 

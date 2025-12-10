@@ -56,11 +56,12 @@ struct Rectangle {
 
     void moveTo(const Position& newTopLeft);
     void moveBy(double deltaX, double deltaY);
-    Rectangle movedBy(double deltaX, double deltaY) const;
+    [[nodiscard]] Rectangle movedBy(double deltaX, double deltaY) const;
     [[nodiscard]] Rectangle scaledBy(double scale) const;
 
     [[nodiscard]] Rectangle rescale(const Position& current_min, const Position& current_max,
                                     const Position& wanted_min, const Position& wanted_max) const;
+    [[nodiscard]] bool isCenteredOnTile() const;
 };
 
 #endif // PACMAN_POSITION_H

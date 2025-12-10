@@ -1,5 +1,8 @@
 #include "Position.h"
 
+#include "LogicConstants.h"
+
+#include <cmath>
 #include <iostream>
 #include <limits>
 #include <stdexcept>
@@ -250,4 +253,42 @@ Rectangle Rectangle::rescale(const Position& current_min, const Position& curren
                              const Position& wanted_max) const {
     return {topLeft.rescale(current_min, current_max, wanted_min, wanted_max),
             bottomRight.rescale(current_min, current_max, wanted_min, wanted_max)};
+}
+
+bool Rectangle::isCenteredOnTile() const {
+    constexpr double HALF_TILE_WIDTH = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_WIDTH);
+    constexpr double HALF_TILE_HEIGHT = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_HEIGHT);
+
+    const double centerX = (topLeft.x + bottomRight.x) / 2.0;
+    const double centerY = (topLeft.y + bottomRight.y) / 2.0;
+
+    const double deltaX = centerX - (-1.0);
+
+    const double unitsX = deltaX / HALF_TILE_WIDTH;
+
+    constexpr double EPSILON = 0.01;
+
+    if (std::abs(unitsX - std::round(unitsX)) > EPSILON) {
+        return false;
+    }
+
+    if (const auto intUnitsX = static_cast<long long>(std::round(unitsX));
+        intUnitsX % 2 == 0) {
+        return false;
+    }
+
+    const double deltaY = 1.0 - centerY;
+
+    const double unitsY = deltaY / HALF_TILE_HEIGHT;
+
+    if (std::abs(unitsY - std::round(unitsY)) > EPSILON) {
+        return false;
+    }
+
+    if (const auto intUnitsY = static_cast<long long>(std::round(unitsY));
+        intUnitsY % 2 == 0) {
+        return false;
+    }
+
+    return true;
 }

@@ -83,8 +83,11 @@ void World::update(const Direction d) {
 }
 
 std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
+    if (!ghost->getHitBox().isCenteredOnTile()) {
+        return {ghost->getDirection()};
+    }
     const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 5;
-    const auto hitBox = ghost->getHitBox();
+    const auto hitBox = ghost->getHitBox().scaledBy(0.90);
 
     // Try four primary directions
     std::map<Direction, Rectangle> test = {{Direction::EAST, hitBox.movedBy(distance, 0)},

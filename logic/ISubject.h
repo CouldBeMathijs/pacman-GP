@@ -16,7 +16,7 @@ public:
     virtual void update(Direction);
     virtual ~ISubject();
     void addObserver(std::shared_ptr<IObserver>);
-    void updateObservers() const;
+    virtual void notify() const;
 };
 
 #endif // PACMAN_SUBJECT_H
