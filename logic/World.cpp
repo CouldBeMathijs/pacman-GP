@@ -54,7 +54,7 @@ const std::shared_ptr<Pacman>& World::getPacman() const { return m_pacman; }
  *
  * @param d The direction input received from the user for Pacman's intended movement.
  */
-void World::update(const Direction d) {
+void World::update(const Direction::Cardinal d) {
     auto& score = ScoreKeeper::getInstance();
     if (!m_pacman) {
         throw std::runtime_error("Pacman not defined");
@@ -82,17 +82,17 @@ void World::update(const Direction d) {
     }
 }
 
-std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
+std::vector<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
     const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 2;
     const auto hitBox = ghost->getHitBox().scaledBy(0.90);
 
     // Try four primary directions
-    std::map<Direction, Rectangle> test = {{Direction::EAST, hitBox.movedBy(distance, 0)},
-                                           {Direction::WEST, hitBox.movedBy(-distance, 0)},
-                                           {Direction::NORTH, hitBox.movedBy(0, distance)},
-                                           {Direction::SOUTH, hitBox.movedBy(0, -distance)}};
+    std::map<Direction::Cardinal, Rectangle> test = {{Direction::Cardinal::EAST, hitBox.movedBy(distance, 0)},
+                                           {Direction::Cardinal::WEST, hitBox.movedBy(-distance, 0)},
+                                           {Direction::Cardinal::NORTH, hitBox.movedBy(0, distance)},
+                                           {Direction::Cardinal::SOUTH, hitBox.movedBy(0, -distance)}};
 
-    std::vector<Direction> out;
+    std::vector<Direction::Cardinal> out;
 
     // A direction is valid only if it's NOT blocked
     for (auto [dir, box] : test) {
@@ -102,7 +102,7 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
 
     // If the ghost is directly facing a wall, keep side movement
     // (the above logic already allows this, but ensure reverse isn't forbidden)
-    const Direction opposite = getOpposite(ghost->getDirection());
+    const Direction::Cardinal opposite = getOpposite(ghost->getDirection());
 
     // Normal rule: ghosts can't reverse
     // Exception: if blocked forward AND side paths exist, allow choosing sides
@@ -113,7 +113,7 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
     return out;
 }
 
-void World::updateGhosts(const Direction d) {
+void World::updateGhosts(const Direction::Cardinal d) {
     for (const auto& ghost : m_ghosts) {
         ghost->snapToGrid();
         switch (ghost->getMode()) {
@@ -183,13 +183,13 @@ bool World::isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntit
     return false;
 }
 
-void World::updatePacman(Direction d) {
+void World::updatePacman(Direction::Cardinal d) {
     constexpr double EPSILON = 0.01;
     const Rectangle current_hb = m_pacman->getHitBox();
     const double current_speed =
         std::round(60 * Stopwatch::getInstance().getDeltaTime()) * m_pacman->getSpeed() * 1.f / 60;
 
-    if (const Direction current_direction = m_pacman->getDirection(); d != current_direction) {
+    if (const Direction::Cardinal current_direction = m_pacman->getDirection(); d != current_direction) {
         constexpr double lookahead_speed = 0.05; // Lookahead distance
 
         // 1. Check the intended direction normally
@@ -206,7 +206,7 @@ void World::updatePacman(Direction d) {
             constexpr double CORNER_TOLERANCE = LogicConstants::TILE_HEIGHT / 4;
 
             // Determine if we are moving vertically or horizontally
-            const bool isVerticalChange = (d == Direction::NORTH || d == Direction::SOUTH);
+            const bool isVerticalChange = (d == Direction::Cardinal::NORTH || d == Direction::Cardinal::SOUTH);
 
             // Check offsets: Negative (Left/Up) and Positive (Right/Down)
 
@@ -254,7 +254,7 @@ void World::updatePacman(Direction d) {
     if (const auto search_future_hb = future_hb.scaledBy(1 - EPSILON); !isBlocked(search_future_hb, m_pacman)) {
         m_pacman->setHitBox(future_hb);
     } else {
-        m_pacman->setDirection(Direction::NONE);
+        m_pacman->setDirection(Direction::Cardinal::NONE);
     }
 
     m_pacman->update(d);

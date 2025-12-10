@@ -1,10 +1,10 @@
 #ifndef PACMAN_DIRECTION_H
 #define PACMAN_DIRECTION_H
-
+namespace Direction {
 /**
  * @brief The order of the Directions is the same as the order in the Spritemap
  */
-enum class Direction {
+enum class Cardinal {
     EAST,
     SOUTH,
     WEST,
@@ -19,43 +19,43 @@ enum class Direction {
  * @param d2 The second direction.
  * @return true if d1 is the opposite of d2.
  */
-constexpr bool isOpposite(const Direction d1, const Direction d2) {
+constexpr bool isOpposite(const Cardinal d1, const Direction::Cardinal d2) {
     if (d1 == d2)
         return false;
 
     switch (d1) {
-    case Direction::EAST:
-        return d2 == Direction::WEST;
+    case Cardinal::EAST:
+        return d2 == Cardinal::WEST;
 
-    case Direction::WEST:
-        return d2 == Direction::EAST;
+    case Cardinal::WEST:
+        return d2 == Cardinal::EAST;
 
-    case Direction::NORTH:
-        return d2 == Direction::SOUTH;
+    case Cardinal::NORTH:
+        return d2 == Cardinal::SOUTH;
 
-    case Direction::SOUTH:
-        return d2 == Direction::NORTH;
+    case Cardinal::SOUTH:
+        return d2 == Cardinal::NORTH;
 
-    case Direction::NONE:
+    case Cardinal::NONE:
         return false;
     }
     return false;
 }
 
-constexpr Direction getOpposite(const Direction d) {
+constexpr Cardinal getOpposite(const Cardinal d) {
     switch (d) {
-    case Direction::EAST:
-        return Direction::WEST;
-    case Direction::SOUTH:
-        return Direction::NORTH;
-    case Direction::WEST:
-        return Direction::EAST;
-    case Direction::NORTH:
-        return Direction::SOUTH;
-    case Direction::NONE:
+    case Cardinal::EAST:
+        return Cardinal::WEST;
+    case Cardinal::SOUTH:
+        return Cardinal::NORTH;
+    case Cardinal::WEST:
+        return Cardinal::EAST;
+    case Cardinal::NORTH:
+        return Cardinal::SOUTH;
+    case Cardinal::NONE:
         break;
     }
-    return Direction::NONE;
+    return Cardinal::NONE;
 }
-
+}
 #endif // PACMAN_DIRECTION_H

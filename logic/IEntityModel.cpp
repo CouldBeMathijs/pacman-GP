@@ -3,9 +3,9 @@
 
 Rectangle IEntityModel::getHitBox() const { return m_hitBox; }
 
-Direction IEntityModel::getDirection() const { return m_direction; }
+Direction::Cardinal IEntityModel::getDirection() const { return m_direction; }
 
-IEntityModel::IEntityModel(Rectangle hitBox, const Direction d) : m_direction(d), m_hitBox(std::move(hitBox)) {}
+IEntityModel::IEntityModel(Rectangle hitBox, const Direction::Cardinal d) : m_direction(d), m_hitBox(std::move(hitBox)) {}
 
 bool IEntityModel::isInBounds(const Rectangle& boundBox) const {
     const bool x_overlap = m_hitBox.bottomRight.x > boundBox.topLeft.x && m_hitBox.topLeft.x < boundBox.bottomRight.x;
@@ -13,26 +13,26 @@ bool IEntityModel::isInBounds(const Rectangle& boundBox) const {
     return x_overlap && y_overlap;
 }
 
-Rectangle IEntityModel::calculateFutureHitBox(const Rectangle& current_hb, const Direction d, const double speed) {
+Rectangle IEntityModel::calculateFutureHitBox(const Rectangle& current_hb, const Direction::Cardinal d, const double speed) {
     Rectangle future_hb = current_hb;
 
     switch (d) {
-    case Direction::SOUTH:
+    case Direction::Cardinal::SOUTH:
         // Move the rectangle down (positive Y)
         future_hb.moveBy(0.0, speed);
         break;
 
-    case Direction::WEST:
+    case Direction::Cardinal::WEST:
         // Move the rectangle left (negative X)
         future_hb.moveBy(-speed, 0.0);
         break;
 
-    case Direction::NORTH:
+    case Direction::Cardinal::NORTH:
         // Move the rectangle up (negative Y)
         future_hb.moveBy(0.0, -speed);
         break;
 
-    case Direction::EAST:
+    case Direction::Cardinal::EAST:
         // Move the rectangle right (positive X)
         future_hb.moveBy(speed, 0.0);
         break;

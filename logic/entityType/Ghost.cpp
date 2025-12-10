@@ -5,7 +5,7 @@
 
 IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode,
                const ChasingAlgorithm algorithm)
-    : IEntityModel(pos, Direction::EAST), m_algorithm(algorithm), m_currentMode(start_mode), m_spawnPoint(pos.topLeft),
+    : IEntityModel(pos, Direction::Cardinal::EAST), m_algorithm(algorithm), m_currentMode(start_mode), m_spawnPoint(pos.topLeft),
       m_amount_of_seconds_left_in_current_mode(amountOfSecondsLeftInCurrentMode) {}
 
 void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
@@ -18,14 +18,14 @@ ChasingAlgorithm IGhost::getAlgorithm() const { return m_algorithm; }
 
 void IGhost::setHitBox(const Rectangle& hb) { m_hitBox = hb; }
 
-void IGhost::setWantedDirection(const Direction d) { m_wantedDirection = d; }
+void IGhost::setWantedDirection(const Direction::Cardinal d) { m_wantedDirection = d; }
 
 void IGhost::goToSpawn() {
     m_hitBox.moveTo(m_spawnPoint);
-    m_direction = Direction::EAST;
+    m_direction = Direction::Cardinal::EAST;
 }
 
-void IGhost::update(const Direction direction) {
+void IGhost::update(const Direction::Cardinal direction) {
     if (m_amount_of_seconds_left_in_current_mode > 0) {
         m_amount_of_seconds_left_in_current_mode -= Stopwatch::getInstance().getDeltaTime();
     } else {
@@ -34,7 +34,7 @@ void IGhost::update(const Direction direction) {
     IEntityModel::update(direction);
 }
 
-void IGhost::setDirection(const Direction d) { m_direction = d; }
+void IGhost::setDirection(const Direction::Cardinal d) { m_direction = d; }
 
 BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::DIRECTIONAL) {}
 

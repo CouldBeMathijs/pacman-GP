@@ -15,7 +15,7 @@ private:
 
 public:
     PausedState();
-    void update(Direction) override;
+    void update(Direction::Cardinal) override;
     void handleInput(const sf::Event&) override;
 };
 

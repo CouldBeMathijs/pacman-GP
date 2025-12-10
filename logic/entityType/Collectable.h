@@ -9,7 +9,7 @@ class Collectable : public IEntityModel {
 protected:
     bool m_isPickedUp = false;
     int m_value = 0;
-    explicit Collectable(const Rectangle& pos, const Direction d);
+    explicit Collectable(const Rectangle& pos, const Direction::Cardinal d);
 
 public:
     /**
@@ -21,7 +21,7 @@ public:
     /**
      * @brief Update the observers if not yet picked up
      */
-    void update(Direction) override;
+    void update(Direction::Cardinal) override;
 
     /**
      * @brief Set the value to be passed through the Score after being picked up

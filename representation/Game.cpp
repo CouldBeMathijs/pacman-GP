@@ -12,7 +12,7 @@ void Game::run() {
     auto& camera = Camera::getInstance();
     sf::RenderWindow& window = camera.getWindow();
 
-    auto direction = Direction::NONE;
+    auto direction = Direction::Cardinal::NONE;
 
     while (window.isOpen()) {
         stopwatch.tick();
@@ -28,16 +28,16 @@ void Game::run() {
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                 case sf::Keyboard::Right:
-                    direction = Direction::EAST;
+                    direction = Direction::Cardinal::EAST;
                     break;
                 case sf::Keyboard::Up:
-                    direction = Direction::NORTH;
+                    direction = Direction::Cardinal::NORTH;
                     break;
                 case sf::Keyboard::Left:
-                    direction = Direction::WEST;
+                    direction = Direction::Cardinal::WEST;
                     break;
                 case sf::Keyboard::Down:
-                    direction = Direction::SOUTH;
+                    direction = Direction::Cardinal::SOUTH;
                     break;
                 default:;
                 }

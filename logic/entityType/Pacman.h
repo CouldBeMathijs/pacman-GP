@@ -59,7 +59,7 @@ public:
      * @brief Setter for the direction
      * @param d The direction to set
      */
-    void setDirection(Direction d);
+    void setDirection(Direction::Cardinal d);
 
     /**
      * @brief Setter for the hitBox (the position and size)

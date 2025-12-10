@@ -3,7 +3,7 @@
 #include "ScoreKeeper.h"
 #include "Visitor.h"
 
-Collectable::Collectable(const Rectangle& pos, const Direction d) : IEntityModel(pos, d) {}
+Collectable::Collectable(const Rectangle& pos, const Direction::Cardinal d) : IEntityModel(pos, d) {}
 
 void Collectable::bePickedUp() {
     if (!m_isPickedUp) {
@@ -15,7 +15,7 @@ void Collectable::bePickedUp() {
     }
 }
 
-void Collectable::update(const Direction direction) {
+void Collectable::update(const Direction::Cardinal direction) {
     if (m_isPickedUp) {
         return;
     }
@@ -24,10 +24,10 @@ void Collectable::update(const Direction direction) {
 
 void Collectable::setValue(const int i) { m_value = i; }
 
-Coin::Coin(const Rectangle& pos) : Collectable(pos, Direction::EAST) { setValue(10); }
+Coin::Coin(const Rectangle& pos) : Collectable(pos, Direction::Cardinal::EAST) { setValue(10); }
 
 void Coin::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
-Fruit::Fruit(const Rectangle& pos) : Collectable(pos, Direction::EAST) { setValue(20); }
+Fruit::Fruit(const Rectangle& pos) : Collectable(pos, Direction::Cardinal::EAST) { setValue(20); }
 
 void Fruit::accept(IEntityVisitor& visitor) { visitor.visit(*this); }

@@ -29,7 +29,7 @@ PausedState::PausedState() {
     m_playText.setPosition(windowSize.x / 2.0f, windowSize.y * 3 / 4.0f);
 }
 
-void PausedState::update(Direction) {
+void PausedState::update(Direction::Cardinal) {
     auto& window = Camera::getInstance().getWindow();
     window.draw(m_pacmanText);
     window.draw(m_playText);

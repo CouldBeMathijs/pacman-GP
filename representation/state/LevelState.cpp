@@ -11,7 +11,7 @@ LevelState::LevelState() : m_factory(std::make_shared<ViewCompatibleEntityFactor
     m_world = WorldCreator::createWorld("./assets/worldmap", parser, m_factory);
 }
 
-void LevelState::update(const Direction d) {
+void LevelState::update(const Direction::Cardinal d) {
     switch (m_world.getState()) {
     case WorldState::RUNNING:
         m_world.update(d);

@@ -12,7 +12,7 @@
 class StateManager : std::stack<std::unique_ptr<IState>> {
 public:
     StateManager();
-    void update(Direction);
+    void update(Direction::Cardinal);
     void handleInput(const sf::Event&);
     [[nodiscard]] bool empty() const;
 };

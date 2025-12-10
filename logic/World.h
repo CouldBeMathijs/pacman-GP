@@ -22,7 +22,7 @@ class World {
 
 protected:
     void handleCollectables(const Rectangle& current_hb);
-    void updatePacman(Direction d);
+    void updatePacman(Direction::Cardinal d);
 
 public:
     World() = default;
@@ -36,9 +36,9 @@ public:
     void addGhost(std::shared_ptr<IGhost> ghost);
     void addNonMovingEntity(std::shared_ptr<IEntityModel>);
     void setPacman(const std::shared_ptr<Pacman>&);
-    void update(Direction d);
-    std::vector<Direction> possibleDirections(const std::shared_ptr<IGhost>& ghost);
-    void updateGhosts(Direction d);
+    void update(Direction::Cardinal d);
+    std::vector<Direction::Cardinal> possibleDirections(const std::shared_ptr<IGhost>& ghost);
+    void updateGhosts(Direction::Cardinal d);
     bool isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity);
 };
 

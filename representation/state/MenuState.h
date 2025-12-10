@@ -15,7 +15,7 @@ private:
 
 public:
     MenuState();
-    void update(Direction d) override;
+    void update(Direction::Cardinal d) override;
     void handleInput(const sf::Event&) override;
 };
 

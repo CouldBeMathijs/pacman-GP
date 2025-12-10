@@ -48,7 +48,7 @@ VictoryState::VictoryState(const unsigned int level) : m_level(level) {
  * @brief Updates the state, primarily used here for drawing the elements.
  * @param d The current direction (unused in this simple state).
  */
-void VictoryState::update(Direction d) {
+void VictoryState::update(Direction::Cardinal d) {
     auto& window = Camera::getInstance().getWindow();
     window.draw(m_victoryText);
     window.draw(m_pressAnyKeyText);

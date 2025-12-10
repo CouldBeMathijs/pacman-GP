@@ -14,7 +14,7 @@ private:
     sf::Text m_pressAnyKeyText;
 
 public:
-    void update(Direction) override;
+    void update(Direction::Cardinal) override;
     GameOverState();
     void handleInput(const sf::Event&) override;
 };

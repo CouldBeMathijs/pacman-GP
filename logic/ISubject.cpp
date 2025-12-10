@@ -4,7 +4,7 @@
 
 ISubject::~ISubject() = default;
 
-void ISubject::update(Direction) { notify(); }
+void ISubject::update(Direction::Cardinal) { notify(); }
 
 void ISubject::addObserver(std::shared_ptr<IObserver> n) { m_observers.push_back(std::move(n)); }
 

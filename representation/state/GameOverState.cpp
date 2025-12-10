@@ -44,7 +44,7 @@ GameOverState::GameOverState() {
  * @brief Updates the state, primarily used here for drawing the elements.
  * @param d The current direction (unused in this simple state).
  */
-void GameOverState::update(Direction d) {
+void GameOverState::update(Direction::Cardinal d) {
     auto& window = Camera::getInstance().getWindow();
     window.draw(m_gameOverText);
     window.draw(m_pressAnyKeyText);

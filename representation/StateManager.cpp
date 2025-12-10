@@ -5,7 +5,7 @@
 
 StateManager::StateManager() { emplace(std::make_unique<MenuState>()); }
 
-void StateManager::update(Direction d) {
+void StateManager::update(Direction::Cardinal d) {
     this->top()->update(d);
     const unsigned int requestedPops = this->top()->getRequestedPops();
     std::unique_ptr<IState> stateToPush;

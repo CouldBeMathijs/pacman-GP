@@ -13,7 +13,7 @@ class ISubject {
 
 public:
     virtual void accept(IEntityVisitor& visitor) = 0;
-    virtual void update(Direction);
+    virtual void update(Direction::Cardinal);
     virtual ~ISubject();
     void addObserver(std::shared_ptr<IObserver>);
     virtual void notify() const;

@@ -24,7 +24,7 @@ public:
      * @brief Draws the text elements to the window.
      * @param d The current direction (often unused in menu/info states).
      */
-    void update(Direction d) override;
+    void update(Direction::Cardinal d) override;
 
     /**
      * @brief Handles user input (e.g., key presses).

@@ -16,7 +16,7 @@ enum class ChasingAlgorithm { DIRECTIONAL, IN_FRONT_MANHATTAN, ON_TOP_MANHATTAN 
 class IGhost : public IEntityModel {
 protected:
     ChasingAlgorithm m_algorithm;
-    Direction m_wantedDirection = Direction::NORTH;
+    Direction::Cardinal m_wantedDirection = Direction::Cardinal::NORTH;
     GhostMode m_currentMode;
     Position m_spawnPoint;
     double m_amount_of_seconds_left_in_current_mode;
@@ -29,7 +29,7 @@ public:
     [[nodiscard]] ChasingAlgorithm getAlgorithm() const;
     void setHitBox(const Rectangle& hb);
 
-    [[nodiscard]] Direction getWantedDirection() const { return m_wantedDirection; }
+    [[nodiscard]] Direction::Cardinal getWantedDirection() const { return m_wantedDirection; }
 
     [[nodiscard]] GhostMode getMode() const;
     [[nodiscard]] double getSpeed() const;
@@ -41,9 +41,9 @@ public:
     void accept(IEntityVisitor& visitor) override;
 
     void goToSpawn();
-    void setDirection(Direction d);
-    void setWantedDirection(Direction d);
-    void update(Direction) override;
+    void setDirection(Direction::Cardinal d);
+    void setWantedDirection(Direction::Cardinal d);
+    void update(Direction::Cardinal) override;
 };
 
 class BlueGhost final : public IGhost {

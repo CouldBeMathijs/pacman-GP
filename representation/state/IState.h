@@ -11,7 +11,7 @@
 class IState {
 public:
     virtual ~IState() = default;
-    virtual void update(Direction) = 0;
+    virtual void update(Direction::Cardinal) = 0;
     virtual void handleInput(const sf::Event&) = 0;
 
     [[nodiscard]] unsigned int getRequestedPops() const { return m_requestedPops; }
