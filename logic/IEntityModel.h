@@ -14,6 +14,7 @@ public:
     [[nodiscard]] Rectangle getHitBox() const;
     [[nodiscard]] bool isInBounds(const Rectangle& boundBox) const;
     static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction d, double speed);
+    void snapToGrid();
 };
 
 #endif

@@ -86,7 +86,7 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
     if (!ghost->getHitBox().isCenteredOnTile()) {
         return {ghost->getDirection()};
     }
-    const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 5;
+    const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 2;
     const auto hitBox = ghost->getHitBox().scaledBy(0.90);
 
     // Try four primary directions
@@ -105,7 +105,7 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
 
     // If the ghost is directly facing a wall, keep side movement
     // (the above logic already allows this, but ensure reverse isn't forbidden)
-    Direction opposite = getOpposite(ghost->getDirection());
+    const Direction opposite = getOpposite(ghost->getDirection());
 
     // Normal rule: ghosts can't reverse
     // Exception: if blocked forward AND side paths exist, allow choosing sides
@@ -118,6 +118,8 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
 
 void World::updateGhosts(const Direction d) {
     for (const auto& ghost : m_ghosts) {
+        ghost->snapToGrid();
+        std::cout << ghost->getHitBox().isCenteredOnTile();
         switch (ghost->getMode()) {
         case GhostMode::CHASING: {
 
@@ -161,6 +163,7 @@ void World::updateGhosts(const Direction d) {
         }
         ghost->update(d);
     }
+    std::cout << std::endl;
 }
 
 bool World::isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity) {

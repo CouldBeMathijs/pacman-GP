@@ -43,3 +43,5 @@ Rectangle IEntityModel::calculateFutureHitBox(const Rectangle& current_hb, const
 
     return future_hb;
 }
+
+void IEntityModel::snapToGrid() { m_hitBox.snapToGrid(); }

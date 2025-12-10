@@ -255,7 +255,7 @@ Rectangle Rectangle::rescale(const Position& current_min, const Position& curren
             bottomRight.rescale(current_min, current_max, wanted_min, wanted_max)};
 }
 
-bool Rectangle::isCenteredOnTile() const {
+bool Rectangle::isCenteredOnTile(double epsilon) const {
     constexpr double HALF_TILE_WIDTH = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_WIDTH);
     constexpr double HALF_TILE_HEIGHT = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_HEIGHT);
 
@@ -266,9 +266,8 @@ bool Rectangle::isCenteredOnTile() const {
 
     const double unitsX = deltaX / HALF_TILE_WIDTH;
 
-    constexpr double EPSILON = 0.01;
 
-    if (std::abs(unitsX - std::round(unitsX)) > EPSILON) {
+    if (std::abs(unitsX - std::round(unitsX)) > epsilon) {
         return false;
     }
 
@@ -281,7 +280,7 @@ bool Rectangle::isCenteredOnTile() const {
 
     const double unitsY = deltaY / HALF_TILE_HEIGHT;
 
-    if (std::abs(unitsY - std::round(unitsY)) > EPSILON) {
+    if (std::abs(unitsY - std::round(unitsY)) > epsilon) {
         return false;
     }
 
@@ -291,4 +290,70 @@ bool Rectangle::isCenteredOnTile() const {
     }
 
     return true;
+}
+
+void Rectangle::snapToGrid() {
+    constexpr double epsilon = 0.02; // The specified snapping threshold
+
+    // --- 1. Calculate Half Tile Dimensions ---
+    constexpr double HALF_TILE_WIDTH = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_WIDTH);
+    constexpr double HALF_TILE_HEIGHT = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_HEIGHT);
+
+    // --- 2. Calculate Center Coordinates ---
+    const double centerX = (topLeft.x + bottomRight.x) / 2.0;
+    const double centerY = (topLeft.y + bottomRight.y) / 2.0;
+
+    // --- 3. Determine Tile Coordinates (X-axis) ---
+    // deltaX is the distance from the left boundary (-1.0)
+    const double deltaX = centerX - (-1.0);
+    // unitsX is the number of half-tile widths from the left boundary
+    const double unitsX = deltaX / HALF_TILE_WIDTH;
+
+    // The grid centers are at odd multiples of HALF_TILE_WIDTH
+    // (1 * HALF_TILE_WIDTH, 3 * HALF_TILE_WIDTH, 5 * HALF_TILE_WIDTH, ...)
+    const double nearestOddUnitsX = std::round(unitsX / 2.0) * 2.0 - 1.0;
+
+    // --- 4. Check for Almost Centered (X-axis) ---
+    // Check if the current unitsX is close to an odd unit center
+    if (std::abs(unitsX - nearestOddUnitsX) <= epsilon) {
+        // --- 5. Calculate Target Center (X-axis) ---
+        // Calculate the center position of the target tile in world coordinates
+        const double targetDeltaX = nearestOddUnitsX * HALF_TILE_WIDTH;
+        const double targetCenterX = -1.0 + targetDeltaX;
+
+        // --- 6. Move the Rectangle (X-axis) ---
+        // Calculate the offset required to move the center to targetCenterX
+        const double offsetX = targetCenterX - centerX;
+
+        // Apply the offset to the rectangle's coordinates
+        topLeft.x += offsetX;
+        bottomRight.x += offsetX;
+    }
+
+    // --- 3. Determine Tile Coordinates (Y-axis) ---
+    // deltaY is the distance from the top boundary (1.0)
+    const double deltaY = 1.0 - centerY;
+    // unitsY is the number of half-tile heights from the top boundary
+    const double unitsY = deltaY / HALF_TILE_HEIGHT;
+
+    // The grid centers are at odd multiples of HALF_TILE_HEIGHT
+    // (1 * HALF_TILE_HEIGHT, 3 * HALF_TILE_HEIGHT, 5 * HALF_TILE_HEIGHT, ...)
+    const double nearestOddUnitsY = std::round(unitsY / 2.0) * 2.0 - 1.0;
+
+    // --- 4. Check for Almost Centered (Y-axis) ---
+    // Check if the current unitsY is close to an odd unit center
+    if (std::abs(unitsY - nearestOddUnitsY) <= epsilon) {
+        // --- 5. Calculate Target Center (Y-axis) ---
+        // Calculate the center position of the target tile in world coordinates
+        const double targetDeltaY = nearestOddUnitsY * HALF_TILE_HEIGHT;
+        const double targetCenterY = 1.0 - targetDeltaY; // Note: 1.0 - deltaY for Y-axis
+
+        // --- 6. Move the Rectangle (Y-axis) ---
+        // Calculate the offset required to move the center to targetCenterY
+        const double offsetY = targetCenterY - centerY;
+
+        // Apply the offset to the rectangle's coordinates
+        topLeft.y += offsetY;
+        bottomRight.y += offsetY;
+    }
 }

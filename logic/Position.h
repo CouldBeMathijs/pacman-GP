@@ -61,7 +61,8 @@ struct Rectangle {
 
     [[nodiscard]] Rectangle rescale(const Position& current_min, const Position& current_max,
                                     const Position& wanted_min, const Position& wanted_max) const;
-    [[nodiscard]] bool isCenteredOnTile() const;
+    [[nodiscard]] bool isCenteredOnTile(double epsilon = 0.01) const;
+    void snapToGrid();
 };
 
 #endif // PACMAN_POSITION_H
