@@ -1,5 +1,6 @@
 #ifndef PACMAN_DIRECTION_H
 #define PACMAN_DIRECTION_H
+
 namespace Direction {
 /**
  * @brief The order of the Directions is the same as the order in the Spritemap
@@ -57,5 +58,5 @@ constexpr Cardinal getOpposite(const Cardinal d) {
     }
     return Cardinal::NONE;
 }
-}
+} // namespace Direction
 #endif // PACMAN_DIRECTION_H

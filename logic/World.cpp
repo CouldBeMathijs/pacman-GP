@@ -88,9 +88,9 @@ std::vector<Direction::Cardinal> World::possibleDirections(const std::shared_ptr
 
     // Try four primary directions
     std::map<Direction::Cardinal, Rectangle> test = {{Direction::Cardinal::EAST, hitBox.movedBy(distance, 0)},
-                                           {Direction::Cardinal::WEST, hitBox.movedBy(-distance, 0)},
-                                           {Direction::Cardinal::NORTH, hitBox.movedBy(0, distance)},
-                                           {Direction::Cardinal::SOUTH, hitBox.movedBy(0, -distance)}};
+                                                     {Direction::Cardinal::WEST, hitBox.movedBy(-distance, 0)},
+                                                     {Direction::Cardinal::NORTH, hitBox.movedBy(0, distance)},
+                                                     {Direction::Cardinal::SOUTH, hitBox.movedBy(0, -distance)}};
 
     std::vector<Direction::Cardinal> out;
 
