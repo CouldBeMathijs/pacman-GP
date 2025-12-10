@@ -23,6 +23,6 @@ jobs:
       - name: Format C++ code
         uses: pachadotdev/clang-format@main
         with:
-          version: '18'
+          version: '20'
           auto-commit: true
           commit-message: 'style: auto-format C++ code with clang-format-18'
