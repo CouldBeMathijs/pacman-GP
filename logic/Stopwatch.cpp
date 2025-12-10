@@ -1,9 +1,6 @@
 #include "Stopwatch.h"
 
-Stopwatch::Stopwatch() {
-    m_lastTickTime = Clock::now();
-    m_deltaTime = 0.0;
-}
+Stopwatch::Stopwatch() : m_lastTickTime(Clock::now()), m_deltaTime(0.0) {}
 
 Stopwatch& Stopwatch::getInstance() {
     static Stopwatch instance;

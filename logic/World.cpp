@@ -83,9 +83,6 @@ void World::update(const Direction d) {
 }
 
 std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
-    if (!ghost->getHitBox().isCenteredOnTile()) {
-        return {ghost->getDirection()};
-    }
     const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 2;
     const auto hitBox = ghost->getHitBox().scaledBy(0.90);
 
@@ -119,7 +116,6 @@ std::vector<Direction> World::possibleDirections(const std::shared_ptr<IGhost>& 
 void World::updateGhosts(const Direction d) {
     for (const auto& ghost : m_ghosts) {
         ghost->snapToGrid();
-        std::cout << ghost->getHitBox().isCenteredOnTile();
         switch (ghost->getMode()) {
         case GhostMode::CHASING: {
 
@@ -150,7 +146,7 @@ void World::updateGhosts(const Direction d) {
             case ChasingAlgorithm::ON_TOP_MANHATTAN:
             case ChasingAlgorithm::IN_FRONT_MANHATTAN:
             case ChasingAlgorithm::DIRECTIONAL: {
-                if (auto possible = possibleDirections(ghost); possible.size() > 1) {
+                if (auto possible = possibleDirections(ghost); !possible.empty()) {
                     ghost->setWantedDirection(Random::getInstance().getRandomElement(possible));
                 }
             }

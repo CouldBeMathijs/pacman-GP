@@ -255,41 +255,6 @@ Rectangle Rectangle::rescale(const Position& current_min, const Position& curren
             bottomRight.rescale(current_min, current_max, wanted_min, wanted_max)};
 }
 
-bool Rectangle::isCenteredOnTile(double epsilon) const {
-    constexpr double HALF_TILE_WIDTH = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_WIDTH);
-    constexpr double HALF_TILE_HEIGHT = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_HEIGHT);
-
-    const double centerX = (topLeft.x + bottomRight.x) / 2.0;
-    const double centerY = (topLeft.y + bottomRight.y) / 2.0;
-
-    const double deltaX = centerX - (-1.0);
-
-    const double unitsX = deltaX / HALF_TILE_WIDTH;
-
-
-    if (std::abs(unitsX - std::round(unitsX)) > epsilon) {
-        return false;
-    }
-
-    if (const auto intUnitsX = static_cast<long long>(std::round(unitsX)); intUnitsX % 2 == 0) {
-        return false;
-    }
-
-    const double deltaY = 1.0 - centerY;
-
-    const double unitsY = deltaY / HALF_TILE_HEIGHT;
-
-    if (std::abs(unitsY - std::round(unitsY)) > epsilon) {
-        return false;
-    }
-
-    if (const auto intUnitsY = static_cast<long long>(std::round(unitsY)); intUnitsY % 2 == 0) {
-        return false;
-    }
-
-    return true;
-}
-
 void Rectangle::snapToGrid() {
     constexpr double epsilon = 0.02; // The specified snapping threshold
 
@@ -309,11 +274,11 @@ void Rectangle::snapToGrid() {
 
     // The grid centers are at odd multiples of HALF_TILE_WIDTH
     // (1 * HALF_TILE_WIDTH, 3 * HALF_TILE_WIDTH, 5 * HALF_TILE_WIDTH, ...)
-    const double nearestOddUnitsX = std::round(unitsX / 2.0) * 2.0 - 1.0;
 
     // --- 4. Check for Almost Centered (X-axis) ---
     // Check if the current unitsX is close to an odd unit center
-    if (std::abs(unitsX - nearestOddUnitsX) <= epsilon) {
+    if (const double nearestOddUnitsX = std::round((unitsX - 1.0) / 2.0) * 2.0 + 1.0;
+        std::abs(unitsX - nearestOddUnitsX) <= epsilon) {
         // --- 5. Calculate Target Center (X-axis) ---
         // Calculate the center position of the target tile in world coordinates
         const double targetDeltaX = nearestOddUnitsX * HALF_TILE_WIDTH;
@@ -336,7 +301,7 @@ void Rectangle::snapToGrid() {
 
     // The grid centers are at odd multiples of HALF_TILE_HEIGHT
     // (1 * HALF_TILE_HEIGHT, 3 * HALF_TILE_HEIGHT, 5 * HALF_TILE_HEIGHT, ...)
-    const double nearestOddUnitsY = std::round(unitsY / 2.0) * 2.0 - 1.0;
+    const double nearestOddUnitsY = std::round((unitsY - 1.0) / 2.0) * 2.0 + 1.0;
 
     // --- 4. Check for Almost Centered (Y-axis) ---
     // Check if the current unitsY is close to an odd unit center
