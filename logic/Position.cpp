@@ -266,7 +266,6 @@ bool Rectangle::isCenteredOnTile(double epsilon) const {
 
     const double unitsX = deltaX / HALF_TILE_WIDTH;
 
-
     if (std::abs(unitsX - std::round(unitsX)) > epsilon) {
         return false;
     }
