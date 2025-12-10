@@ -272,8 +272,7 @@ bool Rectangle::isCenteredOnTile() const {
         return false;
     }
 
-    if (const auto intUnitsX = static_cast<long long>(std::round(unitsX));
-        intUnitsX % 2 == 0) {
+    if (const auto intUnitsX = static_cast<long long>(std::round(unitsX)); intUnitsX % 2 == 0) {
         return false;
     }
 
@@ -285,8 +284,7 @@ bool Rectangle::isCenteredOnTile() const {
         return false;
     }
 
-    if (const auto intUnitsY = static_cast<long long>(std::round(unitsY));
-        intUnitsY % 2 == 0) {
+    if (const auto intUnitsY = static_cast<long long>(std::round(unitsY)); intUnitsY % 2 == 0) {
         return false;
     }
 
