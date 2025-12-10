@@ -274,11 +274,11 @@ void Rectangle::snapToGrid() {
 
     // The grid centers are at odd multiples of HALF_TILE_WIDTH
     // (1 * HALF_TILE_WIDTH, 3 * HALF_TILE_WIDTH, 5 * HALF_TILE_WIDTH, ...)
+    const double nearestOddUnitsX = std::round(unitsX / 2.0) * 2.0 - 1.0;
 
     // --- 4. Check for Almost Centered (X-axis) ---
     // Check if the current unitsX is close to an odd unit center
-    if (const double nearestOddUnitsX = std::round((unitsX - 1.0) / 2.0) * 2.0 + 1.0;
-        std::abs(unitsX - nearestOddUnitsX) <= epsilon) {
+    if (std::abs(unitsX - nearestOddUnitsX) <= epsilon) {
         // --- 5. Calculate Target Center (X-axis) ---
         // Calculate the center position of the target tile in world coordinates
         const double targetDeltaX = nearestOddUnitsX * HALF_TILE_WIDTH;
