@@ -22,7 +22,7 @@ void PacmanCollisionVisitor::visit(Fruit& target) {
 
 void GhostCollisionVisitor::visit(IGhost& target) {
     // Ghost vs Ghost logic
-    // m_result.moveBlocked = true;
+    m_result.moveBlocked = true;
 }
 
 void GhostCollisionVisitor::visit(Pacman& target) {

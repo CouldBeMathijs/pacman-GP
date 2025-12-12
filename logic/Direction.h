@@ -12,6 +12,23 @@ enum class Cardinal {
     NONE,
 };
 
+inline const char* to_string(const Cardinal e) {
+    switch (e) {
+    case Cardinal::EAST:
+        return "EAST";
+    case Cardinal::SOUTH:
+        return "SOUTH";
+    case Cardinal::WEST:
+        return "WEST";
+    case Cardinal::NORTH:
+        return "NORTH";
+    case Cardinal::NONE:
+        return "NONE";
+    default:
+        return "unknown";
+    }
+}
+
 /**
  * @brief Checks if two given directions are exact opposites.
  *
@@ -19,7 +36,7 @@ enum class Cardinal {
  * @param d2 The second direction.
  * @return true if d1 is the opposite of d2.
  */
-constexpr bool isOpposite(const Cardinal d1, const Direction::Cardinal d2) {
+constexpr bool isOpposite(const Cardinal d1, const Cardinal d2) {
     if (d1 == d2)
         return false;
 

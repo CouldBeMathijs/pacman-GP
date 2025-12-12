@@ -36,9 +36,9 @@ void IGhost::update(const Direction::Cardinal direction) {
 
 void IGhost::setDirection(const Direction::Cardinal d) { m_direction = d; }
 
-BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::DIRECTIONAL) {}
+BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 
-PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
+PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::DIRECTIONAL) {}
 
 OrangeGhost::OrangeGhost(const Rectangle& pos)
     : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}

@@ -83,6 +83,16 @@ void World::update(const Direction::Cardinal d) {
 }
 
 std::vector<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
+    std::string ghostColor;
+    if (std::dynamic_pointer_cast<BlueGhost>(ghost)) {
+        ghostColor = "Blue";
+    } else if (std::dynamic_pointer_cast<OrangeGhost>(ghost)) {
+        ghostColor = "Orange";
+    } else if (std::dynamic_pointer_cast<PinkGhost>(ghost)) {
+        ghostColor = "Pink";
+    } else {
+        ghostColor = "Red";
+    }
     const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 2;
     const auto hitBox = ghost->getHitBox().scaledBy(0.90);
 
@@ -110,6 +120,12 @@ std::vector<Direction::Cardinal> World::possibleDirections(const std::shared_ptr
         std::erase(out, opposite);
     }
 
+    std::cout << ghostColor << ": ";
+    for (const auto dir : out) {
+        std::cout << Direction::to_string(dir) << " ";
+    }
+    std::cout << std::endl;
+    
     return out;
 }
 
@@ -124,7 +140,7 @@ void World::updateGhosts(const Direction::Cardinal d) {
 
             // Define the lookahead distance (10 "steps")
             // This ensures we don't move unless the long-range path is clear
-            const double lookAheadDist = moveDist * 2;
+            const double lookAheadDist = moveDist * 1.234567890;
 
             // 1. MOVEMENT CHECK:
             // We check the long distance (lookAheadDist). If that is clear, we perform the short move (moveDist).
@@ -138,7 +154,6 @@ void World::updateGhosts(const Direction::Cardinal d) {
                     IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), moveDist);
                 ghost->setHitBox(movedHitBox);
                 ghost->setDirection(ghost->getWantedDirection());
-                // break;
             }
 
             // 2. DIRECTION DECISION LOGIC
