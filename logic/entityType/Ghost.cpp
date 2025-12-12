@@ -5,8 +5,8 @@
 
 IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode,
                const ChasingAlgorithm algorithm)
-    : IEntityModel(pos, Direction::Cardinal::EAST), m_algorithm(algorithm), m_currentMode(start_mode), m_spawnPoint(pos.topLeft),
-      m_amount_of_seconds_left_in_current_mode(amountOfSecondsLeftInCurrentMode) {}
+    : IEntityModel(pos, Direction::Cardinal::EAST), m_algorithm(algorithm), m_currentMode(start_mode),
+      m_spawnPoint(pos.topLeft), m_amount_of_seconds_left_in_current_mode(amountOfSecondsLeftInCurrentMode) {}
 
 void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
