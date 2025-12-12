@@ -125,7 +125,7 @@ std::vector<Direction::Cardinal> World::possibleDirections(const std::shared_ptr
         std::cout << Direction::to_string(dir) << " ";
     }
     std::cout << std::endl;
-    
+
     return out;
 }
 
