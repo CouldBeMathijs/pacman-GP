@@ -47,3 +47,7 @@ Rectangle IEntityModel::calculateFutureHitBox(const Rectangle& current_hb, const
 }
 
 void IEntityModel::snapToGrid() { m_hitBox.snapToGrid(); }
+
+bool IEntityModel::isCenteredOnTile(const double epsilon) const {
+    return m_hitBox.isCenteredOnTile(epsilon);
+}

@@ -121,7 +121,6 @@ void World::updateGhosts(const Direction::Cardinal d) {
         // ghost->snapToGrid();
         switch (ghost->getMode()) {
         case GhostMode::CHASING: {
-
             // Define the movement distance for this specific frame
             const double moveDist = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
 
@@ -142,18 +141,19 @@ void World::updateGhosts(const Direction::Cardinal d) {
                 ghost->setHitBox(movedHitBox);
                 ghost->setDirection(ghost->getWantedDirection());
             }
-
             // 2. DIRECTION DECISION LOGIC
-            switch (ghost->getAlgorithm()) {
-            case ChasingAlgorithm::ON_TOP_MANHATTAN:
-            case ChasingAlgorithm::IN_FRONT_MANHATTAN:
-            case ChasingAlgorithm::DIRECTIONAL: {
-                if (auto possible = possibleDirections(ghost); !possible.empty()) {
-                    ghost->setWantedDirection(Random::getInstance().getRandomElement(possible));
+            if (ghost->isCenteredOnTile(0.2)) {
+                switch (ghost->getAlgorithm()) {
+                case ChasingAlgorithm::ON_TOP_MANHATTAN:
+                case ChasingAlgorithm::IN_FRONT_MANHATTAN:
+                case ChasingAlgorithm::DIRECTIONAL: {
+                    if (auto possible = possibleDirections(ghost); !possible.empty()) {
+                        ghost->setWantedDirection(Random::getInstance().getRandomElement(possible));
+                    }
                 }
+                }
+                break;
             }
-            }
-            break;
         }
         case GhostMode::PANICKING:
         case GhostMode::WAITING:
@@ -161,7 +161,6 @@ void World::updateGhosts(const Direction::Cardinal d) {
         }
         ghost->update(d);
     }
-    std::cout << std::endl;
 }
 
 bool World::isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity) {

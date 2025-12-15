@@ -40,34 +40,48 @@ World WorldCreator::createWorld(const std::string& filename, const IWorldConfigP
 
             // Access the grid using [row][column] which is [y][x]
             switch (gridData[y][x]) {
-            case '#':
-                out.addNonMovingEntity(factory->createWall(hb));
-                break;
-            case '*': {
+            case '#': { // Wall
+                auto w = factory->createWall(hb);
+                out.addNonMovingEntity(std::move(w));
+            } break;
+
+            case '*': { // Coin
                 auto c = factory->createCoin(hb_coin);
                 score.addCollectable();
                 out.addNonMovingEntity(std::move(c));
             } break;
-            case 'F': {
+
+            case 'F': { // Fruit
                 auto f = factory->createFruit(hb);
                 score.addCollectable();
                 out.addNonMovingEntity(std::move(f));
             } break;
-            case 'P':
-                out.setPacman(std::static_pointer_cast<Pacman>(factory->createPacman(hb)));
-                break;
-            case '1':
-                out.addGhost(std::static_pointer_cast<IGhost>(factory->createBlueGhost(hb)));
-                break;
-            case '2':
-                out.addGhost(std::static_pointer_cast<IGhost>(factory->createPinkGhost(hb)));
-                break;
-            case '3':
-                out.addGhost(std::static_pointer_cast<IGhost>(factory->createOrangeGhost(hb)));
-                break;
-            case '4':
-                out.addGhost(std::static_pointer_cast<IGhost>(factory->createRedGhost(hb)));
-                break;
+
+            case 'P': { // Pacman
+                auto p = factory->createPacman(hb);
+                out.setPacman(std::static_pointer_cast<Pacman>(std::move(p)));
+            } break;
+
+            case '1': { // Blue Ghost
+                auto g = factory->createBlueGhost(hb);
+                out.addGhost(std::static_pointer_cast<IGhost>(std::move(g)));
+            } break;
+
+            case '2': { // Pink Ghost
+                auto g = factory->createPinkGhost(hb);
+                out.addGhost(std::static_pointer_cast<IGhost>(std::move(g)));
+            } break;
+
+            case '3': { // Orange Ghost
+                auto g = factory->createOrangeGhost(hb);
+                out.addGhost(std::static_pointer_cast<IGhost>(std::move(g)));
+            } break;
+
+            case '4': { // Red Ghost
+                auto g = factory->createRedGhost(hb);
+                out.addGhost(std::static_pointer_cast<IGhost>(std::move(g)));
+            } break;
+
             default:
                 // Do nothing for empty space ' '
                 break;

@@ -274,11 +274,11 @@ void Rectangle::snapToGrid() {
 
     // The grid centers are at odd multiples of HALF_TILE_WIDTH
     // (1 * HALF_TILE_WIDTH, 3 * HALF_TILE_WIDTH, 5 * HALF_TILE_WIDTH, ...)
-    const double nearestOddUnitsX = std::round(unitsX - 1.0 / 2.0) * 2.0 + 1.0;
 
     // --- 4. Check for Almost Centered (X-axis) ---
     // Check if the current unitsX is close to an odd unit center
-    if (std::abs(unitsX - nearestOddUnitsX) <= epsilon) {
+    if (const double nearestOddUnitsX = std::round(unitsX - 1.0 / 2.0) * 2.0 + 1.0;
+        std::abs(unitsX - nearestOddUnitsX) <= epsilon) {
         // --- 5. Calculate Target Center (X-axis) ---
         // Calculate the center position of the target tile in world coordinates
         const double targetDeltaX = nearestOddUnitsX * HALF_TILE_WIDTH;
@@ -301,11 +301,11 @@ void Rectangle::snapToGrid() {
 
     // The grid centers are at odd multiples of HALF_TILE_HEIGHT
     // (1 * HALF_TILE_HEIGHT, 3 * HALF_TILE_HEIGHT, 5 * HALF_TILE_HEIGHT, ...)
-    const double nearestOddUnitsY = std::round((unitsY - 1.0) / 2.0) * 2.0 + 1.0;
 
     // --- 4. Check for Almost Centered (Y-axis) ---
     // Check if the current unitsY is close to an odd unit center
-    if (std::abs(unitsY - nearestOddUnitsY) <= epsilon) {
+    if (const double nearestOddUnitsY = std::round((unitsY - 1.0) / 2.0) * 2.0 + 1.0;
+        std::abs(unitsY - nearestOddUnitsY) <= epsilon) {
         // --- 5. Calculate Target Center (Y-axis) ---
         // Calculate the center position of the target tile in world coordinates
         const double targetDeltaY = nearestOddUnitsY * HALF_TILE_HEIGHT;
@@ -319,4 +319,60 @@ void Rectangle::snapToGrid() {
         topLeft.y += offsetY;
         bottomRight.y += offsetY;
     }
+}
+
+bool Rectangle::isCenteredOnTile(const double epsilon) const {
+    // --- 1. Constants and Center Calculation ---
+    // The current range is the Normalized Device Coordinates (NDC) space.
+    const Position current_min = { -1.0, -1.0 }; // Bottom-left corner
+    const Position current_max = { 1.0, 1.0 };   // Top-right corner (NDC)
+
+    // Calculate the center of the rectangle
+    const Position center = {
+        (topLeft.x + bottomRight.x) / 2.0,
+        (topLeft.y + bottomRight.y) / 2.0
+    };
+
+    // Number of tiles
+    constexpr int NUM_TILES_X = LogicConstants::AMOUNT_OF_TILES_WIDTH;
+    constexpr int NUM_TILES_Y = LogicConstants::AMOUNT_OF_TILES_HEIGHT;
+
+    // --- 2. Rescale NDC Center to Tile Index Space ---
+    // We want the X range to map from [-1.0, 1.0] to [0.0, NUM_TILES_X].
+    // We want the Y range to map from [1.0, -1.0] to [0.0, NUM_TILES_Y] (Inversion for screen coords).
+
+    // Wanted X range: [0, NUM_TILES_X]
+    const Position wanted_min_x = { 0.0, 0.0 };
+    const Position wanted_max_x = { static_cast<double>(NUM_TILES_X), static_cast<double>(NUM_TILES_Y) };
+
+    // Due to the standard NDC top-to-bottom Y-axis mapping (1.0 is top, -1.0 is bottom),
+    // we need to flip the current Y range for the Y-coordinate.
+    const Position current_min_y_flipped = { -1.0, 1.0 }; // X min=-1.0, Y min=1.0 (Top Edge)
+    const Position current_max_y_flipped = { 1.0, -1.0 }; // X max=1.0, Y max=-1.0 (Bottom Edge)
+
+    // Rescale X using the standard Position::rescale (using X/Y components of center)
+    // Note: We only care about the X component of the result for the X check.
+    const Position rescaled_x_pos = center.rescale(current_min, current_max, wanted_min_x, wanted_max_x);
+
+    // Rescale Y using the *flipped* Y range (current_min_y_flipped, current_max_y_flipped)
+    // Note: We only care about the Y component of the result for the Y check.
+    const Position rescaled_y_pos = center.rescale(current_min_y_flipped, current_max_y_flipped, wanted_min_x, wanted_max_x);
+
+    const double rescaledCenterX = rescaled_x_pos.x;
+    const double rescaledCenterY = rescaled_y_pos.y;
+
+    // --- 3. Centering Check using Half-Integers ---
+    // A tile is centered when the rescaled coordinate is exactly 0.5, 1.5, 2.5, etc.
+    // The index of the tile is floor(rescaled coordinate).
+
+    // Calculate the expected center of the tile: (Index + 0.5)
+    // Example: if rescaledCenterX is 1.2, it's in tile 1. Expected center is 1.5.
+    const double nearestHalfIntX = std::floor(rescaledCenterX) + 0.5;
+    const double nearestHalfIntY = std::floor(rescaledCenterY) + 0.5;
+
+    // Check if the rescaled center is close to its nearest half-integer center point
+    const bool isCenteredX = std::abs(rescaledCenterX - nearestHalfIntX) <= epsilon;
+    const bool isCenteredY = std::abs(rescaledCenterY - nearestHalfIntY) <= epsilon;
+
+    return isCenteredX && isCenteredY;
 }

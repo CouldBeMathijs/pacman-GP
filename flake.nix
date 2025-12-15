@@ -17,18 +17,18 @@
 
                                 compiler = pkgs.clang;
                                 sfml_2 = pkgs.sfml_2;
+                                valgrind = pkgs.valgrind;
 
                                 # Packages needed for development shell
                                 sfml-dev-pkgs = with pkgs; [ compiler cmake gdb sfml_2 valgrind];
 
                                 cppGamePackage = pkgs.stdenv.mkDerivation {
                                         pname = "pacman";
-                                        version = "0.1.0";
+                                        version = "0.1.0-release";
 
                                         src = ./.; # Source code is in the current flake directory
 
                                         buildInputs = [ sfml_2 ];
-
                                         nativeBuildInputs = [ pkgs.cmake pkgs.clang ];
 
                                         cmakeFlags = [
@@ -38,20 +38,37 @@
 
                                         installPhase = ''
                                                 echo "Running custom install phase..."
-                                                # Create the standard output directory for binaries
                                                 mkdir -p $out
-
-                                                # Copy the built executable (named 'pacman' based on your log) to $out
                                                 cp pacman $out/
-
-                                                # If your project uses assets (images, fonts, etc.), you must copy them here as well.
-                                                # Example for assets:
-                                                # Corrected lines:
                                                 cp -r $src/assets $out/
-
                                                 echo "Executable copied to $out/"
                                         '';
+                                };
 
+                                # --- NEW: Package for Debug Build (for Valgrind) ---
+                                cppGamePackageDebug = pkgs.stdenv.mkDerivation {
+                                        pname = "pacman";
+                                        version = "0.1.0-debug";
+
+                                        src = ./.;
+
+                                        buildInputs = [ sfml_2 ];
+                                        # Use clang for nativeBuildInputs
+                                        nativeBuildInputs = [ pkgs.cmake pkgs.clang ];
+
+                                        cmakeFlags = [
+                                                # Build with Debug symbols for useful Valgrind output
+                                                "-DCMAKE_BUILD_TYPE=Debug" 
+                                                "-DSFML_DIR=${sfml_2}/lib/cmake/SFML"
+                                        ];
+
+                                        installPhase = ''
+                                                echo "Running custom install phase for DEBUG build..."
+                                                mkdir -p $out
+                                                cp pacman $out/
+                                                cp -r $src/assets $out/
+                                                echo "Debug executable copied to $out/"
+                                        '';
                                 };
 
                                 cpp-env = pkgs.mkShell {
@@ -59,8 +76,6 @@
                                         shellHook = ''
                                                 export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [ sfml_2 ]}:$LD_LIBRARY_PATH
                                                 export CMAKE_PREFIX_PATH=${sfml_2}:$CMAKE_PREFIX_PATH
-
-                                                # Manual fix for SFML 2.6 CMake targets
                                                 export SFML_DIR=${sfml_2}/lib/cmake/SFML
 
                                                 echo "Entering C++ development environment."
@@ -72,6 +87,7 @@
                                 packages = {
                                         default = cppGamePackage;
                                         sfml-cpp-project = cppGamePackage;
+                                        pacman-debug = cppGamePackageDebug;
                                 };
 
                                 devShells = {

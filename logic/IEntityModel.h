@@ -1,6 +1,7 @@
 #ifndef PACMAN_ENTITY_MODEL_H
 #define PACMAN_ENTITY_MODEL_H
 #include "ISubject.h"
+#include "LogicConstants.h"
 #include "Position.h"
 
 class IEntityModel : public ISubject {
@@ -12,6 +13,7 @@ protected:
 public:
     [[nodiscard]] Direction::Cardinal getDirection() const;
     [[nodiscard]] Rectangle getHitBox() const;
+    [[nodiscard]] bool isCenteredOnTile(double epsilon) const;
     [[nodiscard]] bool isInBounds(const Rectangle& boundBox) const;
     static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction::Cardinal d, double speed);
     void snapToGrid();
