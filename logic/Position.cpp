@@ -324,14 +324,11 @@ void Rectangle::snapToGrid() {
 bool Rectangle::isCenteredOnTile(const double epsilon) const {
     // --- 1. Constants and Center Calculation ---
     // The current range is the Normalized Device Coordinates (NDC) space.
-    const Position current_min = { -1.0, -1.0 }; // Bottom-left corner
-    const Position current_max = { 1.0, 1.0 };   // Top-right corner (NDC)
+    const Position current_min = {-1.0, -1.0}; // Bottom-left corner
+    const Position current_max = {1.0, 1.0};   // Top-right corner (NDC)
 
     // Calculate the center of the rectangle
-    const Position center = {
-        (topLeft.x + bottomRight.x) / 2.0,
-        (topLeft.y + bottomRight.y) / 2.0
-    };
+    const Position center = {(topLeft.x + bottomRight.x) / 2.0, (topLeft.y + bottomRight.y) / 2.0};
 
     // Number of tiles
     constexpr int NUM_TILES_X = LogicConstants::AMOUNT_OF_TILES_WIDTH;
@@ -342,13 +339,13 @@ bool Rectangle::isCenteredOnTile(const double epsilon) const {
     // We want the Y range to map from [1.0, -1.0] to [0.0, NUM_TILES_Y] (Inversion for screen coords).
 
     // Wanted X range: [0, NUM_TILES_X]
-    const Position wanted_min_x = { 0.0, 0.0 };
-    const Position wanted_max_x = { static_cast<double>(NUM_TILES_X), static_cast<double>(NUM_TILES_Y) };
+    const Position wanted_min_x = {0.0, 0.0};
+    const Position wanted_max_x = {static_cast<double>(NUM_TILES_X), static_cast<double>(NUM_TILES_Y)};
 
     // Due to the standard NDC top-to-bottom Y-axis mapping (1.0 is top, -1.0 is bottom),
     // we need to flip the current Y range for the Y-coordinate.
-    const Position current_min_y_flipped = { -1.0, 1.0 }; // X min=-1.0, Y min=1.0 (Top Edge)
-    const Position current_max_y_flipped = { 1.0, -1.0 }; // X max=1.0, Y max=-1.0 (Bottom Edge)
+    const Position current_min_y_flipped = {-1.0, 1.0}; // X min=-1.0, Y min=1.0 (Top Edge)
+    const Position current_max_y_flipped = {1.0, -1.0}; // X max=1.0, Y max=-1.0 (Bottom Edge)
 
     // Rescale X using the standard Position::rescale (using X/Y components of center)
     // Note: We only care about the X component of the result for the X check.
@@ -356,7 +353,8 @@ bool Rectangle::isCenteredOnTile(const double epsilon) const {
 
     // Rescale Y using the *flipped* Y range (current_min_y_flipped, current_max_y_flipped)
     // Note: We only care about the Y component of the result for the Y check.
-    const Position rescaled_y_pos = center.rescale(current_min_y_flipped, current_max_y_flipped, wanted_min_x, wanted_max_x);
+    const Position rescaled_y_pos =
+        center.rescale(current_min_y_flipped, current_max_y_flipped, wanted_min_x, wanted_max_x);
 
     const double rescaledCenterX = rescaled_x_pos.x;
     const double rescaledCenterY = rescaled_y_pos.y;
