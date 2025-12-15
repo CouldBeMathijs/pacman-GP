@@ -79,6 +79,9 @@ void World::update(const Direction::Cardinal d) {
         }
         m_pacman->goToSpawn();
         m_pacman->resetGhostTouch();
+        for (const auto& ghost : m_ghosts) {
+            ghost->goToSpawn();
+        }
     }
 }
 
@@ -183,6 +186,7 @@ bool World::isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntit
 }
 
 void World::updatePacman(Direction::Cardinal d) {
+    m_pacman->snapToGrid();
     constexpr double EPSILON = 0.01;
     const Rectangle current_hb = m_pacman->getHitBox();
     const double current_speed =
@@ -200,9 +204,7 @@ void World::updatePacman(Direction::Cardinal d) {
         // 2. CORNER CUTTING LOGIC
         // If the direct path is blocked, check perpendicular offsets
         if (lookaheadBlocked) {
-            // How many pixels/units we are willing to "slide" Pacman to catch the corner.
-            // This value depends on your grid size. If tiles are 32px, 8-10 is usually good.
-            constexpr double CORNER_TOLERANCE = LogicConstants::TILE_HEIGHT / 4;
+            constexpr double CORNER_TOLERANCE = LogicConstants::TILE_HEIGHT / 6;
 
             // Determine if we are moving vertically or horizontally
             const bool isVerticalChange = (d == Direction::Cardinal::NORTH || d == Direction::Cardinal::SOUTH);
