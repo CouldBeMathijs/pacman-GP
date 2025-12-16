@@ -141,13 +141,16 @@ void World::updateGhosts(const Direction::Cardinal d) {
                 ghost->setHitBox(movedHitBox);
                 ghost->setDirection(ghost->getWantedDirection());
             }
-            // 2. DIRECTION DECISION LOGIC
-            if (ghost->isCenteredOnTile(0.2)) {
+            if (ghost->allowedToTurn()) {
+                // 2. DIRECTION DECISION LOGIC
                 switch (ghost->getAlgorithm()) {
                 case ChasingAlgorithm::ON_TOP_MANHATTAN:
                 case ChasingAlgorithm::IN_FRONT_MANHATTAN:
                 case ChasingAlgorithm::DIRECTIONAL: {
                     if (auto possible = possibleDirections(ghost); !possible.empty()) {
+                        if (possible.size() > 1) {
+                            ghost->hasTurned();
+                        }
                         ghost->setWantedDirection(Random::getInstance().getRandomElement(possible));
                     }
                 }

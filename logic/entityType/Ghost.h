@@ -19,6 +19,7 @@ protected:
     Direction::Cardinal m_wantedDirection = Direction::Cardinal::NORTH;
     GhostMode m_currentMode;
     Position m_spawnPoint;
+    double m_amount_of_seconds_until_able_to_turn = 0;
     double m_amount_of_seconds_left_in_current_mode;
     double m_speed = LogicConstants::BASE_SPEED * 0.8;
 
@@ -41,8 +42,10 @@ public:
     void accept(IEntityVisitor& visitor) override;
 
     void goToSpawn();
+    void hasTurned();
     void setDirection(Direction::Cardinal d);
     void setWantedDirection(Direction::Cardinal d);
+    [[nodiscard]] bool allowedToTurn() const;
     void update(Direction::Cardinal) override;
 };
 
