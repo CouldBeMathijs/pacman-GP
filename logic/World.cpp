@@ -94,12 +94,8 @@ std::set<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IG
     getValue(Direction::Cardinal::EAST);
 
     // Try four primary directions
-    constexpr std::array<Direction::Cardinal, 4> test = {
-        Direction::Cardinal::EAST,
-        Direction::Cardinal::WEST,
-        Direction::Cardinal::NORTH,
-        Direction::Cardinal::SOUTH
-    };
+    constexpr std::array<Direction::Cardinal, 4> test = {Direction::Cardinal::EAST, Direction::Cardinal::WEST,
+                                                         Direction::Cardinal::NORTH, Direction::Cardinal::SOUTH};
 
     std::set<Direction::Cardinal> out;
 
@@ -109,7 +105,7 @@ std::set<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IG
             out.insert(dir);
     }
 
-    if ( !isBlocked(hitBox.movedBy( Direction::getValue( ghost->getDirection() ) * distance * 2), ghost) ) {
+    if (!isBlocked(hitBox.movedBy(Direction::getValue(ghost->getDirection()) * distance * 2), ghost)) {
         out.insert(ghost->getDirection());
     }
 
@@ -136,7 +132,6 @@ void World::updateGhosts(const Direction::Cardinal d) {
 
             if (ghost->isMovingAwayFromSpawn()) {
                 if (!(std::abs(ghost->getHitBox().getCenter().x) > moveDist)) {
-
                 }
             }
 

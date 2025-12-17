@@ -214,7 +214,6 @@ void Rectangle::moveBy(const Position& other) {
     bottomRight += other;
 }
 
-
 Rectangle Rectangle::movedBy(const Position& other) const {
     Rectangle out = *this;
     out.moveBy(other);
@@ -230,7 +229,6 @@ void Rectangle::moveBy(const double deltaX, const double deltaY) {
     topLeft.y += deltaY;
     bottomRight.y += deltaY;
 }
-
 
 Rectangle Rectangle::movedBy(const double deltaX, const double deltaY) const {
     Rectangle out = *this;
