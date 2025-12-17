@@ -18,9 +18,9 @@ enum class Cardinal {
 constexpr Position getValue(const Cardinal e) {
     switch (e) {
     case Cardinal::EAST:
-        return {1,0};
+        return {1, 0};
     case Cardinal::NORTH:
-        return {0,-1};
+        return {0, -1};
     case Cardinal::SOUTH:
         return {0, 1};
     case Cardinal::WEST:
@@ -28,7 +28,7 @@ constexpr Position getValue(const Cardinal e) {
     default:
         break;
     }
-    return {0,0};
+    return {0, 0};
 }
 
 inline const char* to_string(const Cardinal e) {

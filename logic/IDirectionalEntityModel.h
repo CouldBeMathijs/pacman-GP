@@ -6,6 +6,7 @@ class IDirectionalEntityModel : public IEntityModel {
 protected:
     Position m_spawnPoint = getHitBox().topLeft;
     double m_speed;
+
 public:
     IDirectionalEntityModel(const Rectangle& hitBox, Direction::Cardinal cardinal, double speed);
     virtual void goToSpawn();
