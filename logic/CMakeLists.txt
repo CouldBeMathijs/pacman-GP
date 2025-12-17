@@ -18,7 +18,7 @@ set(LOGIC_SOURCES
         entityType/Pacman.cpp
         entityType/Wall.cpp
 )
-add_compile_options(-Wall)
+add_compile_options(-Wall -Wextra)
 
 add_library(GameLogic STATIC ${LOGIC_SOURCES})
 

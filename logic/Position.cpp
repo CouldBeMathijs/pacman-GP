@@ -2,7 +2,6 @@
 
 #include "LogicConstants.h"
 
-#include <SFML/Graphics/Rect.hpp>
 #include <cmath>
 #include <iostream>
 #include <limits>

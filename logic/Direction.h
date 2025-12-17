@@ -2,8 +2,6 @@
 #define PACMAN_DIRECTION_H
 #include "Position.h"
 
-#include <stdexcept>
-#include <utility>
 
 namespace Direction {
 /**
