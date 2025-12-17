@@ -340,7 +340,8 @@ void World::handleCollectables(const Rectangle& current_hb) {
         CollisionHandler targetInitiates(*target_ptr);
         m_pacman->accept(targetInitiates);
 
-        if (const auto& [ghostTouchesSpawnWall, interactionOccurred, moveBlocked] = targetInitiates.getResult(); interactionOccurred) {
+        if (const auto& [ghostTouchesSpawnWall, interactionOccurred, moveBlocked] = targetInitiates.getResult();
+            interactionOccurred) {
             m_pacman->ghostTouches();
         }
     }
