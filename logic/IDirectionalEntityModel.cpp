@@ -12,6 +12,8 @@ double IDirectionalEntityModel::getSpeed() const { return m_speed; }
 
 void IDirectionalEntityModel::setHitBox(const Rectangle& hb) { m_hitBox = hb; }
 
-void IDirectionalEntityModel::move() { m_hitBox.moveBy(getValue(m_direction) * Stopwatch::getInstance().getDeltaTime() * m_speed); }
+void IDirectionalEntityModel::move() {
+    m_hitBox.moveBy(getValue(m_direction) * Stopwatch::getInstance().getDeltaTime() * m_speed);
+}
 
 void IDirectionalEntityModel::setDirection(const Direction::Cardinal d) { m_direction = d; }

@@ -40,9 +40,7 @@ void IGhost::update(const Direction::Cardinal direction) {
     IEntityModel::update(direction);
 }
 
-void IGhost::hasExitedSpawn() {
-    m_isMovingAwayFromSpawn = false;
-}
+void IGhost::hasExitedSpawn() { m_isMovingAwayFromSpawn = false; }
 
 BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 

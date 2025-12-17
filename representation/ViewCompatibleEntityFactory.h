@@ -19,6 +19,7 @@ public:
     std::shared_ptr<IEntityModel> createRedGhost(const Rectangle& p) override;
     std::shared_ptr<IEntityModel> createSpawnWall(const Rectangle& hb) override;
     std::shared_ptr<IEntityModel> createWall(const Rectangle& p) override;
+
 private:
     /**
      * @brief Template helper function to create an Entity Model and attach its View Observer.

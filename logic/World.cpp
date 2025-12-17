@@ -164,11 +164,11 @@ void World::updateGhosts(const Direction::Cardinal d) {
 
             if (ghost->isMovingAwayFromSpawn()) {
                 if (const auto ghostX = ghost->getHitBox().getCenter().x; std::abs(ghostX) > moveDist) {
-                   if (ghostX < 0) {
-                       ghost->setDirection(Direction::Cardinal::EAST);
-                   } else {
-                       ghost->setDirection(Direction::Cardinal::WEST);
-                   }
+                    if (ghostX < 0) {
+                        ghost->setDirection(Direction::Cardinal::EAST);
+                    } else {
+                        ghost->setDirection(Direction::Cardinal::WEST);
+                    }
                 } else {
                     ghost->setDirection(Direction::Cardinal::NORTH);
                 }
@@ -205,8 +205,7 @@ void World::updateGhosts(const Direction::Cardinal d) {
                     break;
                 case ChasingAlgorithm::IN_FRONT_MANHATTAN:
                     ghost->setWantedDirection(manhattanDecision(
-                        m_pacman->getHitBox().movedBy(
-                            Direction::getValue(m_pacman->getDirection())).getCenter(), ghost,
+                        m_pacman->getHitBox().movedBy(Direction::getValue(m_pacman->getDirection())).getCenter(), ghost,
                         false));
                     break;
                 case ChasingAlgorithm::DIRECTIONAL: {
@@ -270,7 +269,8 @@ void World::updatePacman(Direction::Cardinal d) {
                 Rectangle shifted_future = IEntityModel::calculateFutureHitBox(shifted_current_hb, d, lookahead_speed);
 
                 // If this shifted path is clear, we found a corner!
-                if (Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON); !m_pacman->isBlocked(getEntitiesInBounds(shifted_check))) {
+                if (Rectangle shifted_check = shifted_future.scaledBy(1 - EPSILON);
+                    !m_pacman->isBlocked(getEntitiesInBounds(shifted_check))) {
                     // Apply the snap: Move Pacman to the aligned position immediately
                     m_pacman->setHitBox(shifted_current_hb);
 
@@ -296,7 +296,8 @@ void World::updatePacman(Direction::Cardinal d) {
     // --- Final Movement Calculation ---
     const Rectangle future_hb = IEntityModel::calculateFutureHitBox(current_hb, d, current_speed);
 
-    if (const auto search_future_hb = future_hb.scaledBy(1-EPSILON); !m_pacman->isBlocked(getEntitiesInBounds(search_future_hb))) {
+    if (const auto search_future_hb = future_hb.scaledBy(1 - EPSILON);
+        !m_pacman->isBlocked(getEntitiesInBounds(search_future_hb))) {
         m_pacman->setHitBox(future_hb);
     } else {
         m_pacman->setDirection(Direction::Cardinal::NONE);
@@ -306,7 +307,7 @@ void World::updatePacman(Direction::Cardinal d) {
 }
 
 void World::handleCollectables(const Rectangle& current_hb) {
-    for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(35.0/50.0))) {
+    for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(35.0 / 50.0))) {
         if (target_ptr.get() == m_pacman.get()) {
             continue;
         }

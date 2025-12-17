@@ -5,7 +5,6 @@
 Pacman::Pacman(const Rectangle& pos)
     : IDirectionalEntityModel(pos, Direction::Cardinal::NONE, LogicConstants::BASE_SPEED) {}
 
-
 bool Pacman::isDying() const { return m_isDying; }
 
 void Pacman::goToSpawn() {
