@@ -256,7 +256,7 @@ Rectangle Rectangle::rescale(const Position& current_min, const Position& curren
 }
 
 void Rectangle::snapToGrid() {
-    constexpr double epsilon = 0.02; // The specified snapping threshold
+    constexpr double epsilon = LogicConstants::TILE_HEIGHT / 7;
 
     // --- 1. Calculate Half Tile Dimensions ---
     constexpr double HALF_TILE_WIDTH = 2.0 / (2.0 * LogicConstants::AMOUNT_OF_TILES_WIDTH);

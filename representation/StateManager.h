@@ -1,6 +1,6 @@
 #ifndef PACMAN_STATE_MANAGER_H
 #define PACMAN_STATE_MANAGER_H
-#include "Direction.h"
+#include "../logic/entityType/Direction.h"
 #include "state/IState.h"
 
 #include <memory>

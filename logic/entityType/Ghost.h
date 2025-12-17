@@ -28,23 +28,21 @@ protected:
 
 public:
     [[nodiscard]] ChasingAlgorithm getAlgorithm() const;
-
     [[nodiscard]] Direction::Cardinal getWantedDirection() const { return m_wantedDirection; }
-
     [[nodiscard]] GhostMode getMode() const;
+    [[nodiscard]] bool allowedToTurn() const;
+    [[nodiscard]] bool isMovingAwayFromSpawn() const;
+    bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) override;
 
     /**
      * @brief Calls the correct double dispatch
      * @param visitor Singularly dispatched visitor object
      */
     void accept(IEntityVisitor& visitor) override;
-
-    [[nodiscard]] bool allowedToTurn() const;
-    [[nodiscard]] bool isMovingAwayFromSpawn() const;
-    bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) override;
     void goToSpawn() override;
     void hasExitedSpawn();
     void hasTurned();
+    void setMode(GhostMode);
     void setWantedDirection(Direction::Cardinal d);
     void update(Direction::Cardinal) override;
 };

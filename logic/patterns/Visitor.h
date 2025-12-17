@@ -1,9 +1,9 @@
 #ifndef PACMAN_VISITOR_H
 #define PACMAN_VISITOR_H
 
-#include "entityType/Collectable.h"
-#include "entityType/Ghost.h"
-#include "entityType/Pacman.h"
+#include "../entityType/Collectable.h"
+#include "../entityType/Ghost.h"
+#include "../entityType/Pacman.h"
 
 // --- Forward Declarations ---
 class Fruit;
@@ -17,8 +17,9 @@ class Wall;
  * @brief Used to pass back information about the collision.
  */
 struct CollisionResult {
-    bool moveBlocked = false;
+    bool ghostTouchingSpawnWall = false;
     bool interactionOccurred = false; // e.g., Game Over, Ghost Eaten, Item Picked Up
+    bool moveBlocked = false;
 };
 
 /**

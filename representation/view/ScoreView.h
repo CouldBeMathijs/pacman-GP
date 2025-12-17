@@ -1,6 +1,6 @@
 #ifndef PACMAN_SCORE_VIEW_H
 #define PACMAN_SCORE_VIEW_H
-#include "IObserver.h"
+#include "../../logic/patterns/IObserver.h"
 
 #include <SFML/Graphics.hpp>
 

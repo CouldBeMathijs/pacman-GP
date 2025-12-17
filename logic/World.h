@@ -27,8 +27,7 @@ protected:
 
 public:
     World() = default;
-    Direction::Cardinal manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost,
-                                          bool maximizeDistance);
+    Direction::Cardinal manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost, bool maximizeDistance);
     [[nodiscard]] WorldState getState() const;
     [[nodiscard]] const std::shared_ptr<Pacman>& getPacman() const;
     [[nodiscard]] const std::vector<std::shared_ptr<IEntityModel>>& getNonMovingEntities() const;

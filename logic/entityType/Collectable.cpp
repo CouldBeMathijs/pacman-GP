@@ -1,7 +1,7 @@
 #include "Collectable.h"
 
+#include "../patterns/Visitor.h"
 #include "ScoreKeeper.h"
-#include "Visitor.h"
 
 Collectable::Collectable(const Rectangle& pos, const Direction::Cardinal d) : IEntityModel(pos, d) {}
 

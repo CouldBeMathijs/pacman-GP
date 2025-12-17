@@ -1,7 +1,7 @@
 #ifndef PACMAN_SUBJECT_H
 #define PACMAN_SUBJECT_H
-#include "Direction.h"
-#include "IObserver.h"
+#include "entityType/Direction.h"
+#include "patterns/IObserver.h"
 
 #include <memory>
 #include <vector>

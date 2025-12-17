@@ -1,6 +1,6 @@
 #ifndef PACMAN_SCOREKEEPER_H
 #define PACMAN_SCOREKEEPER_H
-#include "IObserver.h"
+#include "patterns/IObserver.h"
 
 #include <chrono>
 

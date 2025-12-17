@@ -1,7 +1,7 @@
 #include "Ghost.h"
 
+#include "../patterns/Visitor.h"
 #include "Stopwatch.h"
-#include "Visitor.h"
 
 IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode,
                const ChasingAlgorithm algorithm)
@@ -12,11 +12,18 @@ void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
 GhostMode IGhost::getMode() const { return m_currentMode; }
 
+void IGhost::setMode(const GhostMode m) {
+    if (m == GhostMode::PANICKING) {
+        setDirection(getOpposite(getDirection()));
+    }
+    m_currentMode = m;
+}
+
 ChasingAlgorithm IGhost::getAlgorithm() const { return m_algorithm; }
 
 void IGhost::setWantedDirection(const Direction::Cardinal d) { m_wantedDirection = d; }
 
-bool IGhost::isMovingAwayFromSpawn() const { return m_isMovingAwayFromSpawn; }
+bool IGhost::isMovingAwayFromSpawn() const { return m_isMovingAwayFromSpawn && m_currentMode != GhostMode::WAITING; }
 
 bool IGhost::allowedToTurn() const { return m_amount_of_seconds_until_able_to_turn <= 0; }
 
@@ -51,14 +58,14 @@ bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchin
         CollisionHandler entityInitiates(*entity);
         target_ptr->accept(entityInitiates);
         if (entityInitiates.getResult().moveBlocked ||
-            (entityInitiates.getResult().interactionOccurred && !m_isMovingAwayFromSpawn)) {
+            (entityInitiates.getResult().ghostTouchingSpawnWall && !m_isMovingAwayFromSpawn)) {
             return true;
         }
 
         CollisionHandler targetInitiates(*target_ptr);
         entity->accept(targetInitiates);
         if (targetInitiates.getResult().moveBlocked ||
-            (entityInitiates.getResult().interactionOccurred && !m_isMovingAwayFromSpawn)) {
+            (entityInitiates.getResult().ghostTouchingSpawnWall && !m_isMovingAwayFromSpawn)) {
             return true;
         }
     }

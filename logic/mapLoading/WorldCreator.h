@@ -1,6 +1,6 @@
 #ifndef PACMAN_WORLD_CREATOR_H
 #define PACMAN_WORLD_CREATOR_H
-#include "World.h"
+#include "../World.h"
 
 class IEntityFactory;
 class IWorldConfigParser;

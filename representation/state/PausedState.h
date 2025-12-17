@@ -1,6 +1,6 @@
 #ifndef PACMAN_PAUSEDSTATE_H
 #define PACMAN_PAUSEDSTATE_H
-#include "Direction.h"
+#include "../../logic/entityType/Direction.h"
 #include "IState.h"
 
 /**

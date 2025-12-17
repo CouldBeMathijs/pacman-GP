@@ -42,7 +42,7 @@ void GhostCollisionVisitor::visit(Wall& target) {
 
 void GhostCollisionVisitor::visit(SpawnWall& target) {
     // Ghost vs SpawnWall: should block when not moving away from spawn
-    m_result.interactionOccurred = true;
+    m_result.ghostTouchingSpawnWall = true;
 }
 
 void CollectableVisitor::visit(Coin& coin) { coin.bePickedUp(); }

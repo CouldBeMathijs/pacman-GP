@@ -1,6 +1,6 @@
 #ifndef PACMAN_ABSTRACT_ENTITY_FACTORY_H
 #define PACMAN_ABSTRACT_ENTITY_FACTORY_H
-#include "IEntityModel.h"
+#include "../entityType/IEntityModel.h"
 
 #include <memory>
 

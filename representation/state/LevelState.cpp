@@ -1,11 +1,11 @@
 #include "LevelState.h"
 
+#include "../../logic/mapLoading/WorldAsciiGridParser.h"
 #include "GameOverState.h"
 #include "PausedState.h"
 #include "ScoreKeeper.h"
 #include "VictoryState.h"
-#include "WorldAsciiGridParser.h"
-#include "WorldCreator.h"
+#include "mapLoading/WorldCreator.h"
 
 LevelState::LevelState() : m_factory(std::make_shared<ViewCompatibleEntityFactory>()) {
     const WorldAsciiGridParser parser;

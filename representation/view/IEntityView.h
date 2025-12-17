@@ -1,9 +1,9 @@
 #ifndef PACMAN_ENTITY_VIEW_H
 #define PACMAN_ENTITY_VIEW_H
-#include "IObserver.h"
+#include "../../logic/patterns/IObserver.h"
 
+#include "../../logic/entityType/IEntityModel.h"
 #include "../AssetManager.h"
-#include "IEntityModel.h"
 #include <SFML/Graphics.hpp>
 
 #include <memory>

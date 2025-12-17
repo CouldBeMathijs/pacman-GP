@@ -1,6 +1,6 @@
 #include "IDirectionalEntityModel.h"
 
-#include "Stopwatch.h"
+#include "../Stopwatch.h"
 
 IDirectionalEntityModel::IDirectionalEntityModel(const Rectangle& hitBox, const Direction::Cardinal cardinal,
                                                  const double speed)

@@ -1,7 +1,7 @@
 #ifndef PACMAN_VIEW_COMPATIBLE_ENTITY_FACTORY_H
 #define PACMAN_VIEW_COMPATIBLE_ENTITY_FACTORY_H
 
-#include "IEntityFactory.h"
+#include "../logic/patterns/IEntityFactory.h"
 
 #include <memory>
 

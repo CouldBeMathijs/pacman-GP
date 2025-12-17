@@ -1,7 +1,7 @@
 
 #include "IEntityModel.h"
 
-#include "Visitor.h"
+#include "../patterns/Visitor.h"
 
 Rectangle IEntityModel::getHitBox() const { return m_hitBox; }
 

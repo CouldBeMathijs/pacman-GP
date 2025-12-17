@@ -1,6 +1,6 @@
 #include "Pacman.h"
 
-#include "Visitor.h"
+#include "../patterns/Visitor.h"
 
 Pacman::Pacman(const Rectangle& pos)
     : IDirectionalEntityModel(pos, Direction::Cardinal::NONE, LogicConstants::BASE_SPEED) {}

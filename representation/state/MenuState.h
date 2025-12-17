@@ -1,6 +1,6 @@
 #ifndef PACMAN_MENUSTATE_H
 #define PACMAN_MENUSTATE_H
-#include "Direction.h"
+#include "../../logic/entityType/Direction.h"
 #include "IState.h"
 
 /**

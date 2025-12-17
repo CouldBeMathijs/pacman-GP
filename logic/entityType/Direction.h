@@ -1,6 +1,6 @@
 #ifndef PACMAN_DIRECTION_H
 #define PACMAN_DIRECTION_H
-#include "Position.h"
+#include "../Position.h"
 
 namespace Direction {
 /**

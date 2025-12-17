@@ -1,7 +1,7 @@
 #ifndef PACMAN_ENTITY_MODEL_H
 #define PACMAN_ENTITY_MODEL_H
-#include "ISubject.h"
-#include "Position.h"
+#include "../ISubject.h"
+#include "../Position.h"
 
 class IEntityModel : public ISubject {
 protected:

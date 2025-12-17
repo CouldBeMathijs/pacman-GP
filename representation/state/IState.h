@@ -1,7 +1,7 @@
 #ifndef PACMAN_ABSTRACTSTATE_H
 #define PACMAN_ABSTRACTSTATE_H
 
-#include "Direction.h"
+#include "../../logic/entityType/Direction.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 

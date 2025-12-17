@@ -1,12 +1,12 @@
 #include "World.h"
 
-#include "IEntityFactory.h"
 #include "LogicConstants.h"
 #include "Random.h"
 #include "ScoreKeeper.h"
 #include "Stopwatch.h"
-#include "Visitor.h"
 #include "entityType/Pacman.h"
+#include "patterns/IEntityFactory.h"
+#include "patterns/Visitor.h"
 
 #include <algorithm>
 #include <cmath>
@@ -123,7 +123,7 @@ std::set<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IG
 }
 
 Direction::Cardinal World::manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost,
-                                             bool maximizeDistance) {
+                                             const bool maximizeDistance) {
     const auto possible = possibleDirections(ghost);
     const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
 
@@ -156,29 +156,30 @@ Direction::Cardinal World::manhattanDecision(const Position& wantedManhattan, co
 
 void World::updateGhosts(const Direction::Cardinal d) {
     for (const auto& ghost : m_ghosts) {
+        double moveDist = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
         ghost->snapToGrid();
+        ghost->update(d);
+        if (ghost->isMovingAwayFromSpawn()) {
+            if (const auto ghostX = ghost->getHitBox().getCenter().x; std::abs(ghostX) > moveDist) {
+                if (ghostX < 0) {
+                    ghost->setDirection(Direction::Cardinal::EAST);
+                } else {
+                    ghost->setDirection(Direction::Cardinal::WEST);
+                }
+            } else {
+                ghost->setDirection(Direction::Cardinal::NORTH);
+            }
+            ghost->move();
+            if (ghost->isBlocked(getEntitiesInBounds(ghost->getHitBox().scaledBy(0.99)))) {
+                ghost->hasExitedSpawn();
+            } else {
+                continue;
+            }
+        }
+
         switch (ghost->getMode()) {
         case GhostMode::CHASING: {
             // Define the movement distance for this specific frame
-            const double moveDist = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
-
-            if (ghost->isMovingAwayFromSpawn()) {
-                if (const auto ghostX = ghost->getHitBox().getCenter().x; std::abs(ghostX) > moveDist) {
-                    if (ghostX < 0) {
-                        ghost->setDirection(Direction::Cardinal::EAST);
-                    } else {
-                        ghost->setDirection(Direction::Cardinal::WEST);
-                    }
-                } else {
-                    ghost->setDirection(Direction::Cardinal::NORTH);
-                }
-                ghost->move();
-                if (ghost->isBlocked(getEntitiesInBounds(ghost->getHitBox().scaledBy(0.99)))) {
-                    ghost->hasExitedSpawn();
-                } else {
-                    break;
-                }
-            }
 
             // Define the lookahead distance (10 "steps")
             // This ensures we don't move unless the long-range path is clear
@@ -192,10 +193,8 @@ void World::updateGhosts(const Direction::Cardinal d) {
 
             if (!ghost->isBlocked(getEntitiesInBounds(lookAheadBox.scaledBy(0.9)))) {
                 // The long path is clear, so we can safely nudge the ghost forward
-                Rectangle movedHitBox =
-                    IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), moveDist);
-                ghost->setHitBox(movedHitBox);
                 ghost->setDirection(ghost->getWantedDirection());
+                ghost->move();
             }
             if (ghost->allowedToTurn()) {
                 // 2. DIRECTION DECISION LOGIC
@@ -217,15 +216,34 @@ void World::updateGhosts(const Direction::Cardinal d) {
                     }
                 }
                 }
-                break;
             }
-        }
-        case GhostMode::PANICKING:
+        } break;
+        case GhostMode::PANICKING: {
+            moveDist *= 0.7;
+            // Define the movement distance for this specific frame
+
+            // Define the lookahead distance (10 "steps")
+            // This ensures we don't move unless the long-range path is clear
+            const double lookAheadDist = moveDist * 2;
+
+            // 1. MOVEMENT CHECK:
+            // We check the long distance (lookAheadDist). If that is clear, we perform the short move (moveDist).
+            // This satisfies "look further ahead than you can move" and "only move if you can move 10 steps".
+            Rectangle lookAheadBox =
+                IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), lookAheadDist);
+
+            if (!ghost->isBlocked(getEntitiesInBounds(lookAheadBox.scaledBy(0.9)))) {
+                // The long path is clear, so we can safely nudge the ghost forward
+                ghost->setDirection(ghost->getWantedDirection());
+                ghost->move();
+            }
+            ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().getCenter(), ghost, false));
+        } break;
         case GhostMode::WAITING:
         case GhostMode::DEAD:
+            ghost->goToSpawn();
             break;
         }
-        ghost->update(d);
     }
 }
 
@@ -322,7 +340,7 @@ void World::handleCollectables(const Rectangle& current_hb) {
         CollisionHandler targetInitiates(*target_ptr);
         m_pacman->accept(targetInitiates);
 
-        if (const auto& [moveBlocked, interactionOccurred] = targetInitiates.getResult(); interactionOccurred) {
+        if (const auto& [ghostTouchesSpawnWall, interactionOccurred, moveBlocked] = targetInitiates.getResult(); interactionOccurred) {
             m_pacman->ghostTouches();
         }
     }

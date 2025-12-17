@@ -1,6 +1,6 @@
 #ifndef PACMAN_GAMEOVERSTATE_H
 #define PACMAN_GAMEOVERSTATE_H
-#include "Direction.h"
+#include "../../logic/entityType/Direction.h"
 #include "IState.h"
 
 /**

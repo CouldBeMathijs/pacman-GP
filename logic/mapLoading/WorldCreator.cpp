@@ -1,8 +1,8 @@
 #include "WorldCreator.h"
 
-#include "IEntityFactory.h"
 #include "IWorldConfigParser.h"
-#include "ScoreKeeper.h"
+#include "../ScoreKeeper.h"
+#include "../patterns/IEntityFactory.h"
 
 World WorldCreator::createWorld(const std::string& filename, const IWorldConfigParser& parser,
                                 const std::shared_ptr<IEntityFactory>& factory) {
