@@ -26,12 +26,6 @@ public:
     void goToSpawn() override;
 
     /**
-     * @brief Getter for speed
-     * @return Pacman's current speed
-     */
-    [[nodiscard]] double getSpeed() const;
-
-    /**
      * @brief Calls the correct double dispatch
      * @param visitor Singularly dispatched visitor object
      */

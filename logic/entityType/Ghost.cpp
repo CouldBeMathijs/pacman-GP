@@ -12,8 +12,6 @@ void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
 GhostMode IGhost::getMode() const { return m_currentMode; }
 
-double IGhost::getSpeed() const { return m_speed; }
-
 ChasingAlgorithm IGhost::getAlgorithm() const { return m_algorithm; }
 
 void IGhost::setHitBox(const Rectangle& hb) { m_hitBox = hb; }

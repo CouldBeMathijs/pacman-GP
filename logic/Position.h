@@ -11,9 +11,6 @@ struct Position {
     // Inline constructor for initialization
     Position(const double x, const double y) : x(x), y(y) {}
 
-    // --- Assignment Operator ---
-    Position& operator=(const Position& other);
-
     // --- Compound Assignment Operators ---
     Position& operator+=(const Position& other);
     Position& operator-=(const Position& other);

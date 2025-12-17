@@ -16,8 +16,6 @@ void Pacman::goToSpawn() {
 
 void Pacman::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
-double Pacman::getSpeed() const { return m_speed; }
-
 void Pacman::ghostTouches() { m_ghostTouch = true; }
 
 void Pacman::resetGhostTouch() { m_ghostTouch = false; }

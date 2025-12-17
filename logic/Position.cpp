@@ -8,19 +8,6 @@
 #include <stdexcept>
 
 /**
- * @brief Assignment operator.
- * @param other The Position to copy from.
- * @return Reference to the current Position object.
- */
-Position& Position::operator=(const Position& other) {
-    if (this != &other) {
-        this->x = other.x;
-        this->y = other.y;
-    }
-    return *this;
-}
-
-/**
  * @brief Compound addition operator (this += other).
  * @param other The Position to add.
  * @return Reference to the current Position object.

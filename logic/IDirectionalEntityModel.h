@@ -10,6 +10,7 @@ protected:
 public:
     IDirectionalEntityModel(const Rectangle& hitBox, Direction::Cardinal cardinal, double speed);
     virtual void goToSpawn();
+    [[nodiscard]] double getSpeed() const;
 
     void setDirection(Direction::Cardinal d);
 };

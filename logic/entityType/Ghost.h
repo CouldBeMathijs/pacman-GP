@@ -33,7 +33,6 @@ public:
     [[nodiscard]] Direction::Cardinal getWantedDirection() const { return m_wantedDirection; }
 
     [[nodiscard]] GhostMode getMode() const;
-    [[nodiscard]] double getSpeed() const;
 
     /**
      * @brief Calls the correct double dispatch
