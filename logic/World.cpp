@@ -120,7 +120,8 @@ std::set<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IG
     return out;
 }
 
-Direction::Cardinal World::manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost, bool maximizeDistance) {
+Direction::Cardinal World::manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost,
+                                             bool maximizeDistance) {
     const auto possible = possibleDirections(ghost);
     const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
 
@@ -188,7 +189,9 @@ void World::updateGhosts(const Direction::Cardinal d) {
                     ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().getCenter(), ghost, false));
                     break;
                 case ChasingAlgorithm::IN_FRONT_MANHATTAN:
-                    ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().movedBy(Direction::getValue(m_pacman->getDirection())).getCenter(), ghost, false));
+                    ghost->setWantedDirection(manhattanDecision(
+                        m_pacman->getHitBox().movedBy(Direction::getValue(m_pacman->getDirection())).getCenter(), ghost,
+                        false));
                     break;
                 case ChasingAlgorithm::DIRECTIONAL: {
                     if (auto possible = possibleDirections(ghost); !possible.empty()) {
