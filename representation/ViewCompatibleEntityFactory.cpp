@@ -3,6 +3,7 @@
 #include "entityType/Collectable.h"
 #include "entityType/Ghost.h"
 #include "entityType/Pacman.h"
+#include "entityType/SpawnWall.h"
 #include "entityType/Wall.h"
 #include "view/CoinView.h"
 #include "view/FruitView.h"
@@ -20,6 +21,10 @@ std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createPacman(const Re
 
 std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createWall(const Rectangle& p) {
     return createEntityWithView<Wall, WallView>(p);
+}
+
+std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createSpawnWall(const Rectangle& hb) {
+    return createEntityWithView<SpawnWall, WallView>(hb);
 }
 
 std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createCoin(const Rectangle& p) {

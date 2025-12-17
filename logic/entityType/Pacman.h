@@ -40,12 +40,6 @@ public:
      * @brief Makes it so hasTouchedGhost() returns false until ghostTouches() is called
      */
     void resetGhostTouch();
-
-    /**
-     * @brief Setter for the hitBox (the position and size)
-     * @param hb The hitbox to set
-     */
-    void setHitBox(const Rectangle& hb);
 };
 
 #endif // PACMAN_PACMAN_H

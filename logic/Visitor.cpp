@@ -20,20 +20,29 @@ void PacmanCollisionVisitor::visit(Fruit& target) {
     m_result.interactionOccurred = true;
 }
 
-void GhostCollisionVisitor::visit(IGhost& target) {
-    // Ghost vs Ghost logic
+void PacmanCollisionVisitor::visit(SpawnWall& target) {
+    // Pacman vs SpawnWall
     m_result.moveBlocked = true;
 }
 
+void GhostCollisionVisitor::visit(IGhost& target) {
+    // Ghost vs Ghost logic
+    // m_result.moveBlocked = true;
+}
+
 void GhostCollisionVisitor::visit(Pacman& target) {
-    // Ghost vs Pacman: Game Over or Run Away
+    // Ghost vs Pacman
     m_result.interactionOccurred = true;
-    target.ghostTouches();
 }
 
 void GhostCollisionVisitor::visit(Wall& target) {
     // Ghost vs Wall: Blocked
     m_result.moveBlocked = true;
+}
+
+void GhostCollisionVisitor::visit(SpawnWall& target) {
+    // Ghost vs SpawnWall: should block when not moving away from spawn
+    m_result.interactionOccurred = true;
 }
 
 void CollectableVisitor::visit(Coin& coin) { coin.bePickedUp(); }
@@ -63,5 +72,10 @@ void CollisionHandler::visit(Coin& target) {
 
 void CollisionHandler::visit(Fruit& target) {
     CollisionResolver<Fruit> resolver(target, m_result);
+    m_initiator.accept(resolver);
+}
+
+void CollisionHandler::visit(SpawnWall& target) {
+    CollisionResolver<SpawnWall> resolver(target, m_result);
     m_initiator.accept(resolver);
 }

@@ -28,7 +28,6 @@ protected:
 
 public:
     [[nodiscard]] ChasingAlgorithm getAlgorithm() const;
-    void setHitBox(const Rectangle& hb);
 
     [[nodiscard]] Direction::Cardinal getWantedDirection() const { return m_wantedDirection; }
 
@@ -40,11 +39,12 @@ public:
      */
     void accept(IEntityVisitor& visitor) override;
 
+    [[nodiscard]] bool allowedToTurn() const;
+    [[nodiscard]] bool isMovingAwayFromSpawn() const;
     void goToSpawn() override;
+    void hasExitedSpawn();
     void hasTurned();
     void setWantedDirection(Direction::Cardinal d);
-    [[nodiscard]] bool isMovingAwayFromSpawn() const;
-    [[nodiscard]] bool allowedToTurn() const;
     void update(Direction::Cardinal) override;
 };
 

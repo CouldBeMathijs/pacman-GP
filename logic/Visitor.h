@@ -6,11 +6,12 @@
 #include "entityType/Pacman.h"
 
 // --- Forward Declarations ---
-class IEntityModel;
 class Fruit;
-class Wall;
+class IEntityModel;
 class IGhost;
 class Pacman;
+class SpawnWall;
+class Wall;
 
 /**
  * @brief Used to pass back information about the collision.
@@ -28,11 +29,12 @@ public:
     virtual ~IEntityVisitor() = default;
 
     // A visit method for every concrete element type
-    virtual void visit(Pacman& pacman) = 0;
-    virtual void visit(IGhost& ghost) = 0;
-    virtual void visit(Wall& wall) = 0;
     virtual void visit(Coin& coin) = 0;
     virtual void visit(Fruit& fruit) = 0;
+    virtual void visit(IGhost& ghost) = 0;
+    virtual void visit(Pacman& pacman) = 0;
+    virtual void visit(SpawnWall& spawn_wall) = 0;
+    virtual void visit(Wall& wall) = 0;
 };
 
 /**
@@ -54,6 +56,8 @@ public:
     void visit(Coin& target) override;
 
     void visit(Fruit& target) override;
+
+    void visit(SpawnWall& target) override;
 };
 
 /**
@@ -72,6 +76,8 @@ public:
 
     void visit(Wall& target) override;
 
+    void visit(SpawnWall& target) override;
+
     // Ghosts ignore items
     void visit(Coin& target) override {}
 
@@ -89,6 +95,8 @@ public:
 
     void visit(Wall& wall) override {}
 
+    void visit(SpawnWall& spawn_wall) override {}
+
     void visit(Coin& coin) override;
 
     void visit(Fruit& fruit) override;
@@ -104,7 +112,6 @@ public:
  */
 template <typename TargetType>
 class CollisionResolver final : public IEntityVisitor {
-private:
     TargetType& m_target;
     CollisionResult& m_result;
 
@@ -129,6 +136,8 @@ public:
     void visit(Coin& coin) override {}
 
     void visit(Fruit& fruit) override {}
+
+    void visit(SpawnWall& spawn_wall) override {}
 };
 
 template <typename TargetType>
@@ -165,6 +174,8 @@ public:
     void visit(Coin& target) override;
 
     void visit(Fruit& target) override;
+
+    void visit(SpawnWall& target) override;
 };
 
 #endif // PACMAN_VISITOR_H

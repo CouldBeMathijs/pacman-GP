@@ -17,8 +17,10 @@ set(LOGIC_SOURCES
         entityType/Ghost.cpp
         entityType/Pacman.cpp
         entityType/Wall.cpp
+        entityType/SpawnWall.cpp
+        entityType/SpawnWall.h
 )
-add_compile_options(-Wall -Wextra)
+add_compile_options(-Wpedantic)
 
 add_library(GameLogic STATIC ${LOGIC_SOURCES})
 

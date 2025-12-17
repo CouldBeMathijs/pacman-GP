@@ -5,7 +5,6 @@
 Pacman::Pacman(const Rectangle& pos)
     : IDirectionalEntityModel(pos, Direction::Cardinal::NONE, LogicConstants::BASE_SPEED) {}
 
-void Pacman::setHitBox(const Rectangle& hb) { m_hitBox = hb; }
 
 bool Pacman::isDying() const { return m_isDying; }
 

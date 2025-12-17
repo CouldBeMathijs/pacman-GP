@@ -1,6 +1,8 @@
 
 #include "IEntityModel.h"
 
+#include "Visitor.h"
+
 Rectangle IEntityModel::getHitBox() const { return m_hitBox; }
 
 Direction::Cardinal IEntityModel::getDirection() const { return m_direction; }
@@ -12,6 +14,29 @@ bool IEntityModel::isInBounds(const Rectangle& boundBox) const {
     const bool x_overlap = m_hitBox.bottomRight.x > boundBox.topLeft.x && m_hitBox.topLeft.x < boundBox.bottomRight.x;
     const bool y_overlap = m_hitBox.bottomRight.y > boundBox.topLeft.y && m_hitBox.topLeft.y < boundBox.bottomRight.y;
     return x_overlap && y_overlap;
+}
+
+bool IEntityModel::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) {
+    const auto entity = this;
+    for (const auto& target_ptr : touchingEntities) {
+
+        if (target_ptr.get() == entity) {
+            continue;
+        }
+
+        CollisionHandler entityInitiates(*entity);
+        target_ptr->accept(entityInitiates);
+        if (entityInitiates.getResult().moveBlocked) {
+            return true;
+        }
+
+        CollisionHandler targetInitiates(*target_ptr);
+        entity->accept(targetInitiates);
+        if (targetInitiates.getResult().moveBlocked) {
+            return true;
+        }
+    }
+    return false;
 }
 
 Rectangle IEntityModel::calculateFutureHitBox(const Rectangle& current_hb, const Direction::Cardinal d,

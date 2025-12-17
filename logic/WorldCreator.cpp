@@ -83,6 +83,11 @@ World WorldCreator::createWorld(const std::string& filename, const IWorldConfigP
                 out.addGhost(std::static_pointer_cast<IGhost>(std::move(g)));
             } break;
 
+            case '_': {
+                auto w = factory->createSpawnWall(hb);
+                out.addNonMovingEntity(std::move(w));
+            } break;
+
             default:
                 // Do nothing for empty space ' '
                 break;

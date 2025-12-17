@@ -14,8 +14,6 @@ GhostMode IGhost::getMode() const { return m_currentMode; }
 
 ChasingAlgorithm IGhost::getAlgorithm() const { return m_algorithm; }
 
-void IGhost::setHitBox(const Rectangle& hb) { m_hitBox = hb; }
-
 void IGhost::setWantedDirection(const Direction::Cardinal d) { m_wantedDirection = d; }
 
 bool IGhost::isMovingAwayFromSpawn() const { return m_isMovingAwayFromSpawn; }
@@ -40,6 +38,10 @@ void IGhost::update(const Direction::Cardinal direction) {
         m_currentMode = GhostMode::CHASING;
     }
     IEntityModel::update(direction);
+}
+
+void IGhost::hasExitedSpawn() {
+    m_isMovingAwayFromSpawn = false;
 }
 
 BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}

@@ -27,22 +27,18 @@ protected:
 
 public:
     World() = default;
+    Direction::Cardinal manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost, bool maximizeDistance);
     [[nodiscard]] WorldState getState() const;
     [[nodiscard]] const std::shared_ptr<Pacman>& getPacman() const;
     [[nodiscard]] const std::vector<std::shared_ptr<IEntityModel>>& getNonMovingEntities() const;
-
-    [[nodiscard]] const std::vector<std::shared_ptr<IGhost>>& getGhosts() const { return m_ghosts; };
-
+    [[nodiscard]] const std::vector<std::shared_ptr<IGhost>>& getGhosts() const;
+    std::set<Direction::Cardinal> possibleDirections(const std::shared_ptr<IGhost>& ghost);
     std::vector<std::shared_ptr<IEntityModel>> getEntitiesInBounds(const Rectangle& boundBox);
     void addGhost(std::shared_ptr<IGhost> ghost);
     void addNonMovingEntity(std::shared_ptr<IEntityModel>);
     void setPacman(const std::shared_ptr<Pacman>&);
     void update(Direction::Cardinal d);
-    std::set<Direction::Cardinal> possibleDirections(const std::shared_ptr<IGhost>& ghost);
-    Direction::Cardinal manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost,
-                                          bool maximizeDistance);
     void updateGhosts(Direction::Cardinal d);
-    bool isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity);
 };
 
 #endif // PACMAN_WORLD_H

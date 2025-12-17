@@ -4,7 +4,7 @@ project(pacman)
 find_package(SFML 2.5 REQUIRED COMPONENTS graphics window system)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_compile_options(-Wall)
+add_compile_options(-Wall -Wpedantic)
 #add_compile_options(-O0)
 
 add_subdirectory(logic)

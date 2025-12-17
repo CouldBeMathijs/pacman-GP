@@ -9,10 +9,11 @@ protected:
 
 public:
     IDirectionalEntityModel(const Rectangle& hitBox, Direction::Cardinal cardinal, double speed);
-    virtual void goToSpawn();
     [[nodiscard]] double getSpeed() const;
-
+    virtual void goToSpawn();
+    void move();
     void setDirection(Direction::Cardinal d);
+    void setHitBox(const Rectangle& hb);
 };
 
 #endif
