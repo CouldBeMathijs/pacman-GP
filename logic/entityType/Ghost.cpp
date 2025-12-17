@@ -40,6 +40,29 @@ void IGhost::update(const Direction::Cardinal direction) {
     IEntityModel::update(direction);
 }
 
+bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) {
+    const auto entity = this;
+    for (const auto& target_ptr : touchingEntities) {
+
+        if (target_ptr.get() == entity) {
+            continue;
+        }
+
+        CollisionHandler entityInitiates(*entity);
+        target_ptr->accept(entityInitiates);
+        if (entityInitiates.getResult().moveBlocked || (entityInitiates.getResult().interactionOccurred && !m_isMovingAwayFromSpawn)) {
+            return true;
+        }
+
+        CollisionHandler targetInitiates(*target_ptr);
+        entity->accept(targetInitiates);
+        if (targetInitiates.getResult().moveBlocked || (entityInitiates.getResult().interactionOccurred && !m_isMovingAwayFromSpawn)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void IGhost::hasExitedSpawn() { m_isMovingAwayFromSpawn = false; }
 
 BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
@@ -47,6 +70,6 @@ BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, 
 PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::DIRECTIONAL) {}
 
 OrangeGhost::OrangeGhost(const Rectangle& pos)
-    : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
+    : IGhost(pos, GhostMode::WAITING, 0.5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 
 RedGhost::RedGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 10, ChasingAlgorithm::ON_TOP_MANHATTAN) {}

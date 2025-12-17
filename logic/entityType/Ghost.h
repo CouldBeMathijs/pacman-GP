@@ -41,6 +41,7 @@ public:
 
     [[nodiscard]] bool allowedToTurn() const;
     [[nodiscard]] bool isMovingAwayFromSpawn() const;
+    bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) override;
     void goToSpawn() override;
     void hasExitedSpawn();
     void hasTurned();

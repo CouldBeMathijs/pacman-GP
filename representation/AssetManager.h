@@ -21,6 +21,7 @@ enum SpriteDefinition {
     WallBase,
     PacmanDeathBase,
     GhostDeathBase,
+    SpawnWallBase,
     Count
 };
 

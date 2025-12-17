@@ -8,6 +8,7 @@ IGhostView::IGhostView(const Assets::TextureLocation t, std::shared_ptr<IEntityM
 void IGhostView::update() {
     switch (std::static_pointer_cast<IGhost>(getCoupledEntity())->getMode()) {
     case GhostMode::WAITING:
+    case GhostMode::DEAD:
     case GhostMode::CHASING:
         if (m_currentSprite != m_baseSprite) {
             m_currentSprite = m_baseSprite;

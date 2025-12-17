@@ -13,7 +13,7 @@ public:
     [[nodiscard]] Direction::Cardinal getDirection() const;
     [[nodiscard]] Rectangle getHitBox() const;
     [[nodiscard]] bool isInBounds(const Rectangle& boundBox) const;
-    [[nodiscard]] bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities);
+    [[nodiscard]] virtual bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities);
     static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction::Cardinal d, double speed);
     void snapToGrid();
 };

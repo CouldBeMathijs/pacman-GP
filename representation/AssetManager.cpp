@@ -25,6 +25,7 @@ const std::array<TextureLocation, to_underlying(Count)> k_spriteDefinitions = {
     TextureLocation{644, 395, 50, 50}, // SpriteDefinition::Wall
     TextureLocation{344, -4, 50, 50},  // SpriteDefinition::PacmanDeath
     TextureLocation{244, -4, 50, 50},  // SpriteDefinition::GhostDeath
+    TextureLocation{-1, -1, 1, 1},     // SpriteDefinition::SpawnWall
 };
 
 void initialize() {

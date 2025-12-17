@@ -10,6 +10,7 @@
 #include "view/GhostView.h"
 #include "view/PacmanView.h"
 #include "view/ScoreView.h"
+#include "view/SpawnWallView.h"
 #include "view/WallView.h"
 
 std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createPacman(const Rectangle& p) {
@@ -24,7 +25,7 @@ std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createWall(const Rect
 }
 
 std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createSpawnWall(const Rectangle& hb) {
-    return createEntityWithView<SpawnWall, WallView>(hb);
+    return createEntityWithView<SpawnWall, SpawnWallView>(hb);
 }
 
 std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createCoin(const Rectangle& p) {

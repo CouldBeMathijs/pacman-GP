@@ -30,6 +30,8 @@ set(PACMAN_SOURCES
         representation/view/PacmanView.cpp
         representation/view/ScoreView.cpp
         representation/view/WallView.cpp
+        representation/view/SpawnWallView.cpp
+        representation/view/SpawnWallView.h
 )
 
 add_executable(pacman ${PACMAN_SOURCES})
