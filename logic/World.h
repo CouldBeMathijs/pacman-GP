@@ -39,6 +39,8 @@ public:
     void setPacman(const std::shared_ptr<Pacman>&);
     void update(Direction::Cardinal d);
     std::set<Direction::Cardinal> possibleDirections(const std::shared_ptr<IGhost>& ghost);
+    Direction::Cardinal manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost,
+                                          bool maximizeDistance);
     void updateGhosts(Direction::Cardinal d);
     bool isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity);
 };

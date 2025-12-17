@@ -91,8 +91,6 @@ std::set<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IG
     const double lookahead = distance * 10;
     const auto hitBox = ghost->getHitBox().scaledBy(0.9);
 
-    getValue(Direction::Cardinal::EAST);
-
     // Try four primary directions
     constexpr std::array<Direction::Cardinal, 4> test = {Direction::Cardinal::EAST, Direction::Cardinal::WEST,
                                                          Direction::Cardinal::NORTH, Direction::Cardinal::SOUTH};
@@ -120,6 +118,37 @@ std::set<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IG
     }
 
     return out;
+}
+
+Direction::Cardinal World::manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost, bool maximizeDistance) {
+    const auto possible = possibleDirections(ghost);
+    const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
+
+    auto bestDir = Direction::Cardinal::NONE;
+    // Initialize bestDistance with an extreme value
+    double bestDistance = maximizeDistance ? -1.0 : std::numeric_limits<double>::max();
+
+    for (const auto dir : possible) {
+        // Predict the new position based on direction and speed
+        auto hitbox = ghost->getHitBox().movedBy(getValue(dir) * distance);
+        const auto manhattan = hitbox.getCenter().manhattan_distance_to(wantedManhattan);
+
+        if (maximizeDistance) {
+            // Looking for the largest distance
+            if (manhattan > bestDistance) {
+                bestDistance = manhattan;
+                bestDir = dir;
+            }
+        } else {
+            // Looking for the smallest distance
+            if (manhattan < bestDistance) {
+                bestDistance = manhattan;
+                bestDir = dir;
+            }
+        }
+    }
+
+    return bestDir;
 }
 
 void World::updateGhosts(const Direction::Cardinal d) {
@@ -156,7 +185,11 @@ void World::updateGhosts(const Direction::Cardinal d) {
                 // 2. DIRECTION DECISION LOGIC
                 switch (ghost->getAlgorithm()) {
                 case ChasingAlgorithm::ON_TOP_MANHATTAN:
+                    ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().getCenter(), ghost, false));
+                    break;
                 case ChasingAlgorithm::IN_FRONT_MANHATTAN:
+                    ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().movedBy(Direction::getValue(m_pacman->getDirection())).getCenter(), ghost, false));
+                    break;
                 case ChasingAlgorithm::DIRECTIONAL: {
                     if (auto possible = possibleDirections(ghost); !possible.empty()) {
                         if (possible.size() > 1) {
