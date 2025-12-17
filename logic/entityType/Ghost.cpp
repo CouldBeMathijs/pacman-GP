@@ -5,8 +5,8 @@
 
 IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode,
                const ChasingAlgorithm algorithm)
-    : IEntityModel(pos, Direction::Cardinal::EAST), m_algorithm(algorithm), m_currentMode(start_mode),
-      m_spawnPoint(pos.topLeft), m_amount_of_seconds_left_in_current_mode(amountOfSecondsLeftInCurrentMode) {}
+    : IDirectionalEntityModel(pos, Direction::Cardinal::EAST, LogicConstants::BASE_SPEED * 0.8), m_algorithm(algorithm), m_currentMode(start_mode),
+      m_amount_of_seconds_left_in_current_mode(amountOfSecondsLeftInCurrentMode) {}
 
 void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
@@ -24,11 +24,14 @@ void IGhost::setWantedDirection(const Direction::Cardinal d) {
     m_wantedDirection = d;
 }
 
+bool IGhost::isMovingAwayFromSpawn() const { return m_isMovingAwayFromSpawn; }
+
 bool IGhost::allowedToTurn() const { return m_amount_of_seconds_until_able_to_turn <= 0; }
 
 void IGhost::goToSpawn() {
-    m_hitBox.moveTo(m_spawnPoint);
     m_direction = Direction::Cardinal::EAST;
+    m_isMovingAwayFromSpawn = true;
+    IDirectionalEntityModel::goToSpawn();
 }
 
 void IGhost::hasTurned() {
@@ -47,9 +50,6 @@ void IGhost::update(const Direction::Cardinal direction) {
     IEntityModel::update(direction);
 }
 
-void IGhost::setDirection(const Direction::Cardinal d) {
-    m_direction = d;
-}
 
 BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 

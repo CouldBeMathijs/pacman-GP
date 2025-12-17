@@ -4,6 +4,7 @@
 #include "entityType/Ghost.h"
 #include "entityType/Pacman.h"
 
+#include <set>
 #include <vector>
 
 /**
@@ -37,7 +38,7 @@ public:
     void addNonMovingEntity(std::shared_ptr<IEntityModel>);
     void setPacman(const std::shared_ptr<Pacman>&);
     void update(Direction::Cardinal d);
-    std::vector<Direction::Cardinal> possibleDirections(const std::shared_ptr<IGhost>& ghost);
+    std::set<Direction::Cardinal> possibleDirections(const std::shared_ptr<IGhost>& ghost);
     void updateGhosts(Direction::Cardinal d);
     bool isBlocked(const Rectangle& rectToCheck, const std::shared_ptr<IEntityModel>& entity);
 };

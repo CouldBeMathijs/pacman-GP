@@ -2,10 +2,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LOGIC_SOURCES
-        entityType/Collectable.cpp
-        entityType/Ghost.cpp
-        entityType/Pacman.cpp
-        entityType/Wall.cpp
+        IDirectionalEntityModel.cpp
         IEntityModel.cpp
         ISubject.cpp
         Position.cpp
@@ -16,6 +13,10 @@ set(LOGIC_SOURCES
         World.cpp
         WorldAsciiGridParser.cpp
         WorldCreator.cpp
+        entityType/Collectable.cpp
+        entityType/Ghost.cpp
+        entityType/Pacman.cpp
+        entityType/Wall.cpp
 )
 add_compile_options(-Wall)
 

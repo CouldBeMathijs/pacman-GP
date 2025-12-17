@@ -3,6 +3,7 @@
 #include "../AssetManager.h"
 #include "../Camera.h"
 #include "LevelState.h"
+#include "ScoreKeeper.h"
 
 /**
  * @brief Constructor for VictoryState.

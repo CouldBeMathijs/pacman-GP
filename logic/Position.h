@@ -54,11 +54,12 @@ struct Rectangle {
     Rectangle(const Position& top_left, const Position& bottom_right);
     Rectangle();
 
+    [[nodiscard]] Position getCenter() const;
+    [[nodiscard]] Rectangle movedBy(const Position& other) const;
     [[nodiscard]] Rectangle movedBy(double deltaX, double deltaY) const;
-    [[nodiscard]] Rectangle rescale(const Position& current_min, const Position& current_max,
-                                    const Position& wanted_min, const Position& wanted_max) const;
+    [[nodiscard]] Rectangle rescale(const Position& current_min, const Position& current_max, const Position& wanted_min, const Position& wanted_max) const;
     [[nodiscard]] Rectangle scaledBy(double scale) const;
-    [[nodiscard]] bool isCenteredOnTile(double epsilon) const;
+    void moveBy(const Position& other);
     void moveBy(double deltaX, double deltaY);
     void moveTo(const Position& newTopLeft);
     void snapToGrid();

@@ -3,6 +3,7 @@
 #include "IEntityFactory.h"
 #include "LogicConstants.h"
 #include "Random.h"
+#include "ScoreKeeper.h"
 #include "Stopwatch.h"
 #include "Visitor.h"
 #include "entityType/Pacman.h"
@@ -85,22 +86,31 @@ void World::update(const Direction::Cardinal d) {
     }
 }
 
-std::vector<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
-    const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime() * 2;
+std::set<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
+    const double distance = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
+    const double lookahead = distance * 10;
     const auto hitBox = ghost->getHitBox().scaledBy(0.9);
 
-    // Try four primary directions
-    std::map<Direction::Cardinal, Rectangle> test = {{Direction::Cardinal::EAST, hitBox.movedBy(distance, 0)},
-                                                     {Direction::Cardinal::WEST, hitBox.movedBy(-distance, 0)},
-                                                     {Direction::Cardinal::NORTH, hitBox.movedBy(0, -distance)},
-                                                     {Direction::Cardinal::SOUTH, hitBox.movedBy(0, distance)}};
+    getValue(Direction::Cardinal::EAST);
 
-    std::vector<Direction::Cardinal> out;
+    // Try four primary directions
+    constexpr std::array<Direction::Cardinal, 4> test = {
+        Direction::Cardinal::EAST,
+        Direction::Cardinal::WEST,
+        Direction::Cardinal::NORTH,
+        Direction::Cardinal::SOUTH
+    };
+
+    std::set<Direction::Cardinal> out;
 
     // A direction is valid only if it's NOT blocked
-    for (auto [dir, box] : test) {
-        if (!isBlocked(box, ghost))
-            out.push_back(dir);
+    for (auto dir : test) {
+        if (auto box = hitBox.movedBy(getValue(dir) * lookahead); !isBlocked(box, ghost))
+            out.insert(dir);
+    }
+
+    if ( !isBlocked(hitBox.movedBy( Direction::getValue( ghost->getDirection() ) * distance * 2), ghost) ) {
+        out.insert(ghost->getDirection());
     }
 
     // If the ghost is directly facing a wall, keep side movement
@@ -110,7 +120,7 @@ std::vector<Direction::Cardinal> World::possibleDirections(const std::shared_ptr
     // Normal rule: ghosts can't reverse
     // Exception: if blocked forward AND side paths exist, allow choosing sides
     if (out.size() > 1) {
-        std::erase(out, opposite);
+        out.erase(opposite);
     }
 
     return out;
@@ -118,11 +128,17 @@ std::vector<Direction::Cardinal> World::possibleDirections(const std::shared_ptr
 
 void World::updateGhosts(const Direction::Cardinal d) {
     for (const auto& ghost : m_ghosts) {
-        // ghost->snapToGrid();
+        ghost->snapToGrid();
         switch (ghost->getMode()) {
         case GhostMode::CHASING: {
             // Define the movement distance for this specific frame
             const double moveDist = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
+
+            if (ghost->isMovingAwayFromSpawn()) {
+                if (!(std::abs(ghost->getHitBox().getCenter().x) > moveDist)) {
+
+                }
+            }
 
             // Define the lookahead distance (10 "steps")
             // This ensures we don't move unless the long-range path is clear
@@ -160,6 +176,7 @@ void World::updateGhosts(const Direction::Cardinal d) {
         }
         case GhostMode::PANICKING:
         case GhostMode::WAITING:
+        case GhostMode::DEAD:
             break;
         }
         ghost->update(d);

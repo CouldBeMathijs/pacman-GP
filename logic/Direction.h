@@ -1,5 +1,9 @@
 #ifndef PACMAN_DIRECTION_H
 #define PACMAN_DIRECTION_H
+#include "Position.h"
+
+#include <stdexcept>
+#include <utility>
 
 namespace Direction {
 /**
@@ -12,6 +16,22 @@ enum class Cardinal {
     NORTH,
     NONE,
 };
+
+constexpr Position getValue(const Cardinal e) {
+    switch (e) {
+    case Cardinal::EAST:
+        return {1,0};
+    case Cardinal::NORTH:
+        return {0,-1};
+    case Cardinal::SOUTH:
+        return {0, 1};
+    case Cardinal::WEST:
+        return {-1, 0};
+    default:
+        break;
+    }
+    return {0,0};
+}
 
 inline const char* to_string(const Cardinal e) {
     switch (e) {

@@ -3,12 +3,12 @@
 
 #include <iostream>
 #include <random>
+#include <set>
 
 /**
  * @brief Singleton class which provides all randomness
  */
 class Random {
-private:
     std::mt19937 m_generator;
     Random();
 
@@ -41,6 +41,24 @@ public:
 
         // 4. Return the element at the random index.
         return vec[randomIndex];
+    }
+
+    template <typename T>
+    const T& getRandomElement(const std::set<T>& s) {
+        // 1. Check if the set is empty
+        if (s.empty()) {
+            throw std::logic_error("Cannot get a random element from an empty set.");
+        }
+
+        // 2. Determine the range (0 to size - 1)
+        int randomIndex = generateInt(0, static_cast<int>(s.size() - 1));
+
+        // 3. Use an iterator and move it to the random position
+        auto it = s.begin();
+        std::advance(it, randomIndex);
+
+        // 4. Return the dereferenced iterator
+        return *it;
     }
 };
 

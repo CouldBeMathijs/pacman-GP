@@ -2,6 +2,7 @@
 
 #include "LogicConstants.h"
 
+#include <SFML/Graphics/Rect.hpp>
 #include <cmath>
 #include <iostream>
 #include <limits>
@@ -208,7 +209,19 @@ void Rectangle::moveTo(const Position& newTopLeft) {
     bottomRight.y = newTopLeft.y + height;
 }
 
-void Rectangle::moveBy(double deltaX, double deltaY) {
+void Rectangle::moveBy(const Position& other) {
+    topLeft += other;
+    bottomRight += other;
+}
+
+
+Rectangle Rectangle::movedBy(const Position& other) const {
+    Rectangle out = *this;
+    out.moveBy(other);
+    return out;
+}
+
+void Rectangle::moveBy(const double deltaX, const double deltaY) {
     // Apply the delta to the x-coordinate of both corners
     topLeft.x += deltaX;
     bottomRight.x += deltaX;
@@ -218,7 +231,8 @@ void Rectangle::moveBy(double deltaX, double deltaY) {
     bottomRight.y += deltaY;
 }
 
-Rectangle Rectangle::movedBy(double deltaX, double deltaY) const {
+
+Rectangle Rectangle::movedBy(const double deltaX, const double deltaY) const {
     Rectangle out = *this;
     out.moveBy(deltaX, deltaY);
     return out;
@@ -248,6 +262,8 @@ Rectangle Rectangle::scaledBy(double scale) const {
 
     return scaled_rectangle;
 }
+
+Position Rectangle::getCenter() const { return {(topLeft + bottomRight) / 2}; }
 
 Rectangle Rectangle::rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
                              const Position& wanted_max) const {

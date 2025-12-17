@@ -2,18 +2,16 @@
 
 #include "Visitor.h"
 
-Pacman::Pacman(const Rectangle& pos) : IEntityModel(pos, Direction::Cardinal::NONE) {}
+Pacman::Pacman(const Rectangle& pos) : IDirectionalEntityModel(pos, Direction::Cardinal::NONE, LogicConstants::BASE_SPEED) {}
 
 void Pacman::setHitBox(const Rectangle& hb) { m_hitBox = hb; }
 
 bool Pacman::isDying() const { return m_isDying; }
 
 void Pacman::goToSpawn() {
-    m_hitBox.moveTo(m_spawnPoint);
     setDirection(Direction::Cardinal::NONE);
+    IDirectionalEntityModel::goToSpawn();
 }
-
-void Pacman::setDirection(const Direction::Cardinal d) { m_direction = d; }
 
 void Pacman::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 

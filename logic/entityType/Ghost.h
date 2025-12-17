@@ -1,26 +1,26 @@
 #ifndef PACMAN_GHOST_H
 #define PACMAN_GHOST_H
-#include "IEntityModel.h"
+#include "IDirectionalEntityModel.h"
 #include "LogicConstants.h"
 
 /**
  * @brief Different movement modes Ghosts can be in
  */
-enum class GhostMode { CHASING, PANICKING, WAITING };
+enum class GhostMode { CHASING, PANICKING, WAITING, DEAD };
 
 enum class ChasingAlgorithm { DIRECTIONAL, IN_FRONT_MANHATTAN, ON_TOP_MANHATTAN };
 
 /**
  * @brief Virtual class to base on which to base specific Ghost types
  */
-class IGhost : public IEntityModel {
+class IGhost : public IDirectionalEntityModel {
 protected:
     ChasingAlgorithm m_algorithm;
     Direction::Cardinal m_wantedDirection = Direction::Cardinal::NORTH;
     GhostMode m_currentMode;
-    Position m_spawnPoint;
-    double m_amount_of_seconds_until_able_to_turn = 0;
+    bool m_isMovingAwayFromSpawn = true;
     double m_amount_of_seconds_left_in_current_mode;
+    double m_amount_of_seconds_until_able_to_turn = 0;
     double m_speed = LogicConstants::BASE_SPEED * 0.8;
 
     IGhost(const Rectangle& pos, GhostMode start_mode, double amountOfSecondsLeftInCurrentMode,
@@ -41,10 +41,10 @@ public:
      */
     void accept(IEntityVisitor& visitor) override;
 
-    void goToSpawn();
+    void goToSpawn() override;
     void hasTurned();
-    void setDirection(Direction::Cardinal d);
     void setWantedDirection(Direction::Cardinal d);
+    [[nodiscard]] bool isMovingAwayFromSpawn() const;
     [[nodiscard]] bool allowedToTurn() const;
     void update(Direction::Cardinal) override;
 };

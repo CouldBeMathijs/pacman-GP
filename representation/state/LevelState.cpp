@@ -2,6 +2,7 @@
 
 #include "GameOverState.h"
 #include "PausedState.h"
+#include "ScoreKeeper.h"
 #include "VictoryState.h"
 #include "WorldAsciiGridParser.h"
 #include "WorldCreator.h"
