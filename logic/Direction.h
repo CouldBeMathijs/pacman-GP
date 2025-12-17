@@ -2,7 +2,6 @@
 #define PACMAN_DIRECTION_H
 #include "Position.h"
 
-
 namespace Direction {
 /**
  * @brief The order of the Directions is the same as the order in the Spritemap
