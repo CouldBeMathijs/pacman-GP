@@ -42,6 +42,7 @@ public:
     void setPacman(const std::shared_ptr<Pacman>&);
     void update(Direction::Cardinal d);
     void updateGhosts(Direction::Cardinal d);
+    void startPanic() const;
 };
 
 #endif // PACMAN_WORLD_H

@@ -248,6 +248,12 @@ void World::updateGhosts(const Direction::Cardinal d) {
     }
 }
 
+void World::startPanic() const {
+    for (const auto& ghost : m_ghosts ) {
+        ghost->setMode(GhostMode::PANICKING);
+    }
+}
+
 void World::updatePacman(Direction::Cardinal d) {
     m_pacman->snapToGrid();
     constexpr double EPSILON = 0.01;
@@ -343,6 +349,10 @@ void World::handleCollectables(const Rectangle& current_hb) {
         if (const auto result = pacmanInitiates.getResult();
             result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
             CollectableVisitor pickup;
+            if (result == CollisionResult::FRUIT_PICKED_UP) {
+                startPanic();
+            }
+            target_ptr->markForDeletion();
             target_ptr->accept(pickup);
             if (result == CollisionResult::FRUIT_PICKED_UP) {
                 startPanic();

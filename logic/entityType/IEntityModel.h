@@ -5,7 +5,7 @@
 
 class IEntityModel : public ISubject {
 protected:
-    IEntityModel(const Rectangle& hitBox, Direction::Cardinal);
+    IEntityModel(Rectangle hitBox, Direction::Cardinal);
     Direction::Cardinal m_direction;
     Rectangle m_hitBox;
     bool m_isMarkedForDeletion = false;
@@ -15,7 +15,6 @@ public:
     [[nodiscard]] Rectangle getHitBox() const;
     [[nodiscard]] bool isInBounds(const Rectangle& boundBox) const;
     [[nodiscard]] bool isMarkedForDeletion() const;
-    ;
     [[nodiscard]] virtual bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities);
     static Rectangle calculateFutureHitBox(const Rectangle& current_hb, Direction::Cardinal d, double speed);
     void markForDeletion();
