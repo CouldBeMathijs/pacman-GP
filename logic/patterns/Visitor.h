@@ -16,11 +16,7 @@ class Wall;
 /**
  * @brief Used to pass back information about the collision.
  */
-struct CollisionResult {
-    bool ghostTouchingSpawnWall = false;
-    bool interactionOccurred = false; // e.g., Game Over, Ghost Eaten, Item Picked Up
-    bool moveBlocked = false;
-};
+enum class CollisionResult { NONE, MOVE_BLOCKED, SPAWN_WALL_BLOCK, GHOST_TOUCH, COIN_PICKED_UP, FRUIT_PICKED_UP };
 
 /**
  * @brief The core Visitor Interface for all dispatch layers.
@@ -42,7 +38,6 @@ public:
  * @brief Handles logic when PACMAN is the initiator.
  */
 class PacmanCollisionVisitor final : public IEntityVisitor {
-private:
     CollisionResult& m_result;
 
 public:
@@ -65,7 +60,6 @@ public:
  * @brief Handles logic when GHOST is the initiator.
  */
 class GhostCollisionVisitor final : public IEntityVisitor {
-private:
     CollisionResult& m_result;
 
 public:

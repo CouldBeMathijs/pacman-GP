@@ -59,15 +59,15 @@ bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchin
 
         CollisionHandler entityInitiates(*entity);
         target_ptr->accept(entityInitiates);
-        if (entityInitiates.getResult().moveBlocked ||
-            (entityInitiates.getResult().ghostTouchingSpawnWall && !m_isMovingAwayFromSpawn)) {
+        if (entityInitiates.getResult() == CollisionResult::MOVE_BLOCKED ||
+            (entityInitiates.getResult() == CollisionResult::SPAWN_WALL_BLOCK && !m_isMovingAwayFromSpawn)) {
             return true;
         }
 
         CollisionHandler targetInitiates(*target_ptr);
         entity->accept(targetInitiates);
-        if (targetInitiates.getResult().moveBlocked ||
-            (entityInitiates.getResult().ghostTouchingSpawnWall && !m_isMovingAwayFromSpawn)) {
+        if (targetInitiates.getResult() == CollisionResult::MOVE_BLOCKED ||
+            (entityInitiates.getResult() == CollisionResult::SPAWN_WALL_BLOCK && !m_isMovingAwayFromSpawn)) {
             return true;
         }
     }

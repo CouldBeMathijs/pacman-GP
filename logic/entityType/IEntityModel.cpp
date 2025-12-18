@@ -26,13 +26,13 @@ bool IEntityModel::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& t
 
         CollisionHandler entityInitiates(*entity);
         target_ptr->accept(entityInitiates);
-        if (entityInitiates.getResult().moveBlocked) {
+        if (entityInitiates.getResult() == CollisionResult::MOVE_BLOCKED) {
             return true;
         }
 
         CollisionHandler targetInitiates(*target_ptr);
         entity->accept(targetInitiates);
-        if (targetInitiates.getResult().moveBlocked) {
+        if (targetInitiates.getResult() == CollisionResult::MOVE_BLOCKED) {
             return true;
         }
     }

@@ -332,7 +332,7 @@ void World::handleCollectables(const Rectangle& current_hb) {
         CollisionHandler pacmanInitiates(*m_pacman);
         target_ptr->accept(pacmanInitiates);
 
-        if (pacmanInitiates.getResult().interactionOccurred) {
+        if (auto result = pacmanInitiates.getResult(); result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
             CollectableVisitor pickup;
             target_ptr->accept(pickup);
         }
@@ -340,8 +340,7 @@ void World::handleCollectables(const Rectangle& current_hb) {
         CollisionHandler targetInitiates(*target_ptr);
         m_pacman->accept(targetInitiates);
 
-        if (const auto& [ghostTouchesSpawnWall, interactionOccurred, moveBlocked] = targetInitiates.getResult();
-            interactionOccurred) {
+        if (targetInitiates.getResult() == CollisionResult::GHOST_TOUCH) {
             m_pacman->ghostTouches();
         }
     }
