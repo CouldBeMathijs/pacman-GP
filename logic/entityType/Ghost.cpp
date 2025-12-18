@@ -141,11 +141,9 @@ bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchin
 
 void IGhost::displayInfo() const {
     const auto [mode, timer] = m_stateStack.top();
-    std::cout << "Algorithm: " << to_string(m_algorithm)
-    << "\n\tPosition: " << m_hitBox.getCenter()
-    << "\n\tCanMoveThroughSpawnDoor: " << m_isMovingAwayFromSpawn
-    << "\n\tCurrentMode: " << to_string(mode)
-    << "\n\tTimeLeftInCurrentMode: " << timer << std::endl;
+    std::cout << "Algorithm: " << to_string(m_algorithm) << "\n\tPosition: " << m_hitBox.getCenter()
+              << "\n\tCanMoveThroughSpawnDoor: " << m_isMovingAwayFromSpawn << "\n\tCurrentMode: " << to_string(mode)
+              << "\n\tTimeLeftInCurrentMode: " << timer << std::endl;
 }
 
 void IGhost::hasExitedSpawn() { m_isMovingAwayFromSpawn = false; }
