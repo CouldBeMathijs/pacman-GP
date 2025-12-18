@@ -10,13 +10,16 @@
  */
 class MenuState final : public IState {
 private:
+    sf::Clock m_refreshClock;
     sf::Text m_pacmanText;
     sf::Text m_playText;
+    std::vector<sf::Text> m_highScoreTexts;
 
 public:
     MenuState();
     void update(Direction::Cardinal d) override;
     void handleInput(const sf::Event&) override;
+    void setupHighScores();
 };
 
 #endif // PACMAN_MENUSTATE_H

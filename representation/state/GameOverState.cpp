@@ -60,8 +60,8 @@ void GameOverState::update(Direction::Cardinal d) {
 void GameOverState::handleInput(const sf::Event& event) {
     // Check if any key was pressed
     if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right ||
-            event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Down) {
+        if (event.key.code != sf::Keyboard::Left && event.key.code != sf::Keyboard::Right &&
+            event.key.code != sf::Keyboard::Up && event.key.code != sf::Keyboard::Down) {
             // Request to pop this state only for non-arrow keys
             m_requestedPops = 1;
         }
