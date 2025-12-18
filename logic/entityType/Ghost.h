@@ -2,6 +2,7 @@
 #define PACMAN_GHOST_H
 #include "IDirectionalEntityModel.h"
 #include "LogicConstants.h"
+#include "ScoreKeeper.h"
 
 #include <iostream>
 #include <stack>
@@ -41,7 +42,7 @@ protected:
     GhostModeStack m_stateStack;
     bool m_isMovingAwayFromSpawn = true;
     double m_amount_of_seconds_until_able_to_turn = 0;
-    double m_speed = LogicConstants::BASE_SPEED * 0.8;
+    double m_speed = LogicConstants::BASE_SPEED * (0.75 + 0.05 * ScoreKeeper::getInstance().getLevel());
 
     IGhost(const Rectangle& pos, GhostMode start_mode, double amountOfSecondsLeftInCurrentMode,
            ChasingAlgorithm algorithm);
@@ -61,6 +62,7 @@ public:
      * @param visitor Singularly dispatched visitor object
      */
     void accept(IEntityVisitor& visitor) override;
+    void die();
     void goToSpawn() override;
     void hasExitedSpawn();
     void hasTurned();

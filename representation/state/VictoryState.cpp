@@ -33,7 +33,7 @@ VictoryState::VictoryState(const unsigned int level, const unsigned int currentS
 
     // --- Setup 'Press Any Key' Text ---
     m_pressAnyKeyText.setFont(Assets::getDefaultFont());
-    m_pressAnyKeyText.setString("Score:" + std::to_string(currentScore) + " - Press any key to start Level " +
+    m_pressAnyKeyText.setString("Score: " + std::to_string(currentScore) + " - Press any key to start Level " +
                                 std::to_string(level));
     m_pressAnyKeyText.setCharacterSize(30);
     m_pressAnyKeyText.setFillColor(sf::Color::White);

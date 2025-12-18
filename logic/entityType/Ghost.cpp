@@ -1,6 +1,7 @@
 #include "Ghost.h"
 
 #include "../patterns/Visitor.h"
+#include "ScoreKeeper.h"
 #include "Stopwatch.h"
 
 const char* to_string(const GhostMode e) {
@@ -35,11 +36,22 @@ IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double am
                const ChasingAlgorithm algorithm)
     : IDirectionalEntityModel(pos, Direction::Cardinal::EAST, LogicConstants::BASE_SPEED * 0.8),
       m_algorithm(algorithm) {
-    // Push the initial state (e.g., WAITING or CHASING) onto the stack
-    m_stateStack.push({start_mode, amountOfSecondsLeftInCurrentMode});
+    m_stateStack.push({GhostMode::CHASING, 0.0});
+    if (start_mode != GhostMode::CHASING) {
+        m_stateStack.push({start_mode, amountOfSecondsLeftInCurrentMode});
+    }
 }
 
 void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
+
+void IGhost::die() {
+    goToSpawn();
+    if (m_stateStack.top().mode == GhostMode::PANICKING) {
+        m_stateStack.pop();
+        m_stateStack.push({GhostMode::WAITING, 5});
+    }
+    ScoreKeeper::getInstance().addToScore(200);
+}
 
 GhostMode IGhost::getMode() const { return m_stateStack.top().mode; }
 
@@ -111,7 +123,7 @@ void IGhost::update(const Direction::Cardinal direction) {
         m_amount_of_seconds_until_able_to_turn -= dt;
     }
     IEntityModel::update(direction);
-    displayInfo();
+    // displayInfo();
 }
 
 bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) {

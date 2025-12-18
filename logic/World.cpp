@@ -157,7 +157,7 @@ Direction::Cardinal World::manhattanDecision(const Position& wantedManhattan, co
 
 void World::updateGhosts(const Direction::Cardinal d) {
     for (const auto& ghost : m_ghosts) {
-        double moveDist = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
+        const double moveDist = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
         ghost->snapToGrid();
         ghost->update(d);
         if (ghost->isMovingAwayFromSpawn()) {
@@ -179,6 +179,25 @@ void World::updateGhosts(const Direction::Cardinal d) {
         }
 
         switch (ghost->getMode()) {
+        case GhostMode::WAITING: {
+            const double lookAheadDist = moveDist * 2;
+            Rectangle lookAheadBox = IEntityModel::calculateFutureHitBox(
+                ghost->getHitBox(), ghost->getWantedDirection(), lookAheadDist);
+
+            // Check if the ghost is about to hit a wall in its current "wanted" direction
+            if (ghost->isBlocked(getEntitiesInBounds(lookAheadBox.scaledBy(0.9)))) {
+                // If blocked, flip the direction (Left <-> Right)
+                if (ghost->getWantedDirection() == Direction::Cardinal::EAST) {
+                    ghost->setWantedDirection(Direction::Cardinal::WEST);
+                } else {
+                    ghost->setWantedDirection(Direction::Cardinal::EAST);
+                }
+            }
+
+            // Apply the direction and move
+            ghost->setDirection(ghost->getWantedDirection());
+            ghost->move();
+        } break;
         case GhostMode::CHASING: {
             // Define the movement distance for this specific frame
 
@@ -220,7 +239,6 @@ void World::updateGhosts(const Direction::Cardinal d) {
             }
         } break;
         case GhostMode::PANICKING: {
-            moveDist *= 0.7;
             // Define the movement distance for this specific frame
 
             // Define the lookahead distance (10 "steps")
@@ -240,7 +258,6 @@ void World::updateGhosts(const Direction::Cardinal d) {
             }
             ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().getCenter(), ghost, true));
         } break;
-        case GhostMode::WAITING:
         case GhostMode::DEAD:
             ghost->goToSpawn();
             break;
@@ -363,7 +380,11 @@ void World::handleCollectables(const Rectangle& current_hb) {
         m_pacman->accept(targetInitiates);
 
         if (targetInitiates.getResult() == CollisionResult::GHOST_TOUCH) {
-            m_pacman->ghostTouches();
+            if (const auto ghost = std::static_pointer_cast<IGhost>(target_ptr); ghost->getMode() == GhostMode::PANICKING) {
+                ghost->die();
+            } else {
+                m_pacman->ghostTouches();
+            }
         }
     }
 }
