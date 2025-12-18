@@ -237,13 +237,19 @@ void World::updateGhosts(const Direction::Cardinal d) {
                 ghost->setDirection(ghost->getWantedDirection());
                 ghost->move();
             }
-            ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().getCenter(), ghost, false));
+            ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().getCenter(), ghost, true));
         } break;
         case GhostMode::WAITING:
         case GhostMode::DEAD:
             ghost->goToSpawn();
             break;
         }
+    }
+}
+
+void World::startPanic() const {
+    for (const auto& ghost : m_ghosts ) {
+        ghost->setMode(GhostMode::PANICKING);
     }
 }
 
@@ -335,6 +341,10 @@ void World::handleCollectables(const Rectangle& current_hb) {
         if (auto result = pacmanInitiates.getResult();
             result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
             CollectableVisitor pickup;
+            if (result == CollisionResult::FRUIT_PICKED_UP) {
+                startPanic();
+            }
+            target_ptr->markForDeletion();
             target_ptr->accept(pickup);
         }
 

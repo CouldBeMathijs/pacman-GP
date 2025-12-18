@@ -72,3 +72,7 @@ Rectangle IEntityModel::calculateFutureHitBox(const Rectangle& current_hb, const
 }
 
 void IEntityModel::snapToGrid() { m_hitBox.snapToGrid(); }
+
+bool IEntityModel::isMarkedForDeletion() const { return m_isMarkedForDeletion; }
+
+void IEntityModel::markForDeletion() { m_isMarkedForDeletion = true; }
