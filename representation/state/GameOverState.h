@@ -8,14 +8,14 @@
  * * On keypress: return to menu
  */
 class GameOverState final : public IState {
-private:
+    const unsigned int m_finalScore;
     sf::Text m_gameOverText;
     sf::Text m_playText;
     sf::Text m_pressAnyKeyText;
 
 public:
     void update(Direction::Cardinal) override;
-    GameOverState();
+    explicit GameOverState(unsigned int finalScore);
     void handleInput(const sf::Event&) override;
 };
 

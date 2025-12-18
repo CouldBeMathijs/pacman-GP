@@ -7,7 +7,7 @@
  * @brief Constructor for GameOverState.
  * Initializes and positions the 'Game Over' and 'Press any key' text elements.
  */
-GameOverState::GameOverState() {
+GameOverState::GameOverState(unsigned int finalScore) : m_finalScore(finalScore) {
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();
 
@@ -27,7 +27,7 @@ GameOverState::GameOverState() {
 
     // --- Setup 'Press Any Key' Text ---
     m_pressAnyKeyText.setFont(Assets::getDefaultFont());
-    m_pressAnyKeyText.setString("Press any key to return to Menu");
+    m_pressAnyKeyText.setString("Final Score:" + std::to_string(m_finalScore) + " - Press any key to return to Menu");
     m_pressAnyKeyText.setCharacterSize(30);
     m_pressAnyKeyText.setFillColor(sf::Color::White);
 

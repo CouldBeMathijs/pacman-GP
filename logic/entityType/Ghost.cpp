@@ -21,6 +21,8 @@ void IGhost::setMode(const GhostMode m) {
 
 ChasingAlgorithm IGhost::getAlgorithm() const { return m_algorithm; }
 
+Direction::Cardinal IGhost::getWantedDirection() const { return m_wantedDirection; }
+
 void IGhost::setWantedDirection(const Direction::Cardinal d) { m_wantedDirection = d; }
 
 bool IGhost::isMovingAwayFromSpawn() const { return m_isMovingAwayFromSpawn && m_currentMode != GhostMode::WAITING; }

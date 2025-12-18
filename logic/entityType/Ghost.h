@@ -28,9 +28,7 @@ protected:
 
 public:
     [[nodiscard]] ChasingAlgorithm getAlgorithm() const;
-
-    [[nodiscard]] Direction::Cardinal getWantedDirection() const { return m_wantedDirection; }
-
+    [[nodiscard]] Direction::Cardinal getWantedDirection() const;
     [[nodiscard]] GhostMode getMode() const;
     [[nodiscard]] bool allowedToTurn() const;
     [[nodiscard]] bool isMovingAwayFromSpawn() const;

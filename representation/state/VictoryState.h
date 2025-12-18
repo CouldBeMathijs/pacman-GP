@@ -13,12 +13,13 @@ private:
     sf::Text m_victoryText;
     sf::Text m_pressAnyKeyText;
     unsigned int m_level;
+    unsigned int m_currentScore;
 
 public:
     /**
      * @brief Constructor for VictoryState.
      */
-    explicit VictoryState(unsigned int level);
+    explicit VictoryState(unsigned int level, unsigned int currentScore);
 
     /**
      * @brief Draws the text elements to the window.
