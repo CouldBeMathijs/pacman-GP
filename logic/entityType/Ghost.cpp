@@ -174,6 +174,6 @@ BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, 
 PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::DIRECTIONAL) {}
 
 OrangeGhost::OrangeGhost(const Rectangle& pos)
-    : IGhost(pos, GhostMode::WAITING, 0.5 , ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
+    : IGhost(pos, GhostMode::WAITING, 0.5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 
 RedGhost::RedGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 10, ChasingAlgorithm::ON_TOP_MANHATTAN) {}
