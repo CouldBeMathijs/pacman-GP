@@ -2,6 +2,7 @@
 
 #include "../AssetManager.h"
 #include "../Camera.h"
+#include "ScoreKeeper.h"
 
 /**
  * @brief Constructor for GameOverState.
@@ -10,6 +11,7 @@
 GameOverState::GameOverState(unsigned int finalScore) : m_finalScore(finalScore) {
     const auto& window = Camera::getInstance().getWindow();
     const sf::Vector2u windowSize = window.getSize();
+    ScoreKeeper::getInstance().reset();
 
     // --- Setup 'Game Over' Text ---
     m_gameOverText.setFont(Assets::getDefaultFont());

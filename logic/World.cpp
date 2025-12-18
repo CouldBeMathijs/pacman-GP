@@ -262,9 +262,9 @@ void World::updateGhosts(const Direction::Cardinal d) {
             ghost->goToSpawn();
             break;
         }
-        ghost->displayInfo();
+        // ghost->displayInfo();
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
 }
 
 void World::startPanic() const {
