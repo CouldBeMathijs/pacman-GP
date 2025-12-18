@@ -61,7 +61,7 @@ void IGhost::setMode(const GhostMode m) {
     if (m == GhostMode::PANICKING) {
         // If already panicking, just reset the top timer
         if (!m_stateStack.empty() && m_stateStack.top().mode == GhostMode::PANICKING) {
-            m_stateStack.top().timer = 10.0;
+            m_stateStack.top().timer = std::max(10.0 - ScoreKeeper::getInstance().getLevel(), 2.0);
         } else {
             // Push Panic onto the stack with 10s
             m_stateStack.push({GhostMode::PANICKING, 10.0});
@@ -86,19 +86,19 @@ Direction::Cardinal IGhost::getWantedDirection() const { return m_wantedDirectio
 
 void IGhost::setWantedDirection(const Direction::Cardinal d) { m_wantedDirection = d; }
 
-bool IGhost::isMovingAwayFromSpawn() const {
+bool IGhost::canMoveThroughSpawnDoor() const {
     if (m_stateStack.empty() || getMode() == GhostMode::WAITING) {
         return false;
     }
 
-    return m_isMovingAwayFromSpawn;
+    return m_canMoveThroughSpawnDoor;
 }
 
 bool IGhost::allowedToTurn() const { return m_amount_of_seconds_until_able_to_turn <= 0; }
 
 void IGhost::goToSpawn() {
     m_direction = Direction::Cardinal::EAST;
-    m_isMovingAwayFromSpawn = true;
+    m_canMoveThroughSpawnDoor = true;
     IDirectionalEntityModel::goToSpawn();
 }
 
@@ -125,7 +125,6 @@ void IGhost::update(const Direction::Cardinal direction) {
         m_amount_of_seconds_until_able_to_turn -= dt;
     }
     IEntityModel::update(direction);
-    // displayInfo();
 }
 
 bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) {
@@ -139,14 +138,14 @@ bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchin
         CollisionHandler entityInitiates(*entity);
         target_ptr->accept(entityInitiates);
         if (entityInitiates.getResult() == CollisionResult::MOVE_BLOCKED ||
-            (entityInitiates.getResult() == CollisionResult::SPAWN_WALL_BLOCK && !m_isMovingAwayFromSpawn)) {
+            (entityInitiates.getResult() == CollisionResult::SPAWN_WALL_BLOCK && !m_canMoveThroughSpawnDoor)) {
             return true;
         }
 
         CollisionHandler targetInitiates(*target_ptr);
         entity->accept(targetInitiates);
         if (targetInitiates.getResult() == CollisionResult::MOVE_BLOCKED ||
-            (entityInitiates.getResult() == CollisionResult::SPAWN_WALL_BLOCK && !m_isMovingAwayFromSpawn)) {
+            (entityInitiates.getResult() == CollisionResult::SPAWN_WALL_BLOCK && !m_canMoveThroughSpawnDoor)) {
             return true;
         }
     }
@@ -156,7 +155,7 @@ bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchin
 void IGhost::displayInfo() const {
     const auto [mode, timer] = m_stateStack.top();
     std::cout << "Algorithm: " << to_string(m_algorithm) << "\n\tPosition: " << m_hitBox.getCenter()
-              << "\n\tCanMoveThroughSpawnDoor: " << m_isMovingAwayFromSpawn << "\n\tCurrentMode: " << to_string(mode)
+              << "\n\tCanMoveThroughSpawnDoor: " << m_canMoveThroughSpawnDoor << "\n\tCurrentMode: " << to_string(mode)
               << "\n\tTimeLeftInCurrentMode: " << timer << std::endl;
 }
 
@@ -168,13 +167,13 @@ void IGhost::move() {
     }
 }
 
-void IGhost::hasExitedSpawn() { m_isMovingAwayFromSpawn = false; }
+void IGhost::hasExitedSpawn() { m_canMoveThroughSpawnDoor = false; }
 
 BlueGhost::BlueGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 
 PinkGhost::PinkGhost(const Rectangle& pos) : IGhost(pos, GhostMode::CHASING, 0, ChasingAlgorithm::DIRECTIONAL) {}
 
 OrangeGhost::OrangeGhost(const Rectangle& pos)
-    : IGhost(pos, GhostMode::WAITING, 0.5, ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
+    : IGhost(pos, GhostMode::WAITING, 0.5 , ChasingAlgorithm::IN_FRONT_MANHATTAN) {}
 
 RedGhost::RedGhost(const Rectangle& pos) : IGhost(pos, GhostMode::WAITING, 10, ChasingAlgorithm::ON_TOP_MANHATTAN) {}

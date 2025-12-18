@@ -160,7 +160,7 @@ void World::updateGhosts(const Direction::Cardinal d) {
         const double moveDist = ghost->getSpeed() * Stopwatch::getInstance().getDeltaTime();
         ghost->snapToGrid();
         ghost->update(d);
-        if (ghost->isMovingAwayFromSpawn()) {
+        if (ghost->canMoveThroughSpawnDoor()) {
             if (const auto ghostX = ghost->getHitBox().getCenter().x; std::abs(ghostX) > moveDist) {
                 if (ghostX < 0) {
                     ghost->setDirection(Direction::Cardinal::EAST);
@@ -262,7 +262,9 @@ void World::updateGhosts(const Direction::Cardinal d) {
             ghost->goToSpawn();
             break;
         }
+        ghost->displayInfo();
     }
+    std::cout << std::endl;
 }
 
 void World::startPanic() const {
@@ -355,7 +357,7 @@ void World::startPanic() {
 }
 
 void World::handleCollectables(const Rectangle& current_hb) {
-    for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(35.0 / 50.0))) {
+    for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(35.0 / 100.0))) {
         if (target_ptr.get() == m_pacman.get()) {
             continue;
         }

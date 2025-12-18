@@ -38,9 +38,9 @@ public:
 class IGhost : public IDirectionalEntityModel {
 protected:
     ChasingAlgorithm m_algorithm;
-    Direction::Cardinal m_wantedDirection = Direction::Cardinal::NORTH;
+    Direction::Cardinal m_wantedDirection = Direction::Cardinal::EAST;
     GhostModeStack m_stateStack;
-    bool m_isMovingAwayFromSpawn = true;
+    bool m_canMoveThroughSpawnDoor = true;
     double m_amount_of_seconds_until_able_to_turn = 0;
     double m_speed = LogicConstants::BASE_SPEED * (0.75 + 0.05 * ScoreKeeper::getInstance().getLevel());
 
@@ -52,7 +52,7 @@ public:
     [[nodiscard]] Direction::Cardinal getWantedDirection() const;
     [[nodiscard]] GhostMode getMode() const;
     [[nodiscard]] bool allowedToTurn() const;
-    [[nodiscard]] bool isMovingAwayFromSpawn() const;
+    [[nodiscard]] bool canMoveThroughSpawnDoor() const;
     [[nodiscard]] double getTimeInCurrentMode() const;
     bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) override;
 
