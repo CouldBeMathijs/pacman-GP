@@ -37,6 +37,12 @@ void PausedState::update(Direction::Cardinal) {
 
 void PausedState::handleInput(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Left ||
+                    event.key.code == sf::Keyboard::Right ||
+                    event.key.code == sf::Keyboard::Up ||
+                    event.key.code == sf::Keyboard::Down) {
+            return;
+                    }
         if (event.key.code == sf::Keyboard::Space) {
             m_requestedPops = 1;
         } else if (event.key.code == sf::Keyboard::Escape) {

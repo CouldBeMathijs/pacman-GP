@@ -13,7 +13,7 @@ using namespace Assets;
 
 constexpr size_t to_underlying(const SpriteDefinition e) noexcept { return static_cast<size_t>(e); }
 
-const std::array<TextureLocation, to_underlying(Count)> k_spriteDefinitions = {
+const std::array k_spriteDefinitions = {
     TextureLocation{414, 266, 10, 10}, // SpriteDefinition::Coin
     TextureLocation{594, -4, 50, 50},  // SpriteDefinition::Fruit
     TextureLocation{744, -4, 50, 50},  // SpriteDefinition::GhostBlue
@@ -24,8 +24,9 @@ const std::array<TextureLocation, to_underlying(Count)> k_spriteDefinitions = {
     TextureLocation{844, -4, 50, 50},  // SpriteDefinition::Pacman
     TextureLocation{644, 395, 50, 50}, // SpriteDefinition::Wall
     TextureLocation{344, -4, 50, 50},  // SpriteDefinition::PacmanDeath
-    TextureLocation{244, -4, 50, 50},  // SpriteDefinition::GhostDeath
+    TextureLocation{244, -4, 50, 50},  // SpriteDefinition::GhostDeathBase
     TextureLocation{-1, -1, 1, 1},     // SpriteDefinition::SpawnWall
+    TextureLocation{44, 547, 50, 50},  // SpriteDefinition::GhostPanicAlternate
 };
 
 void initialize() {

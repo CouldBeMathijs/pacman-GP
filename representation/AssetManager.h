@@ -9,7 +9,7 @@ using TextureLocation = sf::IntRect;
 /**
  * @brief Switch between all base sprite locations
  */
-enum SpriteDefinition {
+enum class SpriteDefinition {
     CoinBase,
     FruitBase,
     GhostBlueBase,
@@ -22,7 +22,7 @@ enum SpriteDefinition {
     PacmanDeathBase,
     GhostDeathBase,
     SpawnWallBase,
-    Count
+    GhostPanicAlternate,
 };
 
 /**
@@ -34,6 +34,7 @@ TextureLocation getSpriteInfo(SpriteDefinition);
  * @return The texture of the spritemap
  */
 const sf::Texture& getSpritemapTexture();
+
 /**
  * @return The font used for all text in the game
  */

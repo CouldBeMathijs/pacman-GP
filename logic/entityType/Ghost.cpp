@@ -55,6 +55,8 @@ void IGhost::die() {
 
 GhostMode IGhost::getMode() const { return m_stateStack.top().mode; }
 
+double IGhost::getTimeInCurrentMode() const { return m_stateStack.top().timer; }
+
 void IGhost::setMode(const GhostMode m) {
     if (m == GhostMode::PANICKING) {
         // If already panicking, just reset the top timer
@@ -156,6 +158,14 @@ void IGhost::displayInfo() const {
     std::cout << "Algorithm: " << to_string(m_algorithm) << "\n\tPosition: " << m_hitBox.getCenter()
               << "\n\tCanMoveThroughSpawnDoor: " << m_isMovingAwayFromSpawn << "\n\tCurrentMode: " << to_string(mode)
               << "\n\tTimeLeftInCurrentMode: " << timer << std::endl;
+}
+
+void IGhost::move() {
+    if (getMode() == GhostMode::PANICKING) {
+        m_hitBox.moveBy(getValue(m_direction) * Stopwatch::getInstance().getDeltaTime() * m_speed * 0.6);
+    } else {
+        IDirectionalEntityModel::move();
+    }
 }
 
 void IGhost::hasExitedSpawn() { m_isMovingAwayFromSpawn = false; }

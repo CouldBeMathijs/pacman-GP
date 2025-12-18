@@ -11,7 +11,7 @@ public:
     IDirectionalEntityModel(const Rectangle& hitBox, Direction::Cardinal cardinal, double speed);
     [[nodiscard]] double getSpeed() const;
     virtual void goToSpawn();
-    void move();
+    virtual void move();
     void setDirection(Direction::Cardinal d);
     void setHitBox(const Rectangle& hb);
 };

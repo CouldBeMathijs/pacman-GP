@@ -25,11 +25,11 @@ struct GhostState {
 
 class GhostModeStack final : std::stack<GhostState> {
 public:
-    using std::stack<GhostState>::push;
-    using std::stack<GhostState>::pop;
-    using std::stack<GhostState>::top;
     using std::stack<GhostState>::empty;
+    using std::stack<GhostState>::pop;
+    using std::stack<GhostState>::push;
     using std::stack<GhostState>::size;
+    using std::stack<GhostState>::top;
 };
 
 /**
@@ -53,9 +53,8 @@ public:
     [[nodiscard]] GhostMode getMode() const;
     [[nodiscard]] bool allowedToTurn() const;
     [[nodiscard]] bool isMovingAwayFromSpawn() const;
+    [[nodiscard]] double getTimeInCurrentMode() const;
     bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) override;
-
-    void displayInfo() const;
 
     /**
      * @brief Calls the correct double dispatch
@@ -63,9 +62,11 @@ public:
      */
     void accept(IEntityVisitor& visitor) override;
     void die();
+    void displayInfo() const;
     void goToSpawn() override;
     void hasExitedSpawn();
     void hasTurned();
+    void move() override;
     void setMode(GhostMode);
     void setWantedDirection(Direction::Cardinal d);
     void update(Direction::Cardinal) override;

@@ -17,7 +17,11 @@ void IGhostView::update() {
         IDirectionalEntityView::update();
         break;
     case GhostMode::PANICKING:
-        if (const auto panic_sprite = Assets::getSpriteInfo(Assets::GhostPanicBase); m_currentSprite != panic_sprite) {
+        auto panic_sprite = Assets::getSpriteInfo(Assets::SpriteDefinition::GhostPanicBase);
+        if (std::static_pointer_cast<IGhost>(getCoupledEntity())->getTimeInCurrentMode() < 1) {
+            panic_sprite = Assets::getSpriteInfo(Assets::SpriteDefinition::GhostPanicAlternate);
+        }
+        if (m_currentSprite != panic_sprite) {
             m_currentSprite = panic_sprite;
             m_topBase = m_currentSprite.top;
         }
@@ -27,13 +31,13 @@ void IGhostView::update() {
 }
 
 BlueGhostView::BlueGhostView(std::shared_ptr<IEntityModel> e)
-    : IGhostView(Assets::getSpriteInfo(Assets::GhostBlueBase), std::move(e)) {}
+    : IGhostView(Assets::getSpriteInfo(Assets::SpriteDefinition::GhostBlueBase), std::move(e)) {}
 
 PinkGhostView::PinkGhostView(std::shared_ptr<IEntityModel> e)
-    : IGhostView(Assets::getSpriteInfo(Assets::GhostPinkBase), std::move(e)) {}
+    : IGhostView(Assets::getSpriteInfo(Assets::SpriteDefinition::GhostPinkBase), std::move(e)) {}
 
 OrangeGhostView::OrangeGhostView(std::shared_ptr<IEntityModel> e)
-    : IGhostView(Assets::getSpriteInfo(Assets::GhostOrangeBase), std::move(e)) {}
+    : IGhostView(Assets::getSpriteInfo(Assets::SpriteDefinition::GhostOrangeBase), std::move(e)) {}
 
 RedGhostView::RedGhostView(std::shared_ptr<IEntityModel> e)
-    : IGhostView(Assets::getSpriteInfo(Assets::GhostRedBase), std::move(e)) {}
+    : IGhostView(Assets::getSpriteInfo(Assets::SpriteDefinition::GhostRedBase), std::move(e)) {}
