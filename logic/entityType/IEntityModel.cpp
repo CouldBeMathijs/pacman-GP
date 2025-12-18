@@ -7,8 +7,7 @@ Rectangle IEntityModel::getHitBox() const { return m_hitBox; }
 
 Direction::Cardinal IEntityModel::getDirection() const { return m_direction; }
 
-IEntityModel::IEntityModel(const Rectangle& hitBox, const Direction::Cardinal d)
-    : m_direction(d), m_hitBox(hitBox) {}
+IEntityModel::IEntityModel(const Rectangle& hitBox, const Direction::Cardinal d) : m_direction(d), m_hitBox(hitBox) {}
 
 bool IEntityModel::isInBounds(const Rectangle& boundBox) const {
     const bool x_overlap = m_hitBox.bottomRight.x > boundBox.topLeft.x && m_hitBox.topLeft.x < boundBox.bottomRight.x;

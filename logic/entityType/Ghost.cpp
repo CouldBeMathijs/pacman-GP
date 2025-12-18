@@ -6,8 +6,7 @@
 IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode,
                const ChasingAlgorithm algorithm)
     : IDirectionalEntityModel(pos, Direction::Cardinal::EAST, LogicConstants::BASE_SPEED * 0.8),
-      m_algorithm(algorithm)
-{
+      m_algorithm(algorithm) {
     // Push the initial state (e.g., WAITING or CHASING) onto the stack
     m_stateStack.push({start_mode, amountOfSecondsLeftInCurrentMode});
 }
@@ -33,7 +32,8 @@ void IGhost::setMode(const GhostMode m) {
         }
     } else {
         // For hard state changes (like DEAD or spawning), clear and set base state
-        while(!m_stateStack.empty()) m_stateStack.pop();
+        while (!m_stateStack.empty())
+            m_stateStack.pop();
         m_stateStack.push({m, 0.0}); // Timer 0 for infinite states like CHASING
     }
 }

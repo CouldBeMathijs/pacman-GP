@@ -326,12 +326,11 @@ void World::updatePacman(Direction::Cardinal d) {
 }
 
 void World::startPanic() {
-    for (const auto& ghost : m_ghosts ) {
+    for (const auto& ghost : m_ghosts) {
         ghost->setMode(GhostMode::PANICKING);
     }
     ghostTime = 5;
 }
-
 
 void World::handleCollectables(const Rectangle& current_hb) {
     for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(35.0 / 50.0))) {
@@ -341,7 +340,8 @@ void World::handleCollectables(const Rectangle& current_hb) {
         CollisionHandler pacmanInitiates(*m_pacman);
         target_ptr->accept(pacmanInitiates);
 
-        if (const auto result = pacmanInitiates.getResult(); result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
+        if (const auto result = pacmanInitiates.getResult();
+            result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
             CollectableVisitor pickup;
             target_ptr->accept(pickup);
             if (result == CollisionResult::FRUIT_PICKED_UP) {
