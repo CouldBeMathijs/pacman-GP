@@ -181,8 +181,8 @@ void World::updateGhosts(const Direction::Cardinal d) {
         switch (ghost->getMode()) {
         case GhostMode::WAITING: {
             const double lookAheadDist = moveDist * 2;
-            Rectangle lookAheadBox = IEntityModel::calculateFutureHitBox(
-                ghost->getHitBox(), ghost->getWantedDirection(), lookAheadDist);
+            Rectangle lookAheadBox =
+                IEntityModel::calculateFutureHitBox(ghost->getHitBox(), ghost->getWantedDirection(), lookAheadDist);
 
             // Check if the ghost is about to hit a wall in its current "wanted" direction
             if (ghost->isBlocked(getEntitiesInBounds(lookAheadBox.scaledBy(0.9)))) {
@@ -380,7 +380,8 @@ void World::handleCollectables(const Rectangle& current_hb) {
         m_pacman->accept(targetInitiates);
 
         if (targetInitiates.getResult() == CollisionResult::GHOST_TOUCH) {
-            if (const auto ghost = std::static_pointer_cast<IGhost>(target_ptr); ghost->getMode() == GhostMode::PANICKING) {
+            if (const auto ghost = std::static_pointer_cast<IGhost>(target_ptr);
+                ghost->getMode() == GhostMode::PANICKING) {
                 ghost->die();
             } else {
                 m_pacman->ghostTouches();
