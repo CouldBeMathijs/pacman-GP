@@ -335,7 +335,6 @@ void World::startPanic() {
     for (const auto& ghost : m_ghosts) {
         ghost->setMode(GhostMode::PANICKING);
     }
-    ghostTime = 5;
 }
 
 void World::handleCollectables(const Rectangle& current_hb) {

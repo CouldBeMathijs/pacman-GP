@@ -3,6 +3,34 @@
 #include "../patterns/Visitor.h"
 #include "Stopwatch.h"
 
+const char* to_string(const GhostMode e) {
+    switch (e) {
+    case GhostMode::CHASING:
+        return "CHASING";
+    case GhostMode::PANICKING:
+        return "PANICKING";
+    case GhostMode::WAITING:
+        return "WAITING";
+    case GhostMode::DEAD:
+        return "DEAD";
+    default:
+        return "unknown";
+    }
+}
+
+const char* to_string(const ChasingAlgorithm e) {
+    switch (e) {
+    case ChasingAlgorithm::DIRECTIONAL:
+        return "DIRECTIONAL";
+    case ChasingAlgorithm::IN_FRONT_MANHATTAN:
+        return "IN_FRONT_MANHATTAN";
+    case ChasingAlgorithm::ON_TOP_MANHATTAN:
+        return "ON_TOP_MANHATTAN";
+    default:
+        return "unknown";
+    }
+}
+
 IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode,
                const ChasingAlgorithm algorithm)
     : IDirectionalEntityModel(pos, Direction::Cardinal::EAST, LogicConstants::BASE_SPEED * 0.8),
@@ -83,6 +111,7 @@ void IGhost::update(const Direction::Cardinal direction) {
         m_amount_of_seconds_until_able_to_turn -= dt;
     }
     IEntityModel::update(direction);
+    displayInfo();
 }
 
 bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) {
@@ -108,6 +137,12 @@ bool IGhost::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchin
         }
     }
     return false;
+}
+
+void IGhost::displayInfo() const {
+    const auto [mode, timer] = m_stateStack.top();
+
+    std::cout << to_string(m_algorithm) << " " << m_hitBox.getCenter() << " " << m_isMovingAwayFromSpawn << ' ' << to_string(mode) << " " << timer << std::endl;
 }
 
 void IGhost::hasExitedSpawn() { m_isMovingAwayFromSpawn = false; }

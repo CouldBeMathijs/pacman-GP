@@ -3,6 +3,7 @@
 #include "IDirectionalEntityModel.h"
 #include "LogicConstants.h"
 
+#include <iostream>
 #include <stack>
 
 /**
@@ -10,14 +11,18 @@
  */
 enum class GhostMode { CHASING, PANICKING, WAITING, DEAD };
 
+const char* to_string(GhostMode e);
+
 enum class ChasingAlgorithm { DIRECTIONAL, IN_FRONT_MANHATTAN, ON_TOP_MANHATTAN };
+
+const char* to_string(ChasingAlgorithm e);
 
 struct GhostState {
     GhostMode mode;
     double timer;
 };
 
-class GhostModeStack final : private std::stack<GhostState> {
+class GhostModeStack final : std::stack<GhostState> {
 public:
     using std::stack<GhostState>::push;
     using std::stack<GhostState>::pop;
@@ -48,6 +53,8 @@ public:
     [[nodiscard]] bool allowedToTurn() const;
     [[nodiscard]] bool isMovingAwayFromSpawn() const;
     bool isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) override;
+
+    void displayInfo() const;
 
     /**
      * @brief Calls the correct double dispatch
