@@ -86,6 +86,7 @@ void World::update(const Direction::Cardinal d) {
             ghost->goToSpawn();
         }
     }
+    std::erase_if(m_nonMovingEntities, [](const auto& e) { return e->isMarkedForDeletion(); });
 }
 
 std::set<Direction::Cardinal> World::possibleDirections(const std::shared_ptr<IGhost>& ghost) {
@@ -237,7 +238,7 @@ void World::updateGhosts(const Direction::Cardinal d) {
                 ghost->setDirection(ghost->getWantedDirection());
                 ghost->move();
             }
-            ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().getCenter(), ghost, false));
+            ghost->setWantedDirection(manhattanDecision(m_pacman->getHitBox().getCenter(), ghost, true));
         } break;
         case GhostMode::WAITING:
         case GhostMode::DEAD:
@@ -324,6 +325,14 @@ void World::updatePacman(Direction::Cardinal d) {
     m_pacman->update(d);
 }
 
+void World::startPanic() {
+    for (const auto& ghost : m_ghosts ) {
+        ghost->setMode(GhostMode::PANICKING);
+    }
+    ghostTime = 5;
+}
+
+
 void World::handleCollectables(const Rectangle& current_hb) {
     for (const auto& target_ptr : getEntitiesInBounds(current_hb.scaledBy(35.0 / 50.0))) {
         if (target_ptr.get() == m_pacman.get()) {
@@ -332,9 +341,13 @@ void World::handleCollectables(const Rectangle& current_hb) {
         CollisionHandler pacmanInitiates(*m_pacman);
         target_ptr->accept(pacmanInitiates);
 
-        if (auto result = pacmanInitiates.getResult(); result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
+        if (const auto result = pacmanInitiates.getResult(); result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
             CollectableVisitor pickup;
             target_ptr->accept(pickup);
+            if (result == CollisionResult::FRUIT_PICKED_UP) {
+                startPanic();
+            }
+            target_ptr->markForDeletion();
         }
 
         CollisionHandler targetInitiates(*target_ptr);

@@ -7,14 +7,16 @@ Rectangle IEntityModel::getHitBox() const { return m_hitBox; }
 
 Direction::Cardinal IEntityModel::getDirection() const { return m_direction; }
 
-IEntityModel::IEntityModel(Rectangle hitBox, const Direction::Cardinal d)
-    : m_direction(d), m_hitBox(std::move(hitBox)) {}
+IEntityModel::IEntityModel(const Rectangle& hitBox, const Direction::Cardinal d)
+    : m_direction(d), m_hitBox(hitBox) {}
 
 bool IEntityModel::isInBounds(const Rectangle& boundBox) const {
     const bool x_overlap = m_hitBox.bottomRight.x > boundBox.topLeft.x && m_hitBox.topLeft.x < boundBox.bottomRight.x;
     const bool y_overlap = m_hitBox.bottomRight.y > boundBox.topLeft.y && m_hitBox.topLeft.y < boundBox.bottomRight.y;
     return x_overlap && y_overlap;
 }
+
+bool IEntityModel::isMarkedForDeletion() const { return m_isMarkedForDeletion; }
 
 bool IEntityModel::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& touchingEntities) {
     const auto entity = this;
@@ -70,5 +72,7 @@ Rectangle IEntityModel::calculateFutureHitBox(const Rectangle& current_hb, const
 
     return future_hb;
 }
+
+void IEntityModel::markForDeletion() { m_isMarkedForDeletion = true; }
 
 void IEntityModel::snapToGrid() { m_hitBox.snapToGrid(); }

@@ -20,10 +20,12 @@ class World {
     std::shared_ptr<Pacman> m_pacman;
     std::vector<std::shared_ptr<IEntityModel>> m_nonMovingEntities;
     std::vector<std::shared_ptr<IGhost>> m_ghosts;
+    double ghostTime = 0;
 
 protected:
     void handleCollectables(const Rectangle& current_hb);
     void updatePacman(Direction::Cardinal d);
+    void startPanic();
 
 public:
     World() = default;

@@ -5,18 +5,37 @@
 
 IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double amountOfSecondsLeftInCurrentMode,
                const ChasingAlgorithm algorithm)
-    : IDirectionalEntityModel(pos, Direction::Cardinal::EAST, LogicConstants::BASE_SPEED * 0.8), m_algorithm(algorithm),
-      m_currentMode(start_mode), m_amount_of_seconds_left_in_current_mode(amountOfSecondsLeftInCurrentMode) {}
+    : IDirectionalEntityModel(pos, Direction::Cardinal::EAST, LogicConstants::BASE_SPEED * 0.8),
+      m_algorithm(algorithm)
+{
+    // Push the initial state (e.g., WAITING or CHASING) onto the stack
+    m_stateStack.push({start_mode, amountOfSecondsLeftInCurrentMode});
+}
 
 void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
-GhostMode IGhost::getMode() const { return m_currentMode; }
+GhostMode IGhost::getMode() const { return m_stateStack.top().mode; }
 
 void IGhost::setMode(const GhostMode m) {
     if (m == GhostMode::PANICKING) {
-        setDirection(getOpposite(getDirection()));
+        // If already panicking, just reset the top timer
+        if (!m_stateStack.empty() && m_stateStack.top().mode == GhostMode::PANICKING) {
+            m_stateStack.top().timer = 10.0;
+        } else {
+            // Push Panic onto the stack with 10s
+            m_stateStack.push({GhostMode::PANICKING, 10.0});
+
+            // Only flip if not in the house
+            if (m_stateStack.size() > 1 && m_stateStack.top().mode != GhostMode::WAITING) {
+                setDirection(getOpposite(getDirection()));
+                setWantedDirection(getOpposite(getWantedDirection()));
+            }
+        }
+    } else {
+        // For hard state changes (like DEAD or spawning), clear and set base state
+        while(!m_stateStack.empty()) m_stateStack.pop();
+        m_stateStack.push({m, 0.0}); // Timer 0 for infinite states like CHASING
     }
-    m_currentMode = m;
 }
 
 ChasingAlgorithm IGhost::getAlgorithm() const { return m_algorithm; }
@@ -25,7 +44,13 @@ Direction::Cardinal IGhost::getWantedDirection() const { return m_wantedDirectio
 
 void IGhost::setWantedDirection(const Direction::Cardinal d) { m_wantedDirection = d; }
 
-bool IGhost::isMovingAwayFromSpawn() const { return m_isMovingAwayFromSpawn && m_currentMode != GhostMode::WAITING; }
+bool IGhost::isMovingAwayFromSpawn() const {
+    if (m_stateStack.empty() || getMode() == GhostMode::WAITING) {
+        return false;
+    }
+
+    return m_isMovingAwayFromSpawn;
+}
 
 bool IGhost::allowedToTurn() const { return m_amount_of_seconds_until_able_to_turn <= 0; }
 
@@ -38,13 +63,24 @@ void IGhost::goToSpawn() {
 void IGhost::hasTurned() { m_amount_of_seconds_until_able_to_turn = 0.1; }
 
 void IGhost::update(const Direction::Cardinal direction) {
-    if (m_amount_of_seconds_until_able_to_turn > 0) {
-        m_amount_of_seconds_until_able_to_turn -= Stopwatch::getInstance().getDeltaTime();
+    const double dt = Stopwatch::getInstance().getDeltaTime();
+
+    if (!m_stateStack.empty()) {
+
+        // If the current state has a timer (Panic or Waiting)
+        if (auto& [mode, timer] = m_stateStack.top(); timer > 0) {
+            timer -= dt;
+
+            // If timer expires, pop the state!
+            if (timer <= 0) {
+                m_stateStack.pop();
+            }
+        }
     }
-    if (m_amount_of_seconds_left_in_current_mode > 0) {
-        m_amount_of_seconds_left_in_current_mode -= Stopwatch::getInstance().getDeltaTime();
-    } else {
-        m_currentMode = GhostMode::CHASING;
+
+    // Standard logic
+    if (m_amount_of_seconds_until_able_to_turn > 0) {
+        m_amount_of_seconds_until_able_to_turn -= dt;
     }
     IEntityModel::update(direction);
 }

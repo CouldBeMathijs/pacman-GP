@@ -3,12 +3,28 @@
 #include "IDirectionalEntityModel.h"
 #include "LogicConstants.h"
 
+#include <stack>
+
 /**
  * @brief Different movement modes Ghosts can be in
  */
 enum class GhostMode { CHASING, PANICKING, WAITING, DEAD };
 
 enum class ChasingAlgorithm { DIRECTIONAL, IN_FRONT_MANHATTAN, ON_TOP_MANHATTAN };
+
+struct GhostState {
+    GhostMode mode;
+    double timer;
+};
+
+class GhostModeStack final : private std::stack<GhostState> {
+public:
+    using std::stack<GhostState>::push;
+    using std::stack<GhostState>::pop;
+    using std::stack<GhostState>::top;
+    using std::stack<GhostState>::empty;
+    using std::stack<GhostState>::size;
+};
 
 /**
  * @brief Virtual class to base on which to base specific Ghost types
@@ -17,9 +33,8 @@ class IGhost : public IDirectionalEntityModel {
 protected:
     ChasingAlgorithm m_algorithm;
     Direction::Cardinal m_wantedDirection = Direction::Cardinal::NORTH;
-    GhostMode m_currentMode;
+    GhostModeStack m_stateStack;
     bool m_isMovingAwayFromSpawn = true;
-    double m_amount_of_seconds_left_in_current_mode;
     double m_amount_of_seconds_until_able_to_turn = 0;
     double m_speed = LogicConstants::BASE_SPEED * 0.8;
 
