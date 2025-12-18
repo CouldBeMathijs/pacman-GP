@@ -332,7 +332,8 @@ void World::handleCollectables(const Rectangle& current_hb) {
         CollisionHandler pacmanInitiates(*m_pacman);
         target_ptr->accept(pacmanInitiates);
 
-        if (auto result = pacmanInitiates.getResult(); result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
+        if (auto result = pacmanInitiates.getResult();
+            result == CollisionResult::COIN_PICKED_UP || result == CollisionResult::FRUIT_PICKED_UP) {
             CollectableVisitor pickup;
             target_ptr->accept(pickup);
         }
