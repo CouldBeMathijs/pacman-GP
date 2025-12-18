@@ -8,9 +8,7 @@ struct HighScoreEntry {
     unsigned int score;
     std::time_t timestamp;
 
-    bool operator>(const HighScoreEntry& other) const {
-        return score > other.score;
-    }
+    bool operator>(const HighScoreEntry& other) const { return score > other.score; }
 };
 
 inline std::string formatTimestamp(const std::time_t t) {
@@ -19,7 +17,6 @@ inline std::string formatTimestamp(const std::time_t t) {
     ss << std::put_time(tm_ptr, "%Y-%m-%d %H:%M");
     return ss.str();
 }
-
 
 /**
  * @brief Singleton which keeps all persistent score variables
@@ -50,7 +47,9 @@ public:
     // --- Singleton requirements ---
     ScoreKeeper(const ScoreKeeper&) = delete;
     ScoreKeeper& operator=(const ScoreKeeper&) = delete;
+
     const std::vector<HighScoreEntry>& getHighScores() { return m_highScores; };
+
     static ScoreKeeper& getInstance();
 
     [[nodiscard]] bool collectablesLeft() const;

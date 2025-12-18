@@ -5,9 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-ScoreKeeper::ScoreKeeper() : m_lastDeductionTime(Clock::now()), m_lastPickupTime(Clock::now()) {
-    loadHighScores();
-}
+ScoreKeeper::ScoreKeeper() : m_lastDeductionTime(Clock::now()), m_lastPickupTime(Clock::now()) { loadHighScores(); }
 
 ScoreKeeper& ScoreKeeper::getInstance() {
     static ScoreKeeper instance;
@@ -92,6 +90,7 @@ void ScoreKeeper::removeCollectable() {
 }
 
 void ScoreKeeper::removeLife() { m_lives--; }
+
 void ScoreKeeper::reset() {
     recordCurrentScore();
     m_collectablesLeft = 0;

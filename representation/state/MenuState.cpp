@@ -24,8 +24,7 @@ MenuState::MenuState() {
     m_playText.setCharacterSize(30);
     m_playText.setFillColor(sf::Color::White);
     const sf::FloatRect playBounds = m_playText.getLocalBounds();
-    m_playText.setOrigin(playBounds.left + playBounds.width / 2.0f,
-                         playBounds.top + playBounds.height / 2.0f);
+    m_playText.setOrigin(playBounds.left + playBounds.width / 2.0f, playBounds.top + playBounds.height / 2.0f);
     m_playText.setPosition(windowSize.x / 2.0f, windowSize.y * 0.85f);
     m_refreshClock.restart(); // Start the 10-second timer
 }
@@ -59,8 +58,7 @@ void MenuState::setupHighScores() {
         // Format Date and Score
         std::tm* tm_ptr = std::localtime(&scores[i].timestamp);
         std::stringstream ss;
-        ss << i + 1 << ". " << std::setw(6) << scores[i].score
-           << "  [" << std::put_time(tm_ptr, "%Y-%m-%d") << "]";
+        ss << i + 1 << ". " << std::setw(6) << scores[i].score << "  [" << std::put_time(tm_ptr, "%Y-%m-%d") << "]";
 
         text.setString(ss.str());
 
