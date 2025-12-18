@@ -249,7 +249,7 @@ void World::updateGhosts(const Direction::Cardinal d) {
 }
 
 void World::startPanic() const {
-    for (const auto& ghost : m_ghosts ) {
+    for (const auto& ghost : m_ghosts) {
         ghost->setMode(GhostMode::PANICKING);
     }
 }
