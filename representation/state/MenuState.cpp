@@ -3,6 +3,7 @@
 #include "../AssetManager.h"
 #include "../Camera.h"
 #include "LevelState.h"
+#include <iomanip>
 
 MenuState::MenuState() {
     const auto& window = Camera::getInstance().getWindow();
