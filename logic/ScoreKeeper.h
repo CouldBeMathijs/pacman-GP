@@ -1,3 +1,5 @@
+#include <iomanip>
+
 #ifndef PACMAN_SCOREKEEPER_H
 #define PACMAN_SCOREKEEPER_H
 #include "patterns/IObserver.h"
