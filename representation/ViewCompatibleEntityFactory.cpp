@@ -24,6 +24,9 @@ std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createWall(const Rect
     return createEntityWithView<Wall, WallView>(p);
 }
 
+ViewCompatibleEntityFactory::ViewCompatibleEntityFactory(std::vector<std::shared_ptr<IObserver>>& viewStorage)
+    : m_viewStorage(viewStorage) {}
+
 std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createSpawnWall(const Rectangle& hb) {
     return createEntityWithView<SpawnWall, SpawnWallView>(hb);
 }

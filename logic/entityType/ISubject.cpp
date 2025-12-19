@@ -6,10 +6,17 @@ ISubject::~ISubject() = default;
 
 void ISubject::update(Direction::Cardinal) { notify(); }
 
-void ISubject::addObserver(std::shared_ptr<IObserver> n) { m_observers.push_back(std::move(n)); }
+void ISubject::addObserver(std::weak_ptr<IObserver> n) { m_observers.push_back(std::move(n)); }
 
-void ISubject::notify() const {
-    for (const auto& o : m_observers) {
-        o->update();
+void ISubject::notify() {
+    for (auto it = m_observers.begin(); it != m_observers.end(); ) {
+        // Try to promote weak_ptr to shared_ptr
+        if (const auto observer = it->lock()) {
+            observer->update();
+            ++it;
+        } else {
+            // Optimization: If the observer is gone, remove it from the list
+            it = m_observers.erase(it);
+        }
     }
 }

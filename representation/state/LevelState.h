@@ -14,6 +14,7 @@ class LevelState final : public IState {
 private:
     World m_world;
     std::shared_ptr<ViewCompatibleEntityFactory> m_factory;
+    std::vector<std::shared_ptr<IObserver>> m_viewVector;
 
 public:
     LevelState();

@@ -7,7 +7,8 @@
 #include "VictoryState.h"
 #include "mapLoading/WorldCreator.h"
 
-LevelState::LevelState() : m_factory(std::make_shared<ViewCompatibleEntityFactory>()) {
+LevelState::LevelState() : m_viewVector({}) {
+    m_factory = std::make_shared<ViewCompatibleEntityFactory>(m_viewVector);
     const WorldAsciiGridParser parser;
     m_world = WorldCreator::createWorld("./assets/worldmap", parser, m_factory);
 }

@@ -9,14 +9,14 @@
 class IEntityVisitor;
 
 class ISubject {
-    std::vector<std::shared_ptr<IObserver>> m_observers;
+    std::vector<std::weak_ptr<IObserver>> m_observers;
 
 public:
     virtual void accept(IEntityVisitor& visitor) = 0;
-    virtual void notify() const;
+    virtual void notify();
     virtual void update(Direction::Cardinal);
     virtual ~ISubject();
-    void addObserver(std::shared_ptr<IObserver>);
+    void addObserver(std::weak_ptr<IObserver>);
 };
 
 #endif // PACMAN_SUBJECT_H

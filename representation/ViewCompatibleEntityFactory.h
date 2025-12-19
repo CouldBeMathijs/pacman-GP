@@ -10,6 +10,7 @@
  */
 class ViewCompatibleEntityFactory final : public IEntityFactory {
 public:
+    explicit ViewCompatibleEntityFactory(std::vector<std::shared_ptr<IObserver>>& viewStorage);
     std::shared_ptr<IEntityModel> createBlueGhost(const Rectangle& p) override;
     std::shared_ptr<IEntityModel> createCoin(const Rectangle& p) override;
     std::shared_ptr<IEntityModel> createFruit(const Rectangle& p) override;
@@ -21,6 +22,8 @@ public:
     std::shared_ptr<IEntityModel> createWall(const Rectangle& p) override;
 
 private:
+    std::vector<std::shared_ptr<IObserver>>& m_viewStorage;
+
     /**
      * @brief Template helper function to create an Entity Model and attach its View Observer.
      * @tparam Model The specific EntityModel subclass (e.g., Pacman, RedGhost).
@@ -32,8 +35,12 @@ private:
     std::shared_ptr<IEntityModel> createEntityWithView(Rectangle p) {
         auto model = std::make_shared<Model>(p);
         auto view = std::make_shared<View>(model);
+
         model->addObserver(view);
+        m_viewStorage.push_back(view);
+
         return model;
     }
 };
+
 #endif
