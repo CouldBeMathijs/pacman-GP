@@ -2,6 +2,7 @@
 #define PACMAN_LOGIC_CONSTANTS_H
 
 #include <cmath>
+#include <algorithm>
 
 namespace LogicConstants {
 constexpr unsigned int AMOUNT_OF_TILES_WIDTH = 20;
