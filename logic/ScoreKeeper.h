@@ -1,5 +1,5 @@
-#include <vector>
 #include <iomanip>
+#include <vector>
 
 #ifndef PACMAN_SCOREKEEPER_H
 #define PACMAN_SCOREKEEPER_H
