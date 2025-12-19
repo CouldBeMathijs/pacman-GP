@@ -1,3 +1,4 @@
+#include <vector>
 #include <iomanip>
 
 #ifndef PACMAN_SCOREKEEPER_H
