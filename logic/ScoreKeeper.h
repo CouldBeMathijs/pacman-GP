@@ -1,12 +1,10 @@
 #ifndef PACMAN_SCOREKEEPER_H
 #define PACMAN_SCOREKEEPER_H
 
-
-#include <iomanip>
-#include <vector>
 #include "patterns/IObserver.h"
 #include <chrono>
-
+#include <iomanip>
+#include <vector>
 
 struct HighScoreEntry {
     unsigned int score;

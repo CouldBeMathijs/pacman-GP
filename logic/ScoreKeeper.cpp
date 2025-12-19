@@ -1,11 +1,11 @@
 #include "ScoreKeeper.h"
 
+#include <algorithm>
 #include <atomic>
 #include <cmath>
 #include <fstream>
-#include <iostream>
-#include <algorithm>
 #include <functional>
+#include <iostream>
 
 ScoreKeeper::ScoreKeeper() : m_lastDeductionTime(Clock::now()), m_lastPickupTime(Clock::now()) { loadHighScores(); }
 
