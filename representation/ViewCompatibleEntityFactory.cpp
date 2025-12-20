@@ -17,6 +17,7 @@ std::shared_ptr<IEntityModel> ViewCompatibleEntityFactory::createPacman(const Re
     auto pacman = createEntityWithView<Pacman, PacmanView>(p);
     const auto scoreView = std::make_shared<ScoreView>();
     pacman->addObserver(scoreView);
+    m_viewStorage.push_back(scoreView);
     return pacman;
 }
 

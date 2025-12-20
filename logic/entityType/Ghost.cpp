@@ -1,6 +1,7 @@
 #include "Ghost.h"
 
 #include "../patterns/Visitor.h"
+#include "Random.h"
 #include "ScoreKeeper.h"
 #include "Stopwatch.h"
 
@@ -99,6 +100,7 @@ bool IGhost::allowedToTurn() const { return m_amount_of_seconds_until_able_to_tu
 void IGhost::goToSpawn() {
     m_direction = Direction::Cardinal::EAST;
     m_canMoveThroughSpawnDoor = true;
+    m_stateStack.push({GhostMode::WAITING, Random::getInstance().generateDouble(0.5,5)});
     IDirectionalEntityModel::goToSpawn();
 }
 
