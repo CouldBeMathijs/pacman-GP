@@ -1,5 +1,5 @@
 /**
-* @file WallView.h
+ * @file WallView.h
  * @brief Visual representation for the standard maze walls.
  */
 

@@ -1,5 +1,5 @@
 /**
-* @file PausedState.h
+ * @file PausedState.h
  * @brief State handler for the mid-game pause menu.
  */
 

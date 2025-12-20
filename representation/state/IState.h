@@ -13,8 +13,8 @@
 /**
  * @class IState
  * @brief Interface for all game states (Menu, Play, Pause, etc.).
- * * This class provides the blueprint for how states update their logic, 
- * handle user input, and communicate state transitions back to a 
+ * * This class provides the blueprint for how states update their logic,
+ * handle user input, and communicate state transitions back to a
  * State Manager.
  */
 class IState {
@@ -57,12 +57,12 @@ protected:
     /** @brief Protected constructor to prevent direct instantiation of the interface. */
     IState() = default;
 
-    /** * @brief Signal to the State Manager to pop current states. 
+    /** * @brief Signal to the State Manager to pop current states.
      * * Example: Setting to 1 will close the current menu.
      */
     unsigned int m_requestedPops = 0;
 
-    /** * @brief Stores the next state to be added to the game loop. 
+    /** * @brief Stores the next state to be added to the game loop.
      * * Example: In MenuState, this would be assigned a pointer to PlayState.
      */
     std::unique_ptr<IState> m_requestedState = nullptr;

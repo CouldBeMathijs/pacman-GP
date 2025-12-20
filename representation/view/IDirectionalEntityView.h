@@ -1,5 +1,5 @@
 /**
-* @file IDirectionalEntityView.h
+ * @file IDirectionalEntityView.h
  * @brief Base class for entities whose appearance depends on their movement direction.
  */
 

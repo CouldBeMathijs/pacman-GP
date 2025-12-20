@@ -1,5 +1,5 @@
 /**
-* @file ScoreView.h
+ * @file ScoreView.h
  * @brief UI component for rendering the player's score and life count.
  */
 

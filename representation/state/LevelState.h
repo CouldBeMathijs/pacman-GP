@@ -1,5 +1,5 @@
 /**
-* @file LevelState.h
+ * @file LevelState.h
  * @brief Main gameplay state handler, managing the world simulation and its visual observers.
  */
 

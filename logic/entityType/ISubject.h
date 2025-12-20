@@ -13,6 +13,7 @@ class IEntityVisitor;
  */
 class ISubject {
     std::vector<std::weak_ptr<IObserver>> m_observers;
+
 protected:
     ISubject() = default;
 
