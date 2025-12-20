@@ -1,63 +1,91 @@
+/**
+ * @file Random.h
+ * @brief Singleton utility for consistent pseudorandom number generation.
+ */
+
 #ifndef PACMAN_RANDOM_H
 #define PACMAN_RANDOM_H
 
 #include <iostream>
 #include <random>
 #include <set>
+#include <vector>
+#include <stdexcept>
+#include <iterator>
 
 /**
- * @brief Singleton class which provides all randomness
+ * @class Random
+ * @brief A Singleton class providing high-quality random numbers and collection sampling.
+ * * This class wraps the C++ Standard Library's Mersenne Twister engine to ensure
+ * that the random state is maintained throughout the application's lifecycle.
  */
 class Random {
-    std::mt19937 m_generator;
+    std::mt19937 m_generator; /**< The Mersenne Twister engine. */
+
+    /** @brief Private constructor to enforce Singleton pattern. */
     Random();
 
 public:
+    // Delete copy constructor and assignment operator to prevent duplicates.
     Random(const Random&) = delete;
     Random& operator=(const Random&) = delete;
 
+    /**
+     * @brief Accesses the global Random instance.
+     * @return A reference to the static Random instance.
+     */
     static Random& getInstance();
 
+    /**
+     * @brief Generates a random integer within a closed range [min, max].
+     * @param min The lower bound (inclusive).
+     * @param max The upper bound (inclusive).
+     * @return A random integer between min and max.
+     */
     int generateInt(int min, int max);
 
+    /**
+     * @brief Generates a random double within a range [min, max).
+     * @param min The lower bound (inclusive).
+     * @param max The upper bound (exclusive).
+     * @return A random double-precision value.
+     */
     double generateDouble(double min, double max);
 
+    /**
+     * @brief Selects a random element from a std::vector.
+     * @tparam T The type of elements in the vector.
+     * @param vec The vector to sample from.
+     * @return A const reference to a randomly selected element.
+     * @throws std::logic_error if the vector is empty.
+     */
     template <typename T>
     const T& getRandomElement(const std::vector<T>& vec) {
-        // 1. Check if the vector is empty to prevent accessing an invalid index.
         if (vec.empty()) {
-            // You can throw an exception or return a default value,
-            // but throwing is generally safer for a utility function.
             throw std::logic_error("Cannot get a random element from an empty vector.");
         }
-
-        // 2. Determine the range for the index.
-        // The indices are from 0 up to (size - 1).
-        constexpr int minIndex = 0;
-        const int maxIndex = static_cast<int>(vec.size() - 1);
-
-        // 3. Use the existing integer generator to pick a random index.
-        int randomIndex = generateInt(minIndex, maxIndex);
-
-        // 4. Return the element at the random index.
+        
+        int randomIndex = generateInt(0, static_cast<int>(vec.size() - 1));
         return vec[randomIndex];
     }
 
+    /**
+     * @brief Selects a random element from a std::set.
+     * @note This operation is O(N) due to iterator advancement.
+     * @tparam T The type of elements in the set.
+     * @param s The set to sample from.
+     * @return A const reference to a randomly selected element.
+     * @throws std::logic_error if the set is empty.
+     */
     template <typename T>
     const T& getRandomElement(const std::set<T>& s) {
-        // 1. Check if the set is empty
         if (s.empty()) {
             throw std::logic_error("Cannot get a random element from an empty set.");
         }
 
-        // 2. Determine the range (0 to size - 1)
         int randomIndex = generateInt(0, static_cast<int>(s.size() - 1));
-
-        // 3. Use an iterator and move it to the random position
         auto it = s.begin();
         std::advance(it, randomIndex);
-
-        // 4. Return the dereferenced iterator
         return *it;
     }
 };

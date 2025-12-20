@@ -8,6 +8,10 @@
 class Wall final : public IEntityModel {
 public:
     explicit Wall(const Rectangle& pos);
+    /**
+     * @brief Calls the correct double dispatch
+     * @param visitor Singularly dispatched visitor object
+     */
     void accept(IEntityVisitor& visitor) override;
 };
 

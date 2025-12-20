@@ -8,7 +8,7 @@ PausedState::PausedState() {
     const sf::Vector2u windowSize = window.getSize();
 
     m_pacmanText.setFont(Assets::getDefaultFont());
-    m_pacmanText.setString("Pacman");
+    m_pacmanText.setString("Paused");
     m_pacmanText.setCharacterSize(80);
     m_pacmanText.setFillColor(sf::Color::Yellow);
 
@@ -19,7 +19,7 @@ PausedState::PausedState() {
     m_pacmanText.setPosition(windowSize.x / 2.0f, windowSize.y / 4.0f);
 
     m_playText.setFont(Assets::getDefaultFont());
-    m_playText.setString("Game paused\npress Space to continue or Esc to exit");
+    m_playText.setString("Press Space to continue or Esc to exit");
     m_playText.setCharacterSize(30);
     m_playText.setFillColor(sf::Color::White);
 

@@ -1,7 +1,7 @@
 #include "Game.h"
 
+#include "../logic/entityType/ISubject.h"
 #include "Camera.h"
-#include "ISubject.h"
 #include "Stopwatch.h"
 
 #include <SFML/Graphics.hpp>

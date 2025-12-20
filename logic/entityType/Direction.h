@@ -61,22 +61,22 @@ constexpr bool isOpposite(const Cardinal d1, const Cardinal d2) {
     switch (d1) {
     case Cardinal::EAST:
         return d2 == Cardinal::WEST;
-
     case Cardinal::WEST:
         return d2 == Cardinal::EAST;
-
     case Cardinal::NORTH:
         return d2 == Cardinal::SOUTH;
-
     case Cardinal::SOUTH:
         return d2 == Cardinal::NORTH;
-
     case Cardinal::NONE:
         return false;
     }
     return false;
 }
 
+/**
+ * @param d A direction
+ * @return The opposite of d
+ */
 constexpr Cardinal getOpposite(const Cardinal d) {
     switch (d) {
     case Cardinal::EAST:

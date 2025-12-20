@@ -40,28 +40,28 @@ bool IEntityModel::isBlocked(const std::vector<std::shared_ptr<IEntityModel>>& t
 }
 
 Rectangle IEntityModel::calculateFutureHitBox(const Rectangle& current_hb, const Direction::Cardinal d,
-                                              const double speed) {
+                                              const double distance) {
     Rectangle future_hb = current_hb;
 
     switch (d) {
     case Direction::Cardinal::SOUTH:
         // Move the rectangle down (positive Y)
-        future_hb.moveBy(0.0, speed);
+        future_hb.moveBy(0.0, distance);
         break;
 
     case Direction::Cardinal::WEST:
         // Move the rectangle left (negative X)
-        future_hb.moveBy(-speed, 0.0);
+        future_hb.moveBy(-distance, 0.0);
         break;
 
     case Direction::Cardinal::NORTH:
         // Move the rectangle up (negative Y)
-        future_hb.moveBy(0.0, -speed);
+        future_hb.moveBy(0.0, -distance);
         break;
 
     case Direction::Cardinal::EAST:
         // Move the rectangle right (positive X)
-        future_hb.moveBy(speed, 0.0);
+        future_hb.moveBy(distance, 0.0);
         break;
         // Assuming other directions (like NONE) result in no movement.
     default:

@@ -1,8 +1,6 @@
-#include "../ISubject.h"
+#include "ISubject.h"
 
 #include <utility>
-
-ISubject::~ISubject() = default;
 
 void ISubject::update(Direction::Cardinal) { notify(); }
 
