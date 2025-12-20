@@ -1,5 +1,5 @@
 /**
-* @file PacmanView.h
+ * @file PacmanView.h
  * @brief Visual representation and animation logic for the Pac-Man character.
  */
 

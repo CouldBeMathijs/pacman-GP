@@ -9,17 +9,17 @@
 #include "patterns/IObserver.h"
 #include <chrono>
 #include <iomanip>
-#include <vector>
-#include <string>
 #include <sstream>
+#include <string>
+#include <vector>
 
 /**
  * @struct HighScoreEntry
  * @brief Data structure representing a saved score and the date it was achieved.
  */
 struct HighScoreEntry {
-    unsigned int score;     /**< The final score value. */
-    std::time_t timestamp;  /**< The time the score was recorded. */
+    unsigned int score;    /**< The final score value. */
+    std::time_t timestamp; /**< The time the score was recorded. */
 
     /** @brief Used for sorting high scores in descending order. */
     bool operator>(const HighScoreEntry& other) const { return score > other.score; }
@@ -48,10 +48,10 @@ class ScoreKeeper final : public IObserver {
     using TimePoint = Clock::time_point;
 
     // --- Member Variables ---
-    TimePoint m_lastDeductionTime;     /**< Last time the score decay was applied. */
-    TimePoint m_lastPickupTime;        /**< Last time a collectable was picked up (for multipliers). */
+    TimePoint m_lastDeductionTime; /**< Last time the score decay was applied. */
+    TimePoint m_lastPickupTime;    /**< Last time a collectable was picked up (for multipliers). */
     const std::string m_filePath = "./assets/.highscores"; /**< Storage location for high scores. */
-    
+
     std::vector<HighScoreEntry> m_highScores;
     unsigned int m_collectablesLeft = 0;
     unsigned int m_currentScore = 0;
@@ -59,9 +59,9 @@ class ScoreKeeper final : public IObserver {
     unsigned int m_lives = 3;
 
     // --- Constants ---
-    static constexpr double MAX_MULTIPLIER_TIME_S = 3.0;        /**< Window in seconds to maintain a combo. */
+    static constexpr double MAX_MULTIPLIER_TIME_S = 3.0;         /**< Window in seconds to maintain a combo. */
     static constexpr double TIME_BETWEEN_SCORE_DECREASE_S = 0.5; /**< Interval for periodic score deduction. */
-    static constexpr int MAX_HIGH_SCORES = 5;                   /**< Number of entries to keep in the leaderboard. */
+    static constexpr int MAX_HIGH_SCORES = 5;                    /**< Number of entries to keep in the leaderboard. */
 
     /** @brief Private constructor for Singleton pattern. */
     ScoreKeeper();
@@ -98,7 +98,7 @@ public:
 
     /**
      * @brief Adds points adjusted by how recently the last item was picked up.
-     * @param baseScore The raw point value of the item. 
+     * @param baseScore The raw point value of the item.
      */
     void addPointsWithMultiplier(unsigned int baseScore);
 

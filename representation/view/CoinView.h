@@ -1,5 +1,5 @@
 /**
-* @file CoinView.h
+ * @file CoinView.h
  * @brief Visual representation for collectable coins (pellets).
  */
 

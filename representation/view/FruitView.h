@@ -1,5 +1,5 @@
 /**
-* @file FruitView.h
+ * @file FruitView.h
  * @brief Visual representation for bonus fruit entities.
  */
 

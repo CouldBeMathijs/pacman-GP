@@ -10,25 +10,25 @@
 #include "entityType/ISubject.h"
 #include "entityType/Pacman.h"
 
+#include <memory>
 #include <set>
 #include <vector>
-#include <memory>
 
 /**
  * @enum WorldState
  * @brief High-level states representing the current phase of the game session.
  */
-enum class WorldState { 
-    RUNNING,   /**< Normal gameplay is active. */
-    VICTORY,   /**< All collectables have been gathered. */
-    GAME_OVER  /**< Pac-Man has lost all lives. */
+enum class WorldState {
+    RUNNING,  /**< Normal gameplay is active. */
+    VICTORY,  /**< All collectables have been gathered. */
+    GAME_OVER /**< Pac-Man has lost all lives. */
 };
 
 /**
  * @class World
  * @brief The container and controller for all active game entities.
- * * This class facilitates interaction between Pac-Man, the Ghosts, and the 
- * environment (walls, pellets). it provides spatial logic for AI navigation 
+ * * This class facilitates interaction between Pac-Man, the Ghosts, and the
+ * environment (walls, pellets). it provides spatial logic for AI navigation
  * and collision responses.
  */
 class World {
@@ -40,10 +40,10 @@ class World {
 protected:
     /** @brief Checks if Pac-Man's hitbox intersects with items and triggers scoring. */
     void handleCollectables(const Rectangle& current_hb);
-    
+
     /** @brief Moves Pac-Man in the specified direction and checks for wall collisions. */
     void updatePacman(Direction::Cardinal d);
-    
+
     /** @brief Triggers the "Frightened" state for all ghosts. */
     void startPanic() const;
 
@@ -52,7 +52,7 @@ public:
 
     /**
      * @brief AI Pathfinding logic based on tile distance.
-     * * Chooses the next direction for a ghost by evaluating which available neighbor 
+     * * Chooses the next direction for a ghost by evaluating which available neighbor
      * tile is geographically closest to (or furthest from) the target position.
      * @param wantedManhattan The target coordinate the ghost wants to reach.
      * @param ghost The ghost making the decision.
@@ -60,7 +60,7 @@ public:
      * @return The optimal Cardinal direction to move next.
      */
     Direction::Cardinal manhattanDecision(const Position& wantedManhattan, const std::shared_ptr<IGhost>& ghost,
-                                           bool maximizeDistance);
+                                          bool maximizeDistance);
 
     [[nodiscard]] WorldState getState() const;
     [[nodiscard]] const std::shared_ptr<Pacman>& getPacman() const;

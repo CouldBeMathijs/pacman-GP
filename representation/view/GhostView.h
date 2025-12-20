@@ -1,5 +1,5 @@
 /**
-* @file GhostView.h
+ * @file GhostView.h
  * @brief Visual representations for the different ghost entities.
  */
 

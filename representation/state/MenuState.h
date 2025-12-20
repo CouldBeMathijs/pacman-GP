@@ -1,5 +1,5 @@
 /**
-* @file MenuState.h
+ * @file MenuState.h
  * @brief State handler for the initial game menu and leaderboard display.
  */
 
@@ -19,9 +19,9 @@
  * - Escape: Requests a pop to exit the application.
  */
 class MenuState final : public IState {
-    sf::Clock m_refreshClock;           /**< Used for timing animations or UI polling. */
-    sf::Text m_pacmanText;              /**< The main game title/logo text. */
-    sf::Text m_playText;                /**< The "Press any key to start" prompt. */
+    sf::Clock m_refreshClock;               /**< Used for timing animations or UI polling. */
+    sf::Text m_pacmanText;                  /**< The main game title/logo text. */
+    sf::Text m_playText;                    /**< The "Press any key to start" prompt. */
     std::vector<sf::Text> m_highScoreTexts; /**< Visual list of top scores formatted for display. */
 
 public:

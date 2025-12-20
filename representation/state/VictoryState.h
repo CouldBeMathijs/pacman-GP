@@ -1,5 +1,5 @@
 /**
-* @file VictoryState.h
+ * @file VictoryState.h
  * @brief State handler for the level completion / victory screen.
  */
 
@@ -18,10 +18,10 @@
  */
 class VictoryState final : public IState {
 private:
-    sf::Text m_victoryText;     /**< Header text (e.g., "LEVEL COMPLETE!"). */
-    sf::Text m_pressAnyKeyText; /**< Instruction for the user to continue. */
-    unsigned int m_level;       /**< The level index that was just finished. */
-    unsigned int m_currentScore;/**< The player's current accumulated score. */
+    sf::Text m_victoryText;      /**< Header text (e.g., "LEVEL COMPLETE!"). */
+    sf::Text m_pressAnyKeyText;  /**< Instruction for the user to continue. */
+    unsigned int m_level;        /**< The level index that was just finished. */
+    unsigned int m_currentScore; /**< The player's current accumulated score. */
 
 public:
     /**

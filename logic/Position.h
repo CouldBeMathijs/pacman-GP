@@ -18,7 +18,7 @@ struct Position {
     double y; /**< The vertical coordinate. */
 
     // --- Constructors ---
-    
+
     /**
      * @brief Constructs a Position with specific coordinates.
      * @param x The initial x-coordinate.
@@ -27,7 +27,7 @@ struct Position {
     Position(const double x, const double y) : x(x), y(y) {}
 
     // --- Compound Assignment Operators ---
-    
+
     Position& operator+=(const Position& other);
     Position& operator-=(const Position& other);
 
@@ -51,8 +51,8 @@ struct Position {
      * @param wanted_max The maximum corner of the target coordinate system.
      * @return A new Position mapped to the new range.
      */
-    [[nodiscard]] Position rescale(const Position& current_min, const Position& current_max, 
-                                   const Position& wanted_min, const Position& wanted_max) const;
+    [[nodiscard]] Position rescale(const Position& current_min, const Position& current_max, const Position& wanted_min,
+                                   const Position& wanted_max) const;
 
     /**
      * @brief Calculates the Manhattan (L1) distance to another position.
@@ -83,12 +83,12 @@ std::ostream& operator<<(std::ostream& os, const Position& p);
  * @brief Defines an axis-aligned bounding box (AABB) using two Positions.
  */
 struct Rectangle {
-    Position topLeft;      /**< Coordinates of the upper-left corner. */
-    Position bottomRight;  /**< Coordinates of the lower-right corner. */
+    Position topLeft;     /**< Coordinates of the upper-left corner. */
+    Position bottomRight; /**< Coordinates of the lower-right corner. */
 
     /** @brief Constructs a Rectangle from specific corners. */
     Rectangle(const Position& top_left, const Position& bottom_right);
-    
+
     /** @brief Constructs a Rectangle at (0,0) with zero size. */
     Rectangle();
 
@@ -97,7 +97,7 @@ struct Rectangle {
 
     /** @return A new Rectangle offset by the given Position. */
     [[nodiscard]] Rectangle movedBy(const Position& other) const;
-    
+
     /** @return A new Rectangle offset by deltaX and deltaY. */
     [[nodiscard]] Rectangle movedBy(double deltaX, double deltaY) const;
 

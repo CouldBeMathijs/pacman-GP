@@ -1,5 +1,5 @@
 /**
-* @file Stopwatch.h
+ * @file Stopwatch.h
  * @brief Time management and frame rate regulation utility.
  */
 

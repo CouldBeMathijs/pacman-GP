@@ -6,8 +6,8 @@
 #ifndef PACMAN_ENTITY_VIEW_H
 #define PACMAN_ENTITY_VIEW_H
 
-#include "../../logic/patterns/IObserver.h"
 #include "../../logic/entityType/IEntityModel.h"
+#include "../../logic/patterns/IObserver.h"
 #include "../AssetManager.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -20,14 +20,14 @@
  * which logical entity it is responsible for drawing.
  */
 class IEntityView : public IObserver {
-    const double m_timePerFrame = 0.12; /**< Duration of each animation frame in seconds. */
-    double m_timeAccumulator = 0.0;     /**< Accumulated time to track when to switch frames. */
+    const double m_timePerFrame = 0.12;            /**< Duration of each animation frame in seconds. */
+    double m_timeAccumulator = 0.0;                /**< Accumulated time to track when to switch frames. */
     std::shared_ptr<IEntityModel> m_coupledEntity; /**< The logic model being observed. */
 
 protected:
     Assets::TextureLocation m_currentSprite; /**< The current texture/sprite ID from the AssetManager. */
     bool m_animationCycleMovingUp = true;    /**< Direction of animation (e.g., 0->1->2 then 2->1->0). */
-    
+
     /**
      * @brief Protected constructor for derived view classes.
      * @param texture The initial texture location.

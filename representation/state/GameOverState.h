@@ -1,5 +1,5 @@
 /**
-* @file GameOverState.h
+ * @file GameOverState.h
  * @brief State handler for the Game Over screen.
  */
 

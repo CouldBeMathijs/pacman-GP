@@ -7,11 +7,11 @@
 #define PACMAN_RANDOM_H
 
 #include <iostream>
+#include <iterator>
 #include <random>
 #include <set>
-#include <vector>
 #include <stdexcept>
-#include <iterator>
+#include <vector>
 
 /**
  * @class Random
@@ -64,7 +64,7 @@ public:
         if (vec.empty()) {
             throw std::logic_error("Cannot get a random element from an empty vector.");
         }
-        
+
         int randomIndex = generateInt(0, static_cast<int>(vec.size() - 1));
         return vec[randomIndex];
     }

@@ -1,5 +1,5 @@
 /**
-* @file SpawnWallView.h
+ * @file SpawnWallView.h
  * @brief Visual representation for the ghost spawn area boundaries.
  */
 
