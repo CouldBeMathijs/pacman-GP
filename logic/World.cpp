@@ -267,12 +267,6 @@ void World::updateGhosts(const Direction::Cardinal d) {
     // std::cout << std::endl;
 }
 
-void World::startPanic() const {
-    for (const auto& ghost : m_ghosts) {
-        ghost->setMode(GhostMode::PANICKING);
-    }
-}
-
 void World::updatePacman(Direction::Cardinal d) {
     m_pacman->snapToGrid();
     constexpr double EPSILON = 0.01;
@@ -350,7 +344,7 @@ void World::updatePacman(Direction::Cardinal d) {
     m_pacman->update(d);
 }
 
-void World::startPanic() {
+void World::startPanic() const {
     for (const auto& ghost : m_ghosts) {
         ghost->setMode(GhostMode::PANICKING);
     }
