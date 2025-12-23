@@ -81,7 +81,6 @@ void World::update(const Direction::Cardinal d) {
             return;
         }
         m_pacman->die();
-        m_pacman->goToSpawn();
         m_pacman->resetGhostTouch();
         for (const auto& ghost : m_ghosts) {
             ghost->goToSpawn();
@@ -263,13 +262,15 @@ void World::updateGhosts(const Direction::Cardinal d) {
             ghost->goToSpawn();
             break;
         }
-        // ghost->displayInfo();
     }
-    // std::cout << std::endl;
 }
 
 void World::updatePacman(Direction::Cardinal d) {
     m_pacman->snapToGrid();
+    if (m_pacman->getDeathTimer() > 0) {
+        m_pacman->update(d);
+        return;
+    }
     constexpr double EPSILON = 0.01;
     const Rectangle current_hb = m_pacman->getHitBox();
     const double current_speed =

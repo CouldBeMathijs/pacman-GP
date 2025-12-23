@@ -15,6 +15,7 @@
  * of travel and manages the timing of the mouth-opening animation.
  */
 class PacmanView final : public IDirectionalEntityView {
+    bool m_dying = false;
 public:
     /**
      * @brief Constructs a PacmanView and binds it to the player model.

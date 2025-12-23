@@ -29,6 +29,9 @@ void Pacman::resetGhostTouch() { m_ghostTouch = false; }
 
 double Pacman::getDeathTimer() const { return m_deathTimer; }
 
-void Pacman::die() { m_deathTimer = LogicConstants::ANIMATION_SPEED * 10; }
+void Pacman::die() {
+    setDirection(Direction::Cardinal::NONE);
+    m_deathTimer = LogicConstants::ANIMATION_SPEED * 10;
+}
 
 bool Pacman::hasTouchedGhost() const { return m_ghostTouch; }
