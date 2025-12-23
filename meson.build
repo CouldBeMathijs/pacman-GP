@@ -1,14 +1,12 @@
 project('pacman', 'cpp',
-        version : '0.1',
-        default_options : [
-            'cpp_std=c++23',
-            'warning_level=3',
-            'werror=false'
-        ]
-)
+  version : '0.1',
+  default_options : [
+    # 'warning_level=3',
+    'cpp_std=c++23',
+    'werror=false'
+    ]
+  )
 
-# Add pedantic warning via project arguments
-add_project_arguments('-Wpedantic', language : 'cpp')
 
 # We try to find SFML on the system first. 
 # If not found, it triggers the 'sfml' subproject defined in subprojects/sfml.wrap
@@ -22,33 +20,33 @@ subdir('logic')
 
 # Main executable sources
 pacman_sources = files(
-    'main.cpp',
-    'representation/AssetManager.cpp',
-    'representation/Camera.cpp',
-    'representation/Game.cpp',
-    'representation/StateManager.cpp',
-    'representation/ViewCompatibleEntityFactory.cpp',
-    'representation/state/GameOverState.cpp',
-    'representation/state/LevelState.cpp',
-    'representation/state/MenuState.cpp',
-    'representation/state/PausedState.cpp',
-    'representation/state/VictoryState.cpp',
-    'representation/view/CoinView.cpp',
-    'representation/view/FruitView.cpp',
-    'representation/view/GhostView.cpp',
-    'representation/view/IDirectionalEntityView.cpp',
-    'representation/view/IEntityView.cpp',
-    'representation/view/PacmanView.cpp',
-    'representation/view/ScoreView.cpp',
-    'representation/view/SpawnWallView.cpp',
-    'representation/view/WallView.cpp'
-)
+  'main.cpp',
+  'representation/AssetManager.cpp',
+  'representation/Camera.cpp',
+  'representation/Game.cpp',
+  'representation/StateManager.cpp',
+  'representation/ViewCompatibleEntityFactory.cpp',
+  'representation/state/GameOverState.cpp',
+  'representation/state/LevelState.cpp',
+  'representation/state/MenuState.cpp',
+  'representation/state/PausedState.cpp',
+  'representation/state/VictoryState.cpp',
+  'representation/view/CoinView.cpp',
+  'representation/view/FruitView.cpp',
+  'representation/view/GhostView.cpp',
+  'representation/view/IDirectionalEntityView.cpp',
+  'representation/view/IEntityView.cpp',
+  'representation/view/PacmanView.cpp',
+  'representation/view/ScoreView.cpp',
+  'representation/view/SpawnWallView.cpp',
+  'representation/view/WallView.cpp'
+  )
 
 # Create the executable
 executable('pacman',
-           pacman_sources,
-           include_directories : logic_inc, # From the logic subdir
-           link_with : game_logic_lib,     # From the logic subdir
-           dependencies : sfml_deps,
-           install : true
-)
+  pacman_sources,
+  include_directories : logic_inc, # From the logic subdir
+  link_with : game_logic_lib,     # From the logic subdir
+  dependencies : sfml_deps,
+  install : true
+  )
