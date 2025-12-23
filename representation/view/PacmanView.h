@@ -16,6 +16,7 @@
  */
 class PacmanView final : public IDirectionalEntityView {
     bool m_dying = false;
+
 public:
     /**
      * @brief Constructs a PacmanView and binds it to the player model.
