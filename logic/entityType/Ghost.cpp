@@ -46,12 +46,11 @@ IGhost::IGhost(const Rectangle& pos, const GhostMode start_mode, const double am
 void IGhost::accept(IEntityVisitor& visitor) { visitor.visit(*this); }
 
 void IGhost::die() {
-    goToSpawn();
-    if (m_stateStack.top().mode == GhostMode::PANICKING) {
+    if (getMode() == GhostMode::PANICKING) {
         m_stateStack.pop();
-        m_stateStack.push({GhostMode::WAITING, 5});
     }
-    ScoreKeeper::getInstance().addToScore(200);
+
+    goToSpawn();
 }
 
 GhostMode IGhost::getMode() const { return m_stateStack.top().mode; }
