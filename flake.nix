@@ -20,7 +20,16 @@
                                 valgrind = pkgs.valgrind;
 
                                 # Packages needed for development shell
-                                sfml-dev-pkgs = with pkgs; [ compiler cmake gdb sfml_2 valgrind meson ];
+                                sfml-dev-pkgs = with pkgs; [ 
+                                        compiler 
+                                        cmake 
+                                        gdb 
+                                        sfml_2 
+                                        valgrind 
+                                        meson 
+                                        pkg-config 
+                                        ninja
+                                ];
 
                                 cppGamePackage = pkgs.stdenv.mkDerivation {
                                         pname = "pacman";

@@ -49,6 +49,6 @@ executable('pacman',
            pacman_sources,
            include_directories : logic_inc, # From the logic subdir
            link_with : game_logic_lib,     # From the logic subdir
-           dependencies : sfml_dep,
+           dependencies : sfml_deps,
            install : true
 )
