@@ -9,7 +9,8 @@ PacmanView::PacmanView(std::shared_ptr<IEntityModel> e)
 
 void PacmanView::update() {
 
-    if (const double deathTimer = std::static_pointer_cast<Pacman>(getCoupledEntity())->getDeathTimer(); deathTimer > 0) {
+    if (const double deathTimer = std::static_pointer_cast<Pacman>(getCoupledEntity())->getDeathTimer();
+        deathTimer > 0) {
         if (!m_dying) {
             m_dying = !m_dying;
             m_currentSprite = Assets::getSpriteInfo(Assets::SpriteDefinition::PacmanDeathBase);
