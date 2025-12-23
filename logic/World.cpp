@@ -80,6 +80,7 @@ void World::update(const Direction::Cardinal d) {
             m_worldState = WorldState::GAME_OVER;
             return;
         }
+        m_pacman->die();
         m_pacman->goToSpawn();
         m_pacman->resetGhostTouch();
         for (const auto& ghost : m_ghosts) {

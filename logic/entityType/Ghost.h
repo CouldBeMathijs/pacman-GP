@@ -111,7 +111,6 @@ public:
 
     /**
      * @brief Performs the routine of moving the ghost back to spawn
-     * The ghost will wait 5 seconds before going back onto the map
      */
     void die();
 

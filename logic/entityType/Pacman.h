@@ -7,7 +7,7 @@
  */
 class Pacman final : public IDirectionalEntityModel {
     bool m_ghostTouch = false;
-    bool m_isDying = false;
+    double m_deathTimer = 0;
 
 public:
     explicit Pacman(const Rectangle& pos);
@@ -16,12 +16,6 @@ public:
      * @return True if pacman has touched a Ghost, else false
      */
     [[nodiscard]] bool hasTouchedGhost() const;
-
-    /**
-     * @brief Getter for isDying boolean
-     * @return True is pacman is dying, else false
-     */
-    [[nodiscard]] bool isDying() const;
 
     void goToSpawn() override;
 
@@ -36,10 +30,16 @@ public:
      */
     void ghostTouches();
 
+    void update(Direction::Cardinal) override;
+
     /**
      * @brief Makes it so hasTouchedGhost() returns false until ghostTouches() is called
      */
     void resetGhostTouch();
+
+    [[nodiscard]] double getDeathTimer() const;
+
+    void die();
 };
 
 #endif // PACMAN_PACMAN_H

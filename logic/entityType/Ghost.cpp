@@ -49,7 +49,6 @@ void IGhost::die() {
     if (getMode() == GhostMode::PANICKING) {
         m_stateStack.pop();
     }
-
     goToSpawn();
 }
 
