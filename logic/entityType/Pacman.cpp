@@ -6,7 +6,6 @@
 Pacman::Pacman(const Rectangle& pos)
     : IDirectionalEntityModel(pos, Direction::Cardinal::NONE, LogicConstants::BASE_SPEED) {}
 
-
 void Pacman::goToSpawn() {
     IDirectionalEntityModel::goToSpawn();
     setDirection(Direction::Cardinal::NONE);
@@ -30,8 +29,6 @@ void Pacman::resetGhostTouch() { m_ghostTouch = false; }
 
 double Pacman::getDeathTimer() const { return m_deathTimer; }
 
-void Pacman::die() {
-    m_deathTimer = LogicConstants::ANIMATION_SPEED * 10;
-}
+void Pacman::die() { m_deathTimer = LogicConstants::ANIMATION_SPEED * 10; }
 
 bool Pacman::hasTouchedGhost() const { return m_ghostTouch; }

@@ -21,7 +21,7 @@
  * which logical entity it is responsible for drawing.
  */
 class IEntityView : public IObserver {
-    const double m_timePerFrame = LogicConstants::ANIMATION_SPEED;            /**< Duration of each animation frame in seconds. */
+    const double m_timePerFrame = LogicConstants::ANIMATION_SPEED; /**< Duration of each animation frame in seconds. */
     double m_timeAccumulator = 0.0;                /**< Accumulated time to track when to switch frames. */
     std::shared_ptr<IEntityModel> m_coupledEntity; /**< The logic model being observed. */
 
