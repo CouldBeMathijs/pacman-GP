@@ -1,35 +1,36 @@
 # Pacman Gevorderd Programmeren
 
-_Mathijs Pittoors - 20241112_
+**Mathijs Pittoors - 20241112**
 
 ## Core Game Requirements
 
-- Startup screen + scoreboard [x] _See MenuState.h_
-- Maze & collision correctness [x]
-- Smooth continuous movement [x]
-- Ghost AI (4 modes, Manhattan distance, direction locking) [x] _See IGhost.h and World.cpp_
-- Coin/fruit score modifiers [x] _See ScoreKeeper.cpp_
-- Fear mode + ghost reversal [x] _See IGhost.h and World.cpp_
-- Level clearing + scaling difficulty [x] _See ScoreKeeper.cpp, LevelState.cpp and World.cpp_
-- Life system & game over [x] _See ScoreKeeper.cpp, LevelState.cpp and World.cpp_
+- [x] Startup screen + scoreboard _See MenuState.h_
+- [x] Maze & collision correctness [x]
+- [x] Smooth continuous movement [x]
+- [x] Ghost AI (4 modes, Manhattan distance, direction locking) _See IGhost.h and World.cpp_
+- [x] Coin/fruit score modifiers _See ScoreKeeper.cpp_
+- [x] Fear mode + ghost reversal _See IGhost.h and World.cpp_
+- [x] Level clearing + scaling difficulty _See ScoreKeeper.cpp, LevelState.cpp and World.cpp_
+- [x] Life system & game over _See ScoreKeeper.cpp, LevelState.cpp and World.cpp_
 
 ## Soft. Design & Code Arch.
-- Clear MVC separation [x] _Models do not know views exist, they only see Observers_
-- Patterns: 
-  - MVC [x] _See `ViewCompatibleEntityFactory.h`, `IEntity.h`
-  - Observer [x] _See `IObserver.h`, `ISubject.h`
-  - Abstract Factory [x] _See `AbstractFactory.h`_
-  - Singleton [x] _See `Camera.h`, `Random.h`_
-  - State [x] _See the `state` directory_
-- Logic as standalone library [x] _See GitHub Actions, `CMakeList.txt`
-- Camera & normalized coords [x] _See `WorldCreator.cpp`_
-- Good polymorphism & extensibility [x] _Ex. ISubject > IEntityModel > IDirectionalEntityModel > IGhost > RedGhost_
+- [x] Clear MVC separation _Models do not know views exist, they only see Observers_
+- [x] Patterns: 
+  - [x] MVC _See `ViewCompatibleEntityFactory.h`, `IEntity.h`_
+  - [x] Observer _See `IObserver.h`, `ISubject.h`_
+  - [x] Abstract Factory _See `AbstractFactory.h`_
+  - [x] Singleton _See `Camera.h`, `Random.h`_
+  - [x] State _See the `state` directory_
+- [x] Logic as standalone library _See GitHub Actions, `CMakeList.txt`
+- [x] Camera & Normalized coords _See `WorldCreator.cpp`_
+- [x] Good polymorphism & extensibility _Ex. ISubject > IEntityModel > IDirectionalEntityModel > IGhost > RedGhost_
 
 ## Bonus Features
 
-- Extra gameplay/visuals [ ]
-- Sounds/music [ ]
-- Smarter AI (BFS, A*) [ ]
-- Procedural maps [ ]
-- Multithreading [ ]
-- Extra design patterns [x] _See Visitor.h_
+- [x] Alternative build system _See `meson.build`_
+- [x] Extra design patterns _See Visitor.h_
+- [ ] Extra gameplay/visuals
+- [ ] Multithreading
+- [ ] Procedural maps
+- [ ] Smarter AI (BFS, A*)
+- [ ] Sounds/music
