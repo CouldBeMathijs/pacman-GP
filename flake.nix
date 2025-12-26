@@ -28,6 +28,7 @@
                                         gdb
                                         sfml_2
                                         valgrind
+                                        clang-uml
                                 ];
 
                                 # Helper to create a derivation using Meson
