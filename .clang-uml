@@ -15,12 +15,6 @@ diagrams:
         - .
     exclude:
       # This removes the function/method list from the boxes
-      elements:
-        - method
-      relationships:
-        - association
-        - aggregation
-        - dependency
       namespaces:
         - std
       paths:

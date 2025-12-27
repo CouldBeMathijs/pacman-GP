@@ -5,7 +5,6 @@
 #include <cmath>
 #include <fstream>
 #include <functional>
-#include <iostream>
 
 ScoreKeeper::ScoreKeeper() : m_lastDeductionTime(Clock::now()), m_lastPickupTime(Clock::now()) { loadHighScores(); }
 
