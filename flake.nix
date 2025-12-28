@@ -11,115 +11,110 @@
                         let
                                 pkgs = import nixpkgs {
                                         inherit system;
-                                        # config.allowUnfree = true;
                                 };
 
-                                # Explicitly choose the compiler
                                 compiler = pkgs.clang;
                                 sfml_2 = pkgs.sfml_2;
 
-                                # Package list for the development shell
                                 sfml-dev-pkgs = with pkgs; [
                                         compiler
-                                        cmake      # Provided as requested
+                                        cmake
                                         meson
                                         ninja
-                                        pkg-config # Essential for Meson
+                                        pkg-config
                                         gdb
                                         sfml_2
                                         valgrind
                                         clang-uml
                                 ];
 
-                                # Helper to create a derivation using Meson
                                 mkPacmanDerivation = { optimization, debug, version }: pkgs.stdenv.mkDerivation {
                                         pname = "pacman";
                                         inherit version;
                                         src = ./.;
 
-                                        nativeBuildInputs = with pkgs; [ 
-                                                meson 
-                                                ninja 
-                                                pkg-config 
-                                                compiler 
+                                        nativeBuildInputs = with pkgs; [
+                                                meson
+                                                ninja
+                                                pkg-config
+                                                compiler
+                                                makeWrapper
                                         ];
 
                                         buildInputs = [ sfml_2 ];
 
-                                        # We set these instead of buildtype to avoid conflicts with Nix defaults
                                         mesonFlags = [
                                                 "-Doptimization=${optimization}"
                                                 "-Ddebug=${if debug then "true" else "false"}"
                                         ];
 
-                                        # Meson build happens in a subdirectory; we copy results to $out
+                                        # We install the binary and assets into a subfolder in 'share', 
+                                        # then wrap the binary to ensure it runs from that directory.
                                         installPhase = ''
-                                        runHook preInstall
-                                        echo "Installing Pacman to $out..."
-                                        mkdir -p $out
+            runHook preInstall
 
-                                        # Copy the binary (assumed to be named 'pacman' in meson.build)
-                                        # We use a find command to be safe regardless of where Meson puts it
-                                        find . -name pacman -type f -executable -exec cp {} $out/ \;
+            mkdir -p $out/bin
+            mkdir -p $out/share/pacman
 
-                                        # Copy assets
-                                        if [ -d "$src/assets" ]; then
-                                          cp -r $src/assets $out/
-                                        fi
+            # Find the compiled binary and move it to our share folder
+            find . -name pacman -type f -executable -exec cp {} $out/share/pacman/ \;
 
-                                        echo "Installation complete."
-                                        runHook postInstall
+            # Copy assets to the same folder so the relative path "assets/..." works
+            if [ -d "$src/assets" ]; then
+              cp -r $src/assets $out/share/pacman/
+            fi
+
+            # Create a wrapper script in $out/bin/pacman
+            # This script 'cd's into the share folder before running the actual game
+            makeWrapper $out/share/pacman/pacman $out/bin/pacman \
+              --run "cd $out/share/pacman"
+
+            runHook postInstall
                                         '';
                                 };
 
-                                # Define the two main package variants
-                                cppGamePackage = mkPacmanDerivation { 
-                                        optimization = "3"; 
+                                cppGamePackage = mkPacmanDerivation {
+                                        optimization = "3";
                                         debug = false;
-                                        version = "0.1.0-release"; 
+                                        version = "0.1.0-release";
                                 };
 
-                                cppGamePackageDebug = mkPacmanDerivation { 
-                                        optimization = "0"; 
+                                cppGamePackageDebug = mkPacmanDerivation {
+                                        optimization = "0";
                                         debug = true;
-                                        version = "0.1.0-debug"; 
+                                        version = "0.1.0-debug";
                                 };
 
                         in {
-                                # 'nix build'
                                 packages = {
                                         default = cppGamePackage;
                                         pacman-release = cppGamePackage;
                                         pacman-debug = cppGamePackageDebug;
                                 };
 
-                                # 'nix develop'
                                 devShells.default = pkgs.mkShell {
                                         buildInputs = sfml-dev-pkgs;
 
                                         shellHook = ''
-                                        export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [ sfml_2 ]}:$LD_LIBRARY_PATH
+            export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [ sfml_2 ]}:$LD_LIBRARY_PATH
+            export CMAKE_PREFIX_PATH=${sfml_2}:$CMAKE_PREFIX_PATH
+            export SFML_DIR=${sfml_2}/lib/cmake/SFML
 
-                                        # Environment variables to keep CMake happy within the dev shell
-                                        export CMAKE_PREFIX_PATH=${sfml_2}:$CMAKE_PREFIX_PATH
-                                        export SFML_DIR=${sfml_2}/lib/cmake/SFML
-
-                                        echo "--------------------------------------------------------"
-                                        echo "Pacman Dev Environment (Meson + CMake + Clang)"
-                                        echo "--------------------------------------------------------"
-                                        echo "To build with Meson:"
-                                        echo "  meson setup build && meson compile -C build"
-                                        echo ""
-                                        echo "To build with CMake:"
-                                        echo "  cmake -B build-cmake . && cmake --build build-cmake"
-                                        echo "--------------------------------------------------------"
+            echo "--------------------------------------------------------"
+            echo "Pacman Dev Environment (Meson + CMake + Clang)"
+            echo "--------------------------------------------------------"
+            echo "To build with Meson:"
+            echo "  meson setup build && meson compile -C build"
+            echo ""
+            echo "To build with CMake:"
+            echo "  cmake -B build-cmake . && cmake --build build-cmake"
+            echo "--------------------------------------------------------"
                                         '';
                                 };
 
-                                # 'nix run'
                                 apps.default = {
                                         type = "app";
-                                        program = "${cppGamePackage}/pacman";
+                                        program = "${self.packages.${system}.default}/bin/pacman";
                                 };
                         }
                 );
