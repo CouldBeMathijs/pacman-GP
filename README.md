@@ -5,8 +5,8 @@
 ## Core Game Requirements
 
 - [x] Startup screen + scoreboard _See MenuState.h_
-- [x] Maze & collision correctness [x]
-- [x] Smooth continuous movement [x]
+- [x] Maze & collision correctness
+- [x] Smooth continuous movement
 - [x] Ghost AI (4 modes, Manhattan distance, direction locking) _See IGhost.h and World.cpp_
 - [x] Coin/fruit score modifiers _See ScoreKeeper.cpp_
 - [x] Fear mode + ghost reversal _See IGhost.h and World.cpp_
